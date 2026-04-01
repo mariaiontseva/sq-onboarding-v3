@@ -165,38 +165,6 @@ body {
   margin-top: 12px; line-height: 1.5;
 }
 
-/* ===== SUCCESS ===== */
-.success {
-  flex: 1; display: flex; flex-direction: column;
-  align-items: center; justify-content: center; text-align: center;
-  padding: 40px 24px;
-}
-.success-check {
-  width: 72px; height: 72px; border-radius: 50%;
-  background: #AE39C6; color: #fff;
-  display: flex; align-items: center; justify-content: center;
-  font-size: 32px; margin-bottom: 20px;
-  animation: pop-in 0.5s cubic-bezier(0.16, 1, 0.3, 1) both;
-}
-@keyframes pop-in {
-  from { transform: scale(0); opacity: 0; }
-  to { transform: scale(1); opacity: 1; }
-}
-.success h2 { font-size: 24px; font-weight: 700; margin-bottom: 8px; }
-.success p { font-size: 15px; color: #7b8faa; line-height: 1.5; margin-bottom: 24px; max-width: 300px; }
-.success-email {
-  display: flex; align-items: center; gap: 8px;
-  background: #AE39C6; color: #fff; border: none;
-  padding: 12px 24px; border-radius: 10px;
-  font-family: inherit; font-size: 15px; font-weight: 600;
-  cursor: pointer; margin-bottom: 12px;
-}
-.success-email i { font-size: 14px; }
-.success-continue {
-  font-size: 14px; color: #AE39C6; font-weight: 600;
-  text-decoration: none;
-}
-
 /* ===== STICKY BOTTOM ===== */
 .sticky-bottom {
   position: fixed; bottom: 0; left: 0; right: 0; z-index: 100;
@@ -226,10 +194,114 @@ body {
   padding: 5px 12px; border-radius: 4px; text-decoration: none;
   font-family: inherit;
 }
+
+/* ===== PRODUCT PAGE ===== */
+.topnav {
+  display: flex; align-items: center;
+  background: #4075bf; height: 60px; padding: 0 16px;
+  position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+}
+.topnav-logo {
+  width: 36px; height: 36px;
+  background: linear-gradient(135deg, #00b4d8, #4a90d9);
+  border-radius: 50%; display: flex; align-items: center; justify-content: center;
+  color: #fff; font-weight: 700; font-size: 18px; margin-right: 8px;
+}
+.topnav-title { color: #fff; font-weight: 600; font-size: 16px; }
+.product-main {
+  padding: 76px 16px 200px; max-width: 480px; margin: 0 auto;
+}
+.page-title { font-size: 18px; font-weight: 700; margin-bottom: 16px; }
+.card {
+  background: #fff; border-radius: 12px; padding: 16px;
+  border: 1px solid #e8ecf2; margin-bottom: 16px;
+}
+.card-title { font-size: 15px; font-weight: 600; margin-bottom: 12px; }
+.profiles-grid {
+  display: grid; grid-template-columns: 1fr 1fr; gap: 8px;
+}
+.profile-btn {
+  display: flex; align-items: center; gap: 8px;
+  padding: 12px; border: 1.5px solid #e2e8f0; border-radius: 10px;
+  background: #fff; font-family: inherit; font-size: 13px; font-weight: 500;
+  color: #072653; cursor: pointer;
+}
+.profile-btn i { font-size: 16px; color: #4075bf; }
+.connected-empty {
+  background: #fff; border-radius: 12px; padding: 20px;
+  border: 1px solid #e8ecf2; text-align: center;
+}
+.connected-empty h3 { font-size: 15px; font-weight: 600; margin-bottom: 4px; }
+.connected-empty p { font-size: 13px; color: #7b8faa; }
+
+/* ===== BOTTOM SHEET ===== */
+.mob-sheet {
+  position: fixed; bottom: 0; left: 0; right: 0; z-index: 150;
+  background: #fff; border-radius: 14px 14px 0 0;
+  border-top: 3px solid #AE39C6;
+  box-shadow: 0 -4px 24px rgba(7,38,83,0.15);
+  max-width: 480px; margin: 0 auto;
+}
+.mob-sheet.slide-in { animation: mob-sheet-up 0.6s cubic-bezier(0.16, 1, 0.3, 1) both; }
+@keyframes mob-sheet-up {
+  from { transform: translateY(100%); }
+  to { transform: translateY(0); }
+}
+.mob-sheet-handle {
+  width: 32px; height: 4px; background: #d0d8e4;
+  border-radius: 2px; margin: 6px auto 0;
+}
+.mob-sheet-expand-area { padding: 4px 16px 16px; }
+.mob-sheet-exp-header {
+  display: flex; align-items: center; gap: 8px; padding: 0 0 6px;
+}
+.mob-sheet-exp-done {
+  display: flex; align-items: center; gap: 6px;
+  font-size: 13px; font-weight: 700; color: #072653;
+}
+.mob-sheet-exp-done::before {
+  content: ''; width: 8px; height: 8px;
+  background: #AE39C6; border-radius: 50%;
+}
+.mob-sheet-exp-time { font-size: 12px; color: #94a3b8; margin-left: auto; }
+.mob-sheet-bar {
+  height: 4px; background: #edf0f5; border-radius: 2px;
+  overflow: hidden; margin-bottom: 10px;
+}
+.mob-sheet-bar-fill {
+  height: 100%; width: 0%;
+  background: linear-gradient(90deg, #AE39C6, #d06ce8);
+  border-radius: 2px;
+}
+.mob-s-card {
+  border: 1px solid #e8ecf2; border-radius: 10px; margin-bottom: 6px;
+  background: #fff;
+}
+.mob-s-card.active { border-color: #d06ce8; background: #fdfbfe; }
+.mob-s-card-header {
+  display: flex; align-items: center; gap: 10px;
+  padding: 10px 12px;
+}
+.mob-s-num {
+  width: 26px; height: 26px; background: #f5ecfa; color: #AE39C6;
+  border-radius: 50%; display: flex; align-items: center; justify-content: center;
+  font-size: 12px; font-weight: 700; flex-shrink: 0;
+}
+.mob-s-card-title { font-size: 14px; font-weight: 600; color: #072653; flex: 1; }
+.mob-s-card-chevron { width: 16px; height: 16px; color: #c2cdd9; }
+.mob-s-card.active .mob-s-card-chevron { transform: rotate(180deg); color: #AE39C6; }
+.mob-s-card-body { display: grid; grid-template-rows: 0fr; overflow: hidden; }
+.mob-s-card.active .mob-s-card-body { grid-template-rows: 1fr; }
+.mob-s-card-inner { min-height: 0; padding: 0 12px 0 48px; overflow: hidden; }
+.mob-s-card.active .mob-s-card-inner { padding: 0 12px 12px 48px; }
+.mob-s-card-desc { font-size: 13px; color: #6b7c8f; line-height: 1.45; }
+.mob-s-card-time { color: #AE39C6; font-size: 11px; }
+.mob-s-card-time i { font-size: 10px; margin-right: 2px; }
 </style>
 </head>
 <body>
 
+<div id="kycOverlay">
 <a href="https://mariaiontseva.github.io/sq-onboarding/" class="back-to-v1">&larr; v1/v2</a>
 
 <!-- Progress -->
@@ -449,6 +521,74 @@ body {
 <div class="sticky-bottom" id="stickyBottom">
   <button class="btn-next" id="btnNext" disabled onclick="handleNext()">Next</button>
 </div>
+</div><!-- /kycOverlay -->
+
+<!-- Product Page (hidden until KYC complete) -->
+<div id="productPage" style="display:none">
+  <!-- Topnav -->
+  <nav class="topnav">
+    <div class="topnav-logo">Q</div>
+    <div class="topnav-title">SmarterQueue</div>
+  </nav>
+
+  <!-- Main content -->
+  <div class="product-main">
+    <h1 class="page-title">Social Profiles</h1>
+    <div class="card">
+      <h3 class="card-title">Connect Profiles</h3>
+      <div class="profiles-grid">
+        <button class="profile-btn"><i class="fa-brands fa-instagram"></i> Instagram</button>
+        <button class="profile-btn"><i class="fa-brands fa-facebook-f"></i> Facebook</button>
+        <button class="profile-btn"><i class="fa-brands fa-x-twitter"></i> X / Twitter</button>
+        <button class="profile-btn"><i class="fa-brands fa-linkedin-in"></i> LinkedIn</button>
+        <button class="profile-btn"><i class="fa-brands fa-tiktok"></i> TikTok</button>
+        <button class="profile-btn"><i class="fa-brands fa-youtube"></i> YouTube</button>
+        <button class="profile-btn"><i class="fa-brands fa-pinterest-p"></i> Pinterest</button>
+        <button class="profile-btn"><i class="fa-brands fa-threads"></i> Threads</button>
+      </div>
+    </div>
+    <div class="connected-empty">
+      <h3>Connected Profiles</h3>
+      <p>Connect your first profile and let SmarterQueue do the rest.</p>
+    </div>
+  </div>
+
+  <!-- Bottom Sheet (v1 style) -->
+  <div class="mob-sheet expanded" id="mobSheet" style="display:none">
+    <div class="mob-sheet-handle"></div>
+    <div class="mob-sheet-expand-area">
+      <div class="mob-sheet-exp-header">
+        <div class="mob-sheet-exp-done">0 of 3 done</div>
+        <div class="mob-sheet-exp-time">About 8 min left</div>
+      </div>
+      <div class="mob-sheet-bar"><div class="mob-sheet-bar-fill"></div></div>
+      <div class="mob-s-card active">
+        <div class="mob-s-card-header">
+          <div class="mob-s-num">1</div>
+          <div class="mob-s-card-title">Connect your profiles</div>
+          <svg class="mob-s-card-chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
+        </div>
+        <div class="mob-s-card-body"><div class="mob-s-card-inner">
+          <div class="mob-s-card-desc">Stop logging into 4 different apps. Connect once, and every post goes out automatically. <span class="mob-s-card-time"><i class="fa-regular fa-clock"></i> 3 min</span></div>
+        </div></div>
+      </div>
+      <div class="mob-s-card">
+        <div class="mob-s-card-header">
+          <div class="mob-s-num">2</div>
+          <div class="mob-s-card-title"><i class="fa-solid fa-desktop" style="color:#94a3b8;font-size:11px;margin-right:4px"></i> Set your timeslots to post</div>
+          <svg class="mob-s-card-chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
+        </div>
+      </div>
+      <div class="mob-s-card">
+        <div class="mob-s-card-header">
+          <div class="mob-s-num">3</div>
+          <div class="mob-s-card-title"><i class="fa-solid fa-desktop" style="color:#94a3b8;font-size:11px;margin-right:4px"></i> Bulk import your content</div>
+          <svg class="mob-s-card-chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
 
 <script>
 var currentStep = 1;
@@ -476,8 +616,14 @@ function handleNext() {
   if (currentStep === 1 && !selectedPersona) return;
   if (currentStep === 2 && !selectedGoal) return;
   if (currentStep === 3) {
-    // After credit card — go to product with confetti
-    window.location.href = 'https://mariaiontseva.github.io/sq-onboarding/?confetti=1';
+    // After credit card — hide KYC, show product page with confetti
+    document.getElementById('kycOverlay').style.display = 'none';
+    document.getElementById('productPage').style.display = 'block';
+    setTimeout(function() {
+      document.getElementById('mobSheet').style.display = 'block';
+      document.getElementById('mobSheet').classList.add('slide-in');
+      fireConfetti();
+    }, 400);
     return;
   }
   goToStep(currentStep + 1);
