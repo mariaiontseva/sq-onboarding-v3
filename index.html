@@ -8,49 +8,46 @@
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
 <style>
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+html, body {
+  height: 100%;
+}
 body {
   font-family: 'Proxima Nova', -apple-system, BlinkMacSystemFont, sans-serif;
-  background: #fff;
+  background: #314260;
   color: #072653;
   min-height: 100vh;
-  max-width: 480px;
-  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2.5vh 2.5vw;
 }
 
-/* ===== PROGRESS BAR ===== */
-.progress-top {
-  position: fixed; top: 0; left: 0; right: 0; z-index: 100;
-  background: #fff; padding: 16px 20px 12px;
-  max-width: 480px; margin: 0 auto;
+/* ===== MODAL ===== */
+.modal {
+  width: 95vw;
+  max-width: 480px;
+  height: 95vh;
+  background: #fff;
+  border-radius: 18px;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.25);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  position: relative;
 }
-.progress-top-inner {
-  display: flex; align-items: center; gap: 12px;
+
+/* ===== CONTENT (scrollable) ===== */
+.modal-content {
+  flex: 1;
+  overflow-y: auto;
+  padding: 28px 24px 20px;
+  -webkit-overflow-scrolling: touch;
 }
-.progress-back {
-  width: 32px; height: 32px; border: none; background: none;
-  color: #94a3b8; cursor: pointer; display: flex; align-items: center; justify-content: center;
-  border-radius: 8px; font-size: 18px; flex-shrink: 0;
-}
-.progress-back:hover { background: #f0f4f9; color: #072653; }
-.progress-back.hidden { visibility: hidden; }
-.progress-dots {
-  display: flex; gap: 6px; flex: 1; justify-content: center;
-}
-.progress-dot {
-  height: 4px; flex: 1; border-radius: 2px; background: #e8ecf2;
-  transition: background 0.3s;
-}
-.progress-dot.done { background: #AE39C6; }
-.progress-dot.active { background: #AE39C6; }
-.progress-spacer { width: 32px; flex-shrink: 0; }
 
 /* ===== STEPS ===== */
-.step {
-  display: none; flex-direction: column;
-  min-height: 100vh;
-  padding: 72px 20px 100px;
-}
-.step.active { display: flex; }
+.step { display: none; }
+.step.active { display: block; }
 .step-enter { animation: step-in 0.3s ease both; }
 @keyframes step-in {
   from { opacity: 0; transform: translateX(20px); }
@@ -58,11 +55,32 @@ body {
 }
 
 .step-title {
-  font-size: 22px; font-weight: 700; color: #072653;
-  margin-bottom: 4px; line-height: 1.3;
+  font-size: 24px; font-weight: 700; color: #072653;
+  margin-bottom: 20px; line-height: 1.2;
+  letter-spacing: -0.4px;
 }
 .step-subtitle {
-  font-size: 14px; color: #7b8faa; margin-bottom: 20px; line-height: 1.5;
+  font-size: 14px; color: #7b8faa; margin-top: -16px;
+  margin-bottom: 22px; line-height: 1.5;
+}
+
+/* Welcome line — sits above title on first step */
+.welcome {
+  display: flex; align-items: flex-start; gap: 8px;
+  font-size: 14px; color: #6a7d99; line-height: 1.45;
+  margin-bottom: 12px;
+  letter-spacing: 0.1px;
+}
+.welcome .wave {
+  display: inline-block; flex-shrink: 0;
+  font-size: 16px; line-height: 1.2;
+  transform-origin: 70% 70%;
+  animation: wave 1.6s ease-in-out 0.2s 1 both;
+}
+@keyframes wave {
+  0%, 60%, 100% { transform: rotate(0deg); }
+  10%, 30%, 50% { transform: rotate(-14deg); }
+  20%, 40% { transform: rotate(14deg); }
 }
 
 /* ===== OPTION CARDS ===== */
@@ -73,29 +91,28 @@ body {
   overflow: hidden;
 }
 .opt-card:hover { border-color: #c2d0e8; }
-.opt-card.selected { border-color: #AE39C6; background: #fdfbfe; }
+.opt-card.selected { border-color: hsl(215, 50%, 50%); background: hsl(215, 50%, 97%); }
 .opt-card-header {
   display: flex; align-items: center; gap: 12px;
-  padding: 14px 16px;
+  padding: 11px 16px;
 }
 .opt-card-icon {
   width: 36px; height: 36px; border-radius: 9px;
-  background: #f5ecfa; color: #AE39C6;
+  background: hsl(215, 50%, 94%); color: hsl(215, 50%, 50%);
   display: flex; align-items: center; justify-content: center;
   font-size: 15px; flex-shrink: 0;
   transition: background 0.2s, color 0.2s;
 }
-.opt-card.selected .opt-card-icon { background: #AE39C6; color: #fff; }
+.opt-card.selected .opt-card-icon { background: hsl(215, 50%, 50%); color: #fff; }
 .opt-card-text { flex: 1; }
-.opt-card-text strong { font-size: 14px; font-weight: 600; display: block; line-height: 1.3; }
-.opt-card-text span { font-size: 12px; color: #94a3b8; }
-.opt-card-check {
-  width: 20px; height: 20px; border: 2px solid #d0d8e4; border-radius: 50%;
-  flex-shrink: 0; transition: all 0.2s; box-sizing: border-box;
+.opt-card-text strong {
+  font-size: 15px; font-weight: 600; display: block;
+  line-height: 1.3; color: #0d2c5a;
+  letter-spacing: -0.1px;
 }
-.opt-card.selected .opt-card-check {
-  border-color: #AE39C6; background: #AE39C6;
-  box-shadow: inset 0 0 0 3px #fff;
+.opt-card-text > span:not(.goal-badge) {
+  font-size: 14px; color: #8a99b0; line-height: 1.3;
+  display: block; margin-top: 2px;
 }
 /* Value expand */
 .opt-card-value {
@@ -112,23 +129,35 @@ body {
   list-style: none; padding: 0;
 }
 .opt-card-value-inner li {
-  font-size: 13px; color: #4a5a70; line-height: 1.5;
-  padding: 3px 0 3px 18px; position: relative;
+  font-size: 14px; color: #4a5a70; line-height: 1.4;
+  padding: 2px 0 2px 16px; position: relative;
 }
 .opt-card-value-inner li::before {
-  content: ''; position: absolute; left: 0; top: 10px;
-  width: 8px; height: 8px; border-radius: 50%;
-  background: #d06ce8;
+  content: ''; position: absolute; left: 0; top: 9px;
+  width: 6px; height: 6px; border-radius: 50%;
+  background: hsl(215, 50%, 65%);
 }
 
-/* Goal cards — simpler, no icon */
+/* Goal cards — simpler, no icon, taller titles */
 .goal-card { cursor: pointer; }
-.goal-card .opt-card-header { gap: 14px; }
-.goal-card .opt-card-text strong { font-size: 15px; }
+.goal-card .opt-card-header { gap: 14px; padding: 14px 16px; }
+.goal-card .opt-card-text strong {
+  font-size: 16px; font-weight: 600; line-height: 1.35;
+  letter-spacing: -0.15px;
+}
 .goal-badge {
-  background: #072653; color: #fff; font-size: 9px; font-weight: 700;
-  letter-spacing: 0.6px; padding: 3px 10px; border-radius: 20px;
-  text-transform: uppercase; margin-left: 8px; white-space: nowrap;
+  display: inline-block;
+  background: hsl(215, 50%, 50%);
+  color: #ffffff;
+  font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", sans-serif;
+  font-size: 11px;
+  font-weight: 700;
+  padding: 3px 10px;
+  border-radius: 999px;
+  margin-top: 8px;
+  line-height: 1.4;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
 }
 
 /* ===== CREDIT CARD FORM ===== */
@@ -147,22 +176,22 @@ body {
   color: #072653; outline: none; transition: border-color 0.2s;
   background: #fff;
 }
-.cc-input:focus { border-color: #AE39C6; }
+.cc-input:focus { border-color: hsl(215, 50%, 50%); }
 .cc-input::placeholder { color: #b0bac8; }
 .cc-row { display: flex; gap: 12px; }
 .cc-row .cc-input { flex: 1; }
 .cc-trust {
-  display: flex; justify-content: center; gap: 16px;
+  display: flex; justify-content: center; flex-wrap: wrap; gap: 8px 14px;
   margin-top: 16px;
 }
 .cc-trust-item {
-  display: flex; align-items: center; gap: 4px;
-  font-size: 11px; color: #94a3b8;
+  display: flex; align-items: center; gap: 6px;
+  font-size: 14px; color: #8a99b0;
 }
-.cc-trust-item i { font-size: 12px; color: #AE39C6; }
+.cc-trust-item i { font-size: 14px; color: hsl(215, 50%, 50%); }
 .cc-fine {
-  font-size: 11px; color: #b0bac8; text-align: center;
-  margin-top: 12px; line-height: 1.5;
+  font-size: 14px; color: #8a99b0; text-align: center;
+  margin-top: 14px; line-height: 1.45;
 }
 
 /* ===== SUCCESS ===== */
@@ -173,7 +202,7 @@ body {
 }
 .success-check {
   width: 72px; height: 72px; border-radius: 50%;
-  background: #AE39C6; color: #fff;
+  background: hsl(215, 50%, 50%); color: #fff;
   display: flex; align-items: center; justify-content: center;
   font-size: 32px; margin-bottom: 20px;
   animation: pop-in 0.5s cubic-bezier(0.16, 1, 0.3, 1) both;
@@ -184,34 +213,70 @@ body {
 }
 .success h2 { font-size: 24px; font-weight: 700; margin-bottom: 8px; }
 .success p { font-size: 15px; color: #7b8faa; line-height: 1.5; margin-bottom: 24px; max-width: 300px; }
-.success-email {
-  display: flex; align-items: center; gap: 8px;
-  background: #AE39C6; color: #fff; border: none;
-  padding: 12px 24px; border-radius: 10px;
-  font-family: inherit; font-size: 15px; font-weight: 600;
-  cursor: pointer; margin-bottom: 12px;
+
+/* ===== ACTION BAR ===== */
+.action-bar {
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 14px 20px calc(14px + env(safe-area-inset-bottom));
+  border-top: 1px solid #e4e9f0;
+  background: #fff;
+  box-shadow: 0 -6px 16px -4px rgba(7, 38, 83, 0.08), 0 -1px 3px rgba(7, 38, 83, 0.04);
 }
-.success-email i { font-size: 14px; }
-.success-continue {
-  font-size: 14px; color: #AE39C6; font-weight: 600;
-  text-decoration: none;
+.btn-back {
+  height: 44px;
+  padding: 0 20px;
+  border: 1.5px solid hsl(215, 50%, 50%);
+  background: #fff;
+  color: hsl(215, 50%, 50%);
+  font-family: inherit;
+  font-size: 15px;
+  font-weight: 600;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: background 0.2s, border-color 0.2s;
+}
+.btn-back:hover { background: hsl(215, 50%, 97%); border-color: hsl(215, 50%, 42%); }
+.btn-back.hidden { visibility: hidden; }
+
+.action-dots {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 4px;
+  background: #d0d8e4;
+  transition: width 0.3s ease, background 0.3s ease;
+}
+.dot.active {
+  width: 26px;
+  background: hsl(215, 50%, 50%);
+}
+.dot.done {
+  background: hsl(215, 50%, 50%);
 }
 
-/* ===== STICKY BOTTOM ===== */
-.sticky-bottom {
-  position: fixed; bottom: 0; left: 0; right: 0; z-index: 100;
-  background: #fff; border-top: 1px solid #edf0f5;
-  padding: 12px 20px calc(12px + env(safe-area-inset-bottom));
-  max-width: 480px; margin: 0 auto;
+.btn-continue {
+  height: 44px;
+  padding: 0 24px;
+  border: none;
+  border-radius: 10px;
+  background: hsl(215, 50%, 50%);
+  color: #fff;
+  font-family: inherit;
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: opacity 0.2s, background 0.2s;
 }
-.btn-next {
-  width: 100%; height: 44px; border: none; border-radius: 10px;
-  background: #AE39C6; color: #fff;
-  font-family: inherit; font-size: 16px; font-weight: 600;
-  cursor: pointer; transition: opacity 0.2s;
-}
-.btn-next:disabled { opacity: 0.35; cursor: not-allowed; }
-.btn-next:not(:disabled):hover { background: #9a2fb2; }
+.btn-continue:disabled { opacity: 0.45; cursor: not-allowed; }
+.btn-continue:not(:disabled):hover { background: hsl(215, 50%, 42%); }
 
 /* ===== CONFETTI ===== */
 .confetti-canvas {
@@ -221,7 +286,7 @@ body {
 
 /* ===== BACK LINK ===== */
 .back-to-v1 {
-  position: fixed; top: 16px; right: 20px; z-index: 101;
+  position: fixed; top: 12px; right: 12px; z-index: 101;
   background: #111; color: #fff; font-size: 11px; font-weight: 600;
   padding: 5px 12px; border-radius: 4px; text-decoration: none;
   font-family: inherit;
@@ -232,222 +297,218 @@ body {
 
 <a href="https://mariaiontseva.github.io/sq-onboarding/" class="back-to-v1">&larr; v1/v2</a>
 
-<!-- Progress -->
-<div class="progress-top">
-  <div class="progress-top-inner">
-    <button class="progress-back hidden" id="backBtn" onclick="goBack()">
-      <i class="fa-solid fa-arrow-left"></i>
-    </button>
-    <div class="progress-dots" id="progressDots">
-      <div class="progress-dot active"></div>
-      <div class="progress-dot"></div>
-      <div class="progress-dot"></div>
+<div class="modal">
+  <div class="modal-content">
+
+    <!-- Step 1: Persona -->
+    <div class="step active step-enter" id="step1">
+      <p class="welcome"><span class="wave">👋</span><span>Welcome! We'll tailor your setup so you see the most useful things first.</span></p>
+      <div class="step-title">Which describes you best?</div>
+
+      <div class="opt-card" onclick="selectPersona(this)" data-persona="SMM Agency / Freelancer">
+        <div class="opt-card-header">
+          <div class="opt-card-icon"><i class="fa-solid fa-users-gear"></i></div>
+          <div class="opt-card-text"><strong>SMM Agency / Freelancer</strong><span>Multiple clients/brands</span></div>
+        </div>
+        <div class="opt-card-value"><div class="opt-card-value-inner"><ul>
+          <li>Manage all clients from one dashboard</li>
+          <li>Switch between brands in seconds</li>
+          <li>Team collaboration with approval workflows</li>
+        </ul></div></div>
+      </div>
+
+      <div class="opt-card" onclick="selectPersona(this)" data-persona="Business">
+        <div class="opt-card-header">
+          <div class="opt-card-icon"><i class="fa-solid fa-building"></i></div>
+          <div class="opt-card-text"><strong>Business</strong><span>In-house marketer</span></div>
+        </div>
+        <div class="opt-card-value"><div class="opt-card-value-inner"><ul>
+          <li>Schedule across all company channels at once</li>
+          <li>Keep brand voice consistent everywhere</li>
+          <li>Analytics that prove ROI to your team</li>
+        </ul></div></div>
+      </div>
+
+      <div class="opt-card" onclick="selectPersona(this)" data-persona="Branches / Franchise">
+        <div class="opt-card-header">
+          <div class="opt-card-icon"><i class="fa-solid fa-sitemap"></i></div>
+          <div class="opt-card-text"><strong>Branches / Franchise</strong><span>Multiple locations</span></div>
+        </div>
+        <div class="opt-card-value"><div class="opt-card-value-inner"><ul>
+          <li>Localize content per location</li>
+          <li>Central brand control, local flexibility</li>
+          <li>Bulk scheduling across all branches</li>
+        </ul></div></div>
+      </div>
+
+      <div class="opt-card" onclick="selectPersona(this)" data-persona="Solopreneur">
+        <div class="opt-card-header">
+          <div class="opt-card-icon"><i class="fa-solid fa-user"></i></div>
+          <div class="opt-card-text"><strong>Solopreneur</strong><span>My own brand/business</span></div>
+        </div>
+        <div class="opt-card-value"><div class="opt-card-value-inner"><ul>
+          <li>Schedule a week of posts in 10 minutes</li>
+          <li>Auto-recycle your best content forever</li>
+          <li>One dashboard for every platform</li>
+        </ul></div></div>
+      </div>
+
+      <div class="opt-card" onclick="selectPersona(this)" data-persona="Content Creator">
+        <div class="opt-card-header">
+          <div class="opt-card-icon"><i class="fa-solid fa-video"></i></div>
+          <div class="opt-card-text"><strong>Content Creator</strong><span>Influencer / video creator</span></div>
+        </div>
+        <div class="opt-card-value"><div class="opt-card-value-inner"><ul>
+          <li>Cross-post to every platform at once</li>
+          <li>Optimal timing based on your audience</li>
+          <li>Evergreen recycling keeps your feed fresh</li>
+        </ul></div></div>
+      </div>
+
+      <div class="opt-card" onclick="selectPersona(this)" data-persona="Blogger">
+        <div class="opt-card-header">
+          <div class="opt-card-icon"><i class="fa-solid fa-pen-nib"></i></div>
+          <div class="opt-card-text"><strong>Blogger</strong><span>Promote my blog</span></div>
+        </div>
+        <div class="opt-card-value"><div class="opt-card-value-inner"><ul>
+          <li>Auto-share new posts via RSS feed</li>
+          <li>Recycle top-performing articles</li>
+          <li>Drive consistent traffic on autopilot</li>
+        </ul></div></div>
+      </div>
+
+      <div class="opt-card" onclick="selectPersona(this)" data-persona="High-Volume Publisher">
+        <div class="opt-card-header">
+          <div class="opt-card-icon"><i class="fa-solid fa-layer-group"></i></div>
+          <div class="opt-card-text"><strong>High-Volume Publisher</strong><span>Multiple pages at scale</span></div>
+        </div>
+        <div class="opt-card-value"><div class="opt-card-value-inner"><ul>
+          <li>Queue hundreds of posts via CSV import</li>
+          <li>Category-based auto scheduling</li>
+          <li>Scale content without scaling effort</li>
+        </ul></div></div>
+      </div>
+
+      <div class="opt-card" onclick="selectPersona(this)" data-persona="Other">
+        <div class="opt-card-header">
+          <div class="opt-card-icon"><i class="fa-solid fa-ellipsis"></i></div>
+          <div class="opt-card-text"><strong>Other</strong><span>None of the above</span></div>
+        </div>
+        <div class="opt-card-value"><div class="opt-card-value-inner"><ul>
+          <li>Flexible scheduling for any use case</li>
+          <li>14-day free trial, no commitment</li>
+        </ul></div></div>
+      </div>
     </div>
-    <div class="progress-spacer"></div>
-  </div>
-</div>
 
-<!-- Step 1: Persona -->
-<div class="step active step-enter" id="step1">
-  <div class="step-title">Which describes you best?</div>
-  <div class="step-subtitle">We'll tailor your setup so you see the most useful things first.</div>
+    <!-- Step 2: Goals -->
+    <div class="step" id="step2">
+      <div class="step-title">What would you like to achieve first?</div>
+      <div class="step-subtitle">We'll personalize your setup based on your answer.</div>
 
-  <div class="opt-card" onclick="selectPersona(this)" data-persona="SMM Agency / Freelancer">
-    <div class="opt-card-header">
-      <div class="opt-card-icon"><i class="fa-solid fa-users-gear"></i></div>
-      <div class="opt-card-text"><strong>SMM Agency / Freelancer</strong><span>Multiple clients/brands</span></div>
-      <div class="opt-card-check"></div>
+      <div class="opt-card goal-card" onclick="selectGoal(this)">
+        <div class="opt-card-header">
+          <div class="opt-card-text">
+            <strong>Set up a consistent posting plan &amp; start scheduling</strong>
+            <span class="goal-badge">Recommended</span>
+          </div>
+        </div>
+        <div class="opt-card-value"><div class="opt-card-value-inner"><ul>
+          <li>Pick your best times, we auto-publish</li>
+          <li>Fill a week of content in under 10 minutes</li>
+        </ul></div></div>
+      </div>
+
+      <div class="opt-card goal-card" onclick="selectGoal(this)">
+        <div class="opt-card-header">
+          <div class="opt-card-text"><strong>Set up a workspace &amp; get my team collaborating</strong></div>
+        </div>
+        <div class="opt-card-value"><div class="opt-card-value-inner"><ul>
+          <li>Roles, approvals and shared queues in one place</li>
+          <li>Keep brand voice consistent across the team</li>
+        </ul></div></div>
+      </div>
+
+      <div class="opt-card goal-card" onclick="selectGoal(this)">
+        <div class="opt-card-header">
+          <div class="opt-card-text"><strong>Import our existing content &amp; get it publishing</strong></div>
+        </div>
+        <div class="opt-card-value"><div class="opt-card-value-inner"><ul>
+          <li>CSV upload or RSS auto-import</li>
+          <li>Your content goes live on schedule</li>
+        </ul></div></div>
+      </div>
+
+      <div class="opt-card goal-card" onclick="selectGoal(this)">
+        <div class="opt-card-header">
+          <div class="opt-card-text"><strong>Discover high-performing content in our niche to share</strong></div>
+        </div>
+        <div class="opt-card-value"><div class="opt-card-value-inner"><ul>
+          <li>AI-curated content from your niche</li>
+          <li>One click to add to your queue</li>
+        </ul></div></div>
+      </div>
+
+      <div class="opt-card goal-card" onclick="selectGoal(this)">
+        <div class="opt-card-header">
+          <div class="opt-card-text"><strong>See which of our posts performed best &amp; apply those learnings</strong></div>
+        </div>
+        <div class="opt-card-value"><div class="opt-card-value-inner"><ul>
+          <li>Visual analytics dashboard</li>
+          <li>See what resonates and double down</li>
+        </ul></div></div>
+      </div>
+
+      <div class="opt-card goal-card" onclick="selectGoal(this)">
+        <div class="opt-card-header">
+          <div class="opt-card-text"><strong>Recycle our best posts automatically for ongoing engagement</strong></div>
+        </div>
+        <div class="opt-card-value"><div class="opt-card-value-inner"><ul>
+          <li>Set it and forget it</li>
+          <li>Top posts re-enter your queue automatically</li>
+        </ul></div></div>
+      </div>
     </div>
-    <div class="opt-card-value"><div class="opt-card-value-inner"><ul>
-      <li>Manage all clients from one dashboard</li>
-      <li>Switch between brands in seconds</li>
-      <li>Team collaboration with approval workflows</li>
-    </ul></div></div>
-  </div>
 
-  <div class="opt-card" onclick="selectPersona(this)" data-persona="Business">
-    <div class="opt-card-header">
-      <div class="opt-card-icon"><i class="fa-solid fa-building"></i></div>
-      <div class="opt-card-text"><strong>Business</strong><span>In-house marketer</span></div>
-      <div class="opt-card-check"></div>
+    <!-- Step 3: Credit Card -->
+    <div class="step" id="step3">
+      <div class="cc-header">
+        <h2>Start your free trial</h2>
+        <p>Pay $0 today. Full access for 14 days.</p>
+      </div>
+      <div class="cc-brands">
+        <i class="fa-brands fa-cc-visa"></i>
+        <i class="fa-brands fa-cc-mastercard"></i>
+        <i class="fa-brands fa-cc-amex"></i>
+      </div>
+      <div class="cc-form">
+        <input class="cc-input" id="ccNumber" type="text" inputmode="numeric" maxlength="19" placeholder="Card number" oninput="formatCardNumber(this)">
+        <div class="cc-row">
+          <input class="cc-input" type="text" inputmode="numeric" maxlength="7" placeholder="MM / YY">
+          <input class="cc-input" type="text" inputmode="numeric" maxlength="4" placeholder="CVC">
+        </div>
+        <input class="cc-input" type="text" placeholder="Name on card">
+      </div>
+      <div class="cc-trust">
+        <div class="cc-trust-item"><i class="fa-solid fa-lock"></i> 256-bit encryption</div>
+        <div class="cc-trust-item"><i class="fa-solid fa-rotate-left"></i> Cancel anytime</div>
+        <div class="cc-trust-item"><i class="fa-solid fa-shield-halved"></i> $0 for 14 days</div>
+      </div>
+      <div class="cc-fine">After your 14-day trial, you'll be charged $19.99/mo.<br>Cancel anytime before to avoid charges.</div>
     </div>
-    <div class="opt-card-value"><div class="opt-card-value-inner"><ul>
-      <li>Schedule across all company channels at once</li>
-      <li>Keep brand voice consistent everywhere</li>
-      <li>Analytics that prove ROI to your team</li>
-    </ul></div></div>
+
   </div>
 
-  <div class="opt-card" onclick="selectPersona(this)" data-persona="Branches / Franchise">
-    <div class="opt-card-header">
-      <div class="opt-card-icon"><i class="fa-solid fa-sitemap"></i></div>
-      <div class="opt-card-text"><strong>Branches / Franchise</strong><span>Multiple locations</span></div>
-      <div class="opt-card-check"></div>
+  <!-- Action Bar -->
+  <div class="action-bar">
+    <button class="btn-back hidden" id="btnBack" onclick="goBack()">Go Back</button>
+    <div class="action-dots" id="actionDots">
+      <div class="dot active"></div>
+      <div class="dot"></div>
+      <div class="dot"></div>
     </div>
-    <div class="opt-card-value"><div class="opt-card-value-inner"><ul>
-      <li>Localize content per location</li>
-      <li>Central brand control, local flexibility</li>
-      <li>Bulk scheduling across all branches</li>
-    </ul></div></div>
+    <button class="btn-continue" id="btnNext" disabled onclick="handleNext()">Continue</button>
   </div>
-
-  <div class="opt-card" onclick="selectPersona(this)" data-persona="Solopreneur">
-    <div class="opt-card-header">
-      <div class="opt-card-icon"><i class="fa-solid fa-user"></i></div>
-      <div class="opt-card-text"><strong>Solopreneur</strong><span>My own brand/business</span></div>
-      <div class="opt-card-check"></div>
-    </div>
-    <div class="opt-card-value"><div class="opt-card-value-inner"><ul>
-      <li>Schedule a week of posts in 10 minutes</li>
-      <li>Auto-recycle your best content forever</li>
-      <li>One dashboard for every platform</li>
-    </ul></div></div>
-  </div>
-
-  <div class="opt-card" onclick="selectPersona(this)" data-persona="Content Creator">
-    <div class="opt-card-header">
-      <div class="opt-card-icon"><i class="fa-solid fa-video"></i></div>
-      <div class="opt-card-text"><strong>Content Creator</strong><span>Influencer / video creator</span></div>
-      <div class="opt-card-check"></div>
-    </div>
-    <div class="opt-card-value"><div class="opt-card-value-inner"><ul>
-      <li>Cross-post to every platform at once</li>
-      <li>Optimal timing based on your audience</li>
-      <li>Evergreen recycling keeps your feed fresh</li>
-    </ul></div></div>
-  </div>
-
-  <div class="opt-card" onclick="selectPersona(this)" data-persona="Blogger">
-    <div class="opt-card-header">
-      <div class="opt-card-icon"><i class="fa-solid fa-pen-nib"></i></div>
-      <div class="opt-card-text"><strong>Blogger</strong><span>Promote my blog</span></div>
-      <div class="opt-card-check"></div>
-    </div>
-    <div class="opt-card-value"><div class="opt-card-value-inner"><ul>
-      <li>Auto-share new posts via RSS feed</li>
-      <li>Recycle top-performing articles</li>
-      <li>Drive consistent traffic on autopilot</li>
-    </ul></div></div>
-  </div>
-
-  <div class="opt-card" onclick="selectPersona(this)" data-persona="High-Volume Publisher">
-    <div class="opt-card-header">
-      <div class="opt-card-icon"><i class="fa-solid fa-layer-group"></i></div>
-      <div class="opt-card-text"><strong>High-Volume Publisher</strong><span>Multiple pages at scale</span></div>
-      <div class="opt-card-check"></div>
-    </div>
-    <div class="opt-card-value"><div class="opt-card-value-inner"><ul>
-      <li>Queue hundreds of posts via CSV import</li>
-      <li>Category-based auto scheduling</li>
-      <li>Scale content without scaling effort</li>
-    </ul></div></div>
-  </div>
-
-  <div class="opt-card" onclick="selectPersona(this)" data-persona="Other">
-    <div class="opt-card-header">
-      <div class="opt-card-icon"><i class="fa-solid fa-ellipsis"></i></div>
-      <div class="opt-card-text"><strong>Other</strong><span>None of the above</span></div>
-      <div class="opt-card-check"></div>
-    </div>
-    <div class="opt-card-value"><div class="opt-card-value-inner"><ul>
-      <li>Flexible scheduling for any use case</li>
-      <li>14-day free trial, no commitment</li>
-    </ul></div></div>
-  </div>
-</div>
-
-<!-- Step 2: Goals -->
-<div class="step" id="step2">
-  <div class="step-title">What would you like to achieve first?</div>
-  <div class="step-subtitle">We'll personalize your setup based on your answer.</div>
-
-  <div class="opt-card goal-card" onclick="selectGoal(this)">
-    <div class="opt-card-header">
-      <div class="opt-card-check"></div>
-      <div class="opt-card-text"><strong>Set up a posting plan &amp; start scheduling <span class="goal-badge">RECOMMENDED</span></strong></div>
-    </div>
-    <div class="opt-card-value"><div class="opt-card-value-inner"><ul>
-      <li>Pick your best times, we auto-publish</li>
-      <li>Fill a week of content in under 10 minutes</li>
-    </ul></div></div>
-  </div>
-
-  <div class="opt-card goal-card" onclick="selectGoal(this)">
-    <div class="opt-card-header">
-      <div class="opt-card-check"></div>
-      <div class="opt-card-text"><strong>Discover high-performing content to share</strong></div>
-    </div>
-    <div class="opt-card-value"><div class="opt-card-value-inner"><ul>
-      <li>AI-curated content from your niche</li>
-      <li>One click to add to your queue</li>
-    </ul></div></div>
-  </div>
-
-  <div class="opt-card goal-card" onclick="selectGoal(this)">
-    <div class="opt-card-header">
-      <div class="opt-card-check"></div>
-      <div class="opt-card-text"><strong>Import my existing content &amp; get it publishing</strong></div>
-    </div>
-    <div class="opt-card-value"><div class="opt-card-value-inner"><ul>
-      <li>CSV upload or RSS auto-import</li>
-      <li>Your content goes live on schedule</li>
-    </ul></div></div>
-  </div>
-
-  <div class="opt-card goal-card" onclick="selectGoal(this)">
-    <div class="opt-card-header">
-      <div class="opt-card-check"></div>
-      <div class="opt-card-text"><strong>See which posts performed best &amp; learn from them</strong></div>
-    </div>
-    <div class="opt-card-value"><div class="opt-card-value-inner"><ul>
-      <li>Visual analytics dashboard</li>
-      <li>See what resonates and double down</li>
-    </ul></div></div>
-  </div>
-
-  <div class="opt-card goal-card" onclick="selectGoal(this)">
-    <div class="opt-card-header">
-      <div class="opt-card-check"></div>
-      <div class="opt-card-text"><strong>Recycle my best posts automatically</strong></div>
-    </div>
-    <div class="opt-card-value"><div class="opt-card-value-inner"><ul>
-      <li>Set it and forget it</li>
-      <li>Top posts re-enter your queue automatically</li>
-    </ul></div></div>
-  </div>
-</div>
-
-<!-- Step 3: Credit Card -->
-<div class="step" id="step3">
-  <div class="cc-header">
-    <h2>Start your free trial</h2>
-    <p>Pay $0 today. Full access for 14 days.</p>
-  </div>
-  <div class="cc-brands">
-    <i class="fa-brands fa-cc-visa"></i>
-    <i class="fa-brands fa-cc-mastercard"></i>
-    <i class="fa-brands fa-cc-amex"></i>
-  </div>
-  <div class="cc-form">
-    <input class="cc-input" id="ccNumber" type="text" inputmode="numeric" maxlength="19" placeholder="Card number" oninput="formatCardNumber(this)">
-    <div class="cc-row">
-      <input class="cc-input" type="text" inputmode="numeric" maxlength="7" placeholder="MM / YY">
-      <input class="cc-input" type="text" inputmode="numeric" maxlength="4" placeholder="CVC">
-    </div>
-    <input class="cc-input" type="text" placeholder="Name on card">
-  </div>
-  <div class="cc-trust">
-    <div class="cc-trust-item"><i class="fa-solid fa-lock"></i> 256-bit encryption</div>
-    <div class="cc-trust-item"><i class="fa-solid fa-rotate-left"></i> Cancel anytime</div>
-    <div class="cc-trust-item"><i class="fa-solid fa-shield-halved"></i> $0 for 14 days</div>
-  </div>
-  <div class="cc-fine">After your 14-day trial, you'll be charged $19.99/mo.<br>Cancel anytime before to avoid charges.</div>
-</div>
-
-
-<!-- Sticky Bottom -->
-<div class="sticky-bottom" id="stickyBottom">
-  <button class="btn-next" id="btnNext" disabled onclick="handleNext()">Next</button>
 </div>
 
 <script>
@@ -460,7 +521,6 @@ function selectPersona(el) {
   el.classList.add('selected');
   selectedPersona = el.dataset.persona;
   document.getElementById('btnNext').disabled = false;
-  // Scroll selected into view
   setTimeout(function() { el.scrollIntoView({ behavior: 'smooth', block: 'center' }); }, 100);
 }
 
@@ -476,7 +536,6 @@ function handleNext() {
   if (currentStep === 1 && !selectedPersona) return;
   if (currentStep === 2 && !selectedGoal) return;
   if (currentStep === 3) {
-    // After credit card — go to product with confetti
     window.location.href = 'https://mariaiontseva.github.io/sq-onboarding/?confetti=1';
     return;
   }
@@ -493,7 +552,7 @@ function goToStep(n) {
     newStep.removeEventListener('animationend', h);
     newStep.classList.remove('step-enter');
   });
-  window.scrollTo(0, 0);
+  document.querySelector('.modal-content').scrollTo(0, 0);
   updateUI();
 }
 
@@ -504,26 +563,24 @@ function goBack() {
 
 function updateUI() {
   // Progress dots
-  var dots = document.querySelectorAll('.progress-dot');
+  var dots = document.querySelectorAll('.dot');
   dots.forEach(function(d, i) {
     d.classList.remove('done', 'active');
     if (i < currentStep - 1) d.classList.add('done');
     if (i === currentStep - 1) d.classList.add('active');
   });
   // Back button
-  var back = document.getElementById('backBtn');
+  var back = document.getElementById('btnBack');
   if (currentStep <= 1) back.classList.add('hidden');
   else back.classList.remove('hidden');
-  // Bottom bar
-  var sticky = document.getElementById('stickyBottom');
+  // Continue button
   var btn = document.getElementById('btnNext');
   if (currentStep === 3) {
     btn.textContent = 'Start Free Trial';
     btn.disabled = false;
   } else {
-    btn.textContent = 'Next';
-    btn.disabled = true; // re-disabled until selection
-    // Re-enable if already selected
+    btn.textContent = 'Continue';
+    btn.disabled = true;
     if (currentStep === 1 && selectedPersona) btn.disabled = false;
     if (currentStep === 2 && selectedGoal) btn.disabled = false;
   }
@@ -534,55 +591,6 @@ function formatCardNumber(el) {
   var parts = [];
   for (var i = 0; i < v.length; i += 4) { parts.push(v.substring(i, i + 4)); }
   el.value = parts.join(' ');
-}
-
-function fireConfetti() {
-  var canvas = document.createElement('canvas');
-  canvas.className = 'confetti-canvas';
-  canvas.width = window.innerWidth;
-  canvas.height = window.innerHeight;
-  document.body.appendChild(canvas);
-  var ctx = canvas.getContext('2d');
-  var colors = ['#AE39C6','#d06ce8','#4075bf','#f0c040','#22a85b','#ff6b6b','#ff9f43','#54a0ff','#fff'];
-  var pieces = [];
-  var origins = [
-    { x: canvas.width * 0.3, y: canvas.height * 0.35 },
-    { x: canvas.width * 0.7, y: canvas.height * 0.35 }
-  ];
-  for (var i = 0; i < 100; i++) {
-    var o = origins[i % 2];
-    var angle = Math.random() * Math.PI * 2;
-    var speed = 4 + Math.random() * 7;
-    pieces.push({
-      x: o.x, y: o.y,
-      vx: Math.cos(angle) * speed, vy: Math.sin(angle) * speed - 3,
-      w: 4 + Math.random() * 5, h: 6 + Math.random() * 8,
-      color: colors[Math.floor(Math.random() * colors.length)],
-      rotation: Math.random() * 360, rotSpeed: (Math.random() - 0.5) * 12,
-      gravity: 0.12 + Math.random() * 0.08,
-      opacity: 1, decay: 0.008 + Math.random() * 0.006
-    });
-  }
-  function draw() {
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
-    var alive = false;
-    for (var i = 0; i < pieces.length; i++) {
-      var p = pieces[i];
-      if (p.opacity <= 0) continue;
-      alive = true;
-      p.x += p.vx; p.y += p.vy; p.vy += p.gravity; p.vx *= 0.99;
-      p.rotation += p.rotSpeed; p.opacity -= p.decay;
-      ctx.save(); ctx.translate(p.x, p.y);
-      ctx.rotate(p.rotation * Math.PI / 180);
-      ctx.globalAlpha = Math.max(0, p.opacity);
-      ctx.fillStyle = p.color;
-      ctx.fillRect(-p.w / 2, -p.h / 2, p.w, p.h);
-      ctx.restore();
-    }
-    if (alive) requestAnimationFrame(draw);
-    else canvas.remove();
-  }
-  requestAnimationFrame(draw);
 }
 </script>
 </body>
