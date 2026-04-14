@@ -1,0 +1,4399 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SmarterQueue — Social Profiles</title>
+<link href="https://fonts.cdnfonts.com/css/proxima-nova-2" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+html, body {
+  height: 100%;
+}
+body {
+  font-family: 'Proxima Nova', -apple-system, BlinkMacSystemFont, sans-serif;
+  background: #f9fafd;
+  color: #072653;
+  min-height: 100vh;
+}
+
+/* ===== TOP NAV ===== */
+.topnav {
+  display: flex;
+  align-items: center;
+  background: #4075bf;
+  height: 60px;
+  padding: 0 16px;
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  z-index: 100;
+}
+
+.topnav-logo {
+  width: 36px; height: 36px;
+  background: linear-gradient(135deg, #00b4d8, #4a90d9);
+  border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  color: #fff;
+  font-weight: 700;
+  font-size: 18px;
+  margin-right: 8px;
+  flex-shrink: 0;
+}
+
+.topnav-org {
+  background: rgba(255,255,255,0.1);
+  border-radius: 6px;
+  padding: 6px 12px;
+  color: #fff;
+  font-size: 16px;
+  letter-spacing: 0.32px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-right: auto;
+  cursor: pointer;
+}
+.topnav-org small { display: block; font-size: 12px; opacity: 0.75; letter-spacing: 0.24px; }
+.topnav-org .org-text { line-height: 1.3; }
+.topnav-org .chevron { font-size: 10px; opacity: 0.7; }
+
+.topnav-links {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  margin: 0 auto;
+}
+.topnav-link {
+  color: rgba(255,255,255,0.85);
+  text-decoration: none;
+  font-size: 16px;
+  font-weight: 500;
+  letter-spacing: 0.32px;
+  padding: 8px 16px;
+  border-radius: 6px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  transition: background 0.15s;
+}
+.topnav-link:hover { background: rgba(255,255,255,0.1); color: #fff; }
+.topnav-link.active {
+  background: rgba(255,255,255,0.2);
+  color: #fff;
+}
+.topnav-link svg { width: 18px; height: 18px; }
+
+.topnav-right {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.btn-upgrade {
+  background: #e8a030;
+  color: #fff;
+  font-weight: 600;
+  font-size: 13px;
+  padding: 8px 20px;
+  border-radius: 20px;
+  border: none;
+  cursor: pointer;
+}
+.topnav-icon {
+  width: 36px; height: 36px;
+  display: flex; align-items: center; justify-content: center;
+  color: rgba(255,255,255,0.8);
+  cursor: pointer;
+  border-radius: 50%;
+}
+.topnav-icon:hover { background: rgba(255,255,255,0.1); }
+.topnav-icon svg { width: 20px; height: 20px; }
+
+/* ===== LAYOUT ===== */
+.layout {
+  display: flex;
+  margin-top: 60px;
+  min-height: calc(100vh - 60px);
+}
+
+/* ===== SIDEBAR ===== */
+.sidebar-bg {
+  position: fixed;
+  top: 60px;
+  left: 0;
+  width: 320px;
+  bottom: 0;
+  background: #fff;
+  border-right: 1px solid #eff2f5;
+  z-index: 0;
+}
+.sidebar {
+  width: 320px;
+  padding: 20px 0;
+  flex-shrink: 0;
+  overflow-y: auto;
+  position: relative;
+  z-index: 1;
+}
+.sidebar-section { padding: 0 16px; margin-bottom: 8px; }
+.sidebar-label {
+  font-size: 12px;
+  font-weight: 500;
+  color: #072653;
+  opacity: 0.5;
+  text-transform: uppercase;
+  letter-spacing: 0.48px;
+  padding: 8px 16px;
+  line-height: 1.2;
+}
+.sidebar-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 16px;
+  color: #072653;
+  opacity: 0.85;
+  font-size: 16px;
+  font-weight: 500;
+  letter-spacing: 0.16px;
+  cursor: pointer;
+  border-radius: 8px;
+  margin: 0 8px;
+  transition: background 0.15s;
+  white-space: nowrap;
+}
+.sidebar-item:hover { background: #f7fafc; }
+.sidebar-item.active {
+  background: #ecf2fb;
+  color: #072653;
+  opacity: 1;
+}
+.sidebar-item svg { width: 18px; height: 18px; opacity: 0.6; flex-shrink: 0; }
+.sidebar-item.active svg { opacity: 1; color: #4075bf; }
+
+/* ===== MAIN CONTENT ===== */
+.main {
+  flex: 1;
+  padding: 32px 40px;
+  max-width: 720px;
+}
+
+.page-title {
+  font-size: 22px;
+  font-weight: 500;
+  color: #072653;
+  opacity: 0.85;
+  letter-spacing: 0.22px;
+  line-height: 1.2;
+  margin-bottom: 24px;
+}
+
+/* Connect Profiles Card */
+.card {
+  background: #fff;
+  border-radius: 6px;
+  border: 1px solid #eff2f5;
+  padding: 24px;
+  margin-bottom: 20px;
+}
+
+.card-title {
+  font-size: 18px;
+  font-weight: 500;
+  color: #072653;
+  opacity: 0.85;
+  letter-spacing: 0.18px;
+  line-height: 1.2;
+  margin-bottom: 20px;
+}
+
+.profiles-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.profile-btn {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  padding: 14px 8px 10px;
+  border-radius: 6px;
+  border: 1px solid #e2e8f0;
+  background: #fff;
+  cursor: pointer;
+  transition: all 0.15s;
+  font-size: 14px;
+  font-weight: 500;
+  letter-spacing: 0.28px;
+  opacity: 0.85;
+  width: 72px;
+  min-height: 88px;
+}
+.profile-btn:hover { opacity: 1; }
+
+.profile-btn .icon {
+  width: 24px; height: 24px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 22px;
+  line-height: 1;
+}
+
+/* Platform-specific colors — from Figma design tokens */
+.profile-btn.instagram { border-color: #c32aa3; background: #f5e7f2; color: #c32aa3; }
+.profile-btn.instagram .icon { color: #c32aa3; }
+
+.profile-btn.facebook { border-color: #1877f2; background: #e5effb; color: #1877f2; }
+.profile-btn.facebook .icon { color: #1877f2; }
+
+.profile-btn.twitter { border-color: #2c2c2c; background: #eee; color: #2c2c2c; }
+.profile-btn.twitter .icon { color: #2c2c2c; }
+
+.profile-btn.linkedin { border-color: #007bb5; background: #e3eff4; color: #007bb5; }
+.profile-btn.linkedin .icon { color: #007bb5; }
+
+.profile-btn.google { border-color: #5283eb; background: #e9eef9; color: #5283eb; }
+.profile-btn.google .icon { color: #5283eb; }
+
+.profile-btn.pinterest { border-color: #bd081c; background: #f5e4e6; color: #bd081c; }
+.profile-btn.pinterest .icon { color: #bd081c; }
+
+.profile-btn.tiktok { border-color: #2c2c2c; background: #eee; color: #2c2c2c; }
+.profile-btn.tiktok .icon { color: #2c2c2c; }
+
+.profile-btn.threads { border-color: #2c2c2c; background: #eee; color: #2c2c2c; }
+.profile-btn.threads .icon { color: #2c2c2c; }
+
+.profile-btn.youtube { border-color: #ff0000; background: #fde8e8; color: #ff0000; }
+.profile-btn.youtube .icon { color: #ff0000; }
+
+.profile-btn.bluesky { border-color: #0085ff; background: #e5f0fd; color: #0085ff; }
+.profile-btn.bluesky .icon { color: #0085ff; }
+
+.profile-btn.bitly { border-color: #ee6123; background: #fdf0e9; color: #ee6123; }
+.profile-btn.bitly .icon { color: #ee6123; }
+
+.profile-btn.universal { border-color: #cdd9e9; background: #f9fafd; color: #8393a9; }
+.profile-btn.universal .icon { color: #8393a9; }
+
+/* profiles-grid-bottom removed — single grid now */
+
+/* Workspace info banner */
+.workspace-banner {
+  border: 2px dashed #c084fc;
+  border-radius: 6px;
+  padding: 20px 28px;
+  display: flex;
+  align-items: flex-start;
+  gap: 16px;
+  position: relative;
+  margin-bottom: 20px;
+}
+.workspace-banner .ws-icon {
+  width: 40px; height: 40px;
+  background: #ede9fe;
+  border-radius: 10px;
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0;
+  color: #7c3aed;
+  font-size: 20px;
+}
+.workspace-banner h4 {
+  font-size: 15px;
+  font-weight: 600;
+  color: #1a202c;
+  margin-bottom: 4px;
+}
+.workspace-banner p {
+  font-size: 13px;
+  color: #4a5568;
+  line-height: 1.5;
+}
+.workspace-banner a { color: #4075bf; font-weight: 500; text-decoration: none; }
+.workspace-banner a:hover { text-decoration: underline; }
+.workspace-banner .close-btn {
+  position: absolute;
+  top: 12px; right: 16px;
+  background: none; border: none;
+  font-size: 22px; color: #a0aec0;
+  cursor: pointer;
+  line-height: 1;
+}
+
+/* Connected Profiles */
+.connected-card {
+  background: #fff;
+  border-radius: 6px;
+  border: 1px solid #eff2f5;
+  padding: 24px;
+}
+.connected-card h3 {
+  font-size: 18px;
+  font-weight: 500;
+  color: #072653;
+  opacity: 0.85;
+  letter-spacing: 0.18px;
+  line-height: 1.2;
+  margin-bottom: 12px;
+}
+.connected-card p {
+  font-size: 16px;
+  color: #8393a9;
+  letter-spacing: 0.16px;
+}
+.connected-card-illustration {
+  margin-top: 16px;
+  max-width: 100%;
+  overflow: hidden;
+  border-radius: 8px;
+  opacity: 0.35;
+  filter: saturate(0.4) brightness(1.15);
+  transition: opacity 0.4s ease, filter 0.4s ease;
+}
+.connected-card:hover .connected-card-illustration {
+  opacity: 0.55;
+  filter: saturate(0.7) brightness(1.05);
+}
+
+/* ===== WELCOME TOOLTIP ===== */
+.welcome-tooltip {
+  position: fixed;
+  top: 64px;
+  right: 60px;
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 4px 24px rgba(0,0,0,0.12);
+  padding: 24px;
+  width: 300px;
+  z-index: 200;
+}
+.welcome-tooltip::before {
+  content: '';
+  position: absolute;
+  top: -8px;
+  right: 50px;
+  width: 16px; height: 16px;
+  background: #fff;
+  transform: rotate(45deg);
+  box-shadow: -2px -2px 4px rgba(0,0,0,0.04);
+}
+.welcome-tooltip h3 {
+  font-size: 16px;
+  font-weight: 700;
+  color: #1a202c;
+  margin-bottom: 10px;
+}
+.welcome-tooltip p {
+  font-size: 13px;
+  color: #4a5568;
+  line-height: 1.6;
+  margin-bottom: 16px;
+}
+.welcome-tooltip a { color: #3b5998; font-weight: 500; text-decoration: none; }
+.welcome-tooltip .btn-got-it {
+  background: #edf2ff;
+  color: #3b5998;
+  font-weight: 600;
+  font-size: 13px;
+  padding: 8px 20px;
+  border-radius: 6px;
+  border: none;
+  cursor: pointer;
+  float: right;
+}
+.welcome-tooltip .btn-got-it:hover { background: #dbe4ff; }
+
+/* ===== BOTTOM RIGHT BUTTONS ===== */
+.bottom-actions {
+  position: fixed;
+  bottom: 24px;
+  right: 24px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  z-index: 50;
+}
+.btn-onboarding-call {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  height: 44px;
+  background: #b644d0;
+  color: #fff;
+  font-family: 'Proxima Nova', sans-serif;
+  font-weight: 600;
+  font-size: 14px;
+  padding: 0 20px;
+  border-radius: 22px;
+  border: none;
+  cursor: pointer;
+  box-shadow: 0 3px 12px rgba(182,68,208,0.35);
+}
+.btn-onboarding-call:hover { background: #a33bbf; }
+.btn-onboarding-call svg { width: 18px; height: 18px; }
+
+/* ===== AI ASSISTANT BUTTON ===== */
+.ai-assistant {
+  position: relative;
+}
+.ai-button {
+  height: 44px;
+  cursor: pointer;
+  transition: opacity 0.4s ease, transform 0.4s ease;
+  display: flex;
+  align-items: center;
+}
+.ai-button.hidden {
+  opacity: 0;
+  transform: scale(0.8);
+  pointer-events: none;
+}
+.ai-button-pill {
+  display: flex;
+  align-items: center;
+  height: 44px;
+  padding: 2px;
+  background: transparent;
+  border: 1px solid transparent;
+  border-radius: 22px;
+  transition: all 0.5s cubic-bezier(0.25, 1, 0.5, 1);
+}
+.ai-button:hover .ai-button-pill {
+  padding: 2px 16px 2px 2px;
+  background: hsla(295, 50%, 95%, 1);
+  border-color: #AE39C6;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.25);
+}
+.ai-button-circle {
+  width: 40px;
+  height: 40px;
+  min-width: 40px;
+  background: #AE39C6;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 2;
+  transition: transform 0.6s cubic-bezier(0.25, 1, 0.5, 1), box-shadow 0.3s ease;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.25);
+}
+@keyframes sparkleRotate {
+  0% { transform: rotate(0deg) scale(1); }
+  25% { transform: rotate(15deg) scale(1.15); }
+  50% { transform: rotate(-10deg) scale(1.05); }
+  75% { transform: rotate(5deg) scale(1.1); }
+  100% { transform: rotate(0deg) scale(1); }
+}
+.ai-icon {
+  width: 24px;
+  height: 24px;
+  fill: white;
+  transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1), filter 0.3s ease;
+  filter: drop-shadow(0 0 0 transparent);
+}
+.ai-button:hover .ai-icon {
+  animation: sparkleRotate 0.8s cubic-bezier(0.34, 1.56, 0.64, 1);
+  filter: drop-shadow(0 0 8px rgba(255, 255, 255, 0.6));
+}
+.ai-button-text {
+  color: #AE39C6;
+  font-family: 'Proxima Nova', sans-serif;
+  font-size: 16px;
+  font-weight: 600;
+  white-space: nowrap;
+  margin-left: 0;
+  opacity: 0;
+  max-width: 0;
+  overflow: hidden;
+  transition: all 0.5s cubic-bezier(0.25, 1, 0.5, 1);
+}
+.ai-button:hover .ai-button-text {
+  opacity: 1;
+  max-width: 100px;
+  margin-left: 10px;
+}
+
+/* ===== AI CHAT PANEL ===== */
+.ai-panel {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  width: 420px;
+  max-height: calc(100vh - 120px);
+  background: white;
+  border-radius: 16px;
+  box-shadow: 0 8px 40px rgba(0, 0, 0, 0.15);
+  overflow: visible;
+  display: none;
+  flex-direction: column;
+  opacity: 0;
+  transform: scale(0.9) translateY(20px);
+  transform-origin: bottom right;
+  transition: opacity 0.4s cubic-bezier(0.25, 1, 0.5, 1), transform 0.4s cubic-bezier(0.25, 1, 0.5, 1);
+  pointer-events: none;
+}
+.ai-panel.open {
+  display: flex;
+  opacity: 1;
+  transform: scale(1) translateY(0);
+  pointer-events: all;
+}
+.ai-panel-close {
+  position: absolute;
+  top: -36px;
+  right: 0;
+  width: 28px;
+  height: 28px;
+  background: #AE39C6;
+  border-radius: 50%;
+  border: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.2s ease;
+  z-index: 10;
+}
+.ai-panel-close:hover { background: #842697; }
+.ai-panel-close svg { width: 10px; height: 10px; }
+.ai-panel-close svg path { fill: white; }
+.ai-panel-header {
+  background: linear-gradient(180deg, #f8f4fa 0%, #f0f8ff 50%, #f5fff8 100%);
+  padding: 50px 24px 24px;
+  text-align: center;
+  position: relative;
+  border-radius: 16px 16px 0 0;
+}
+.ai-panel-icon {
+  width: 56px;
+  height: 56px;
+  background: white;
+  border: 1px solid #AE39C6;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 12px;
+}
+.ai-panel-icon svg { width: 28px; height: 28px; fill: #AE39C6; }
+.ai-panel-title { font-size: 20px; font-weight: 600; color: #1a1a1a; }
+.ai-panel-back {
+  position: absolute;
+  top: 16px;
+  left: 16px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 8px;
+  color: #666;
+  transition: color 0.2s ease;
+}
+.ai-panel-back:hover { color: #AE39C6; }
+.ai-panel-content {
+  padding: 20px 24px;
+  overflow-y: auto;
+  flex: 1;
+}
+.ai-message-label { font-size: 12px; color: #888; margin-bottom: 8px; }
+.ai-message {
+  background: #f5f5f5;
+  border-radius: 16px;
+  border-top-left-radius: 4px;
+  padding: 16px;
+  font-size: 14px;
+  line-height: 1.5;
+  color: #333;
+  margin-bottom: 24px;
+}
+.ai-message a { color: #2196F3; text-decoration: none; }
+.ai-message a:hover { text-decoration: underline; }
+.ai-suggestions-label { font-size: 12px; color: #888; text-align: right; margin-bottom: 12px; }
+.ai-suggestion {
+  display: block;
+  width: 100%;
+  padding: 14px 16px;
+  margin-bottom: 8px;
+  background: white;
+  border: 1px solid #e0e0e0;
+  border-radius: 12px;
+  font-size: 14px;
+  color: #333;
+  text-align: left;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  font-family: inherit;
+}
+.ai-suggestion:hover {
+  border-color: #AE39C6;
+  background: hsla(295, 50%, 98%, 1);
+}
+.ai-panel-input {
+  padding: 16px 24px;
+  border-top: 1px solid #eee;
+}
+.ai-panel-input input {
+  width: 100%;
+  padding: 14px 16px;
+  border: 1px solid #e0e0e0;
+  border-radius: 12px;
+  font-size: 14px;
+  font-family: inherit;
+  outline: none;
+  transition: border-color 0.2s ease;
+}
+.ai-panel-input input:focus { border-color: #AE39C6; }
+.ai-panel-input input::placeholder { color: #aaa; }
+
+/* ===== V2: COLLAPSIBLE CORNER WIDGET ===== */
+
+/* Collapsed pill — purple, same size as Ask AI button */
+.v2-trigger {
+  display: none;
+  height: 44px;
+  padding: 0 16px 0 6px;
+  background: #AE39C6;
+  border: none;
+  border-radius: 22px;
+  cursor: pointer;
+  align-items: center;
+  gap: 8px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+}
+.v2-trigger:hover {
+  background: #9c30b3;
+}
+/* Completed state — no ring, just icon */
+.v2-trigger.completed {
+  padding: 0 16px 0 14px;
+  gap: 8px;
+}
+.v2-trigger.completed .v2-ring-wrap { display: none; }
+.v2-trigger.completed .v2-trigger-icon { display: inline-flex; }
+
+/* Progress circle inside trigger */
+.v2-ring-wrap {
+  position: relative;
+  width: 40px;
+  height: 40px;
+  min-width: 40px;
+  background: none;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.v2-ring-wrap svg {
+  width: 30px;
+  height: 30px;
+  transform: rotate(-90deg);
+}
+.v2-ring-bg {
+  fill: none;
+  stroke: rgba(255,255,255,0.25);
+  stroke-width: 3;
+}
+.v2-ring-fill {
+  fill: none;
+  stroke: #fff;
+  stroke-width: 3;
+  stroke-linecap: round;
+  stroke-dasharray: 75.4;
+  stroke-dashoffset: 75.4;
+  transition: stroke-dashoffset 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+}
+.v2-ring-text {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 9px;
+  font-weight: 800;
+  color: #fff;
+}
+
+.v2-trigger-icon {
+  display: none;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+.v2-trigger-icon svg {
+  display: block;
+}
+.v2-trigger-label {
+  font-size: 13px;
+  font-weight: 600;
+  color: #fff;
+  white-space: nowrap;
+  line-height: 44px;
+}
+
+/* Widget animations */
+@keyframes widgetOpen {
+  from { opacity: 0; transform: scale(0.92) translateY(8px); }
+  to { opacity: 1; transform: scale(1) translateY(0); }
+}
+@keyframes widgetClose {
+  from { opacity: 1; transform: scale(1) translateY(0); }
+  to { opacity: 0; transform: scale(0.92) translateY(8px); }
+}
+@keyframes triggerIn {
+  from { opacity: 0; transform: scale(0.8); }
+  to { opacity: 1; transform: scale(1); }
+}
+.v2-expanded.widget-opening {
+  animation: widgetOpen 0.25s ease-out forwards;
+}
+.v2-expanded.widget-closing {
+  animation: widgetClose 0.2s ease-in forwards;
+}
+.v2-trigger.trigger-in {
+  animation: triggerIn 0.2s ease-out forwards;
+}
+
+/* Confetti — canvas burst */
+.confetti-canvas {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 9999;
+  pointer-events: none;
+}
+/* Expanded widget */
+.v2-expanded {
+  display: none;
+  position: fixed;
+  bottom: 24px;
+  right: 24px;
+  width: 340px;
+  max-height: calc(100vh - 108px);
+  background: #fff;
+  border-radius: 14px;
+  border: 1px solid #dde2eb;
+  transform-origin: bottom right;
+  box-shadow: 0 4px 20px rgba(7, 38, 83, 0.1);
+  z-index: 50;
+  overflow: hidden;
+  display: none;
+}
+
+.v2-expanded-header {
+  padding: 16px 16px 12px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.v2-expanded-header h3 {
+  font-size: 17px;
+  font-weight: 800;
+  color: #072653;
+  letter-spacing: -0.2px;
+  line-height: 1.2;
+}
+.v2-expanded-close {
+  background: none;
+  border: none;
+  color: #b8c4d2;
+  cursor: pointer;
+  font-size: 18px;
+  padding: 0;
+  line-height: 1;
+}
+.v2-expanded-close:hover { color: #072653; }
+
+.v2-expanded-progress {
+  padding: 10px 16px 12px;
+}
+.v2-expanded-progress-labels {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 6px;
+}
+.v2-expanded-progress-text {
+  font-size: 11px;
+  font-weight: 700;
+  color: #072653;
+}
+.v2-expanded-progress-time {
+  font-size: 10px;
+  color: #a3b1c3;
+}
+.v2-expanded-bar-bg {
+  width: 100%;
+  height: 5px;
+  background: #edf0f5;
+  border-radius: 3px;
+  overflow: hidden;
+}
+.v2-expanded-bar-fill {
+  height: 5px;
+  background: linear-gradient(90deg, #AE39C6, #d06ce8);
+  border-radius: 3px;
+  width: 0%;
+  transition: width 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.v2-expanded-cards {
+  padding: 0 14px 14px;
+  max-height: calc(100vh - 300px);
+  overflow-y: auto;
+}
+
+/* Reuse recipe-card styles from v3 inside widget */
+.v2-expanded-cards .recipe-card { margin-bottom: 5px; }
+.v2-expanded-cards .recipe-card-header { padding: 10px 12px; gap: 10px; }
+.v2-expanded-cards .recipe-step-num { width: 26px; height: 26px; min-width: 26px; font-size: 12px; }
+.v2-expanded-cards .recipe-card-title { font-size: 13px; }
+.v2-expanded-cards .recipe-card-chevron { width: 16px; height: 16px; }
+.v2-expanded-cards .recipe-card-body { padding: 0 12px 0 48px; }
+.v2-expanded-cards .recipe-card.active .recipe-card-body { padding: 0 12px 12px 48px; }
+.v2-expanded-cards .recipe-card-desc { font-size: 12.5px; }
+.v2-expanded-cards .btn-recipe-mark { font-size: 11px; padding: 3px 8px; }
+.v2-expanded-cards .btn-recipe-go { font-size: 12px; }
+.v2-expanded-cards .recipes-section-divider { margin: 12px 0 8px; }
+.v2-expanded-cards .recipes-section-divider span { font-size: 9px; }
+.v2-expanded-cards .recipes-feature-req { margin-top: 12px; padding: 10px 12px; }
+.v2-expanded-cards .recipes-feature-req-title { font-size: 12px; }
+.v2-expanded-cards .recipes-feature-req-desc { font-size: 11px; margin-bottom: 6px; }
+.v2-expanded-cards .recipes-feature-req-btn { font-size: 11px; padding: 4px 10px; }
+
+/* All-done state — strip to bonus cards only, all collapsed */
+.v2-expanded.all-done .recipe-card:not(.recipe-card-bonus) { display: none; }
+.v2-expanded.all-done .recipes-section-divider { display: none; }
+.v2-expanded.all-done .v2-expanded-progress { display: none; }
+
+/* V2 sticky CTA inside widget */
+.v2-expanded-sticky {
+  padding: 10px 16px;
+  border-top: 1px solid #e8ecf2;
+}
+.v2-expanded-sticky .btn-panel-call {
+  height: 36px;
+  font-size: 12px;
+  border-radius: 18px;
+}
+
+/* ===== V3: RIGHT PANEL ===== */
+.recipes-panel {
+  display: none;
+  width: 328px;
+  flex-shrink: 0;
+  position: relative;
+  z-index: 1;
+}
+.recipes-panel-bg {
+  display: none;
+  position: fixed;
+  top: 60px;
+  right: 0;
+  width: 328px;
+  bottom: 0;
+  background: #fff;
+  border-left: 1px solid #e8ecf2;
+  z-index: 0;
+}
+.recipes-panel-scroll {
+  position: fixed;
+  top: 60px;
+  right: 0;
+  width: 328px;
+  bottom: 68px;
+  overflow-y: auto;
+  z-index: 1;
+}
+.recipes-panel-inner {
+  padding: 24px 20px 16px;
+}
+
+/* Panel header */
+.recipes-panel-header {
+  margin-bottom: 20px;
+  position: relative;
+}
+.v3-panel-close {
+  position: absolute;
+  top: 0;
+  right: 0;
+  background: none;
+  border: none;
+  font-size: 20px;
+  color: #b8c4d2;
+  cursor: pointer;
+  padding: 0;
+  line-height: 1;
+}
+.v3-panel-close:hover { color: #072653; }
+.recipes-panel-header h2 {
+  font-size: 19px;
+  font-weight: 800;
+  color: #072653;
+  letter-spacing: -0.3px;
+  line-height: 1.2;
+  margin-bottom: 6px;
+}
+.recipes-panel-header p {
+  font-size: 13px;
+  color: #8494a7;
+  line-height: 1.45;
+}
+.recipes-panel-person {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 14px;
+}
+.recipes-panel-person img {
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+.recipes-panel-person span {
+  font-size: 12px;
+  color: #8494a7;
+}
+.recipes-panel-person strong {
+  color: #072653;
+  font-weight: 600;
+}
+
+/* Progress */
+.recipes-panel-progress {
+  margin-bottom: 22px;
+}
+.progress-bar-labels {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 7px;
+}
+.progress-text {
+  font-size: 12px;
+  font-weight: 700;
+  color: #072653;
+  white-space: nowrap;
+}
+.progress-time-left {
+  font-size: 11px;
+  color: #a3b1c3;
+}
+.progress-bar-bg {
+  width: 100%;
+  height: 6px;
+  background: #edf0f5;
+  border-radius: 3px;
+  overflow: hidden;
+}
+.progress-bar-fill {
+  height: 6px;
+  background: linear-gradient(90deg, #AE39C6, #d06ce8);
+  border-radius: 3px;
+  width: 0%;
+  transition: width 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* ---- Recipe Cards ---- */
+.recipe-card {
+  background: #fff;
+  border-radius: 10px;
+  margin-bottom: 6px;
+  border: 1px solid #dde2eb;
+  overflow: hidden;
+  transition: border-color 0.2s ease, background 0.2s ease;
+}
+.recipe-card.active {
+  border-color: #c9a3d4;
+  background: #fdfbfe;
+}
+.recipe-step-icon {
+  background: #edf1f7 !important;
+  color: #6b7c8f !important;
+}
+.recipe-card.active .recipe-step-icon {
+  background: #f3e8f7 !important;
+  color: #AE39C6 !important;
+}
+
+.recipe-card-header {
+  display: flex;
+  align-items: center;
+  gap: 11px;
+  padding: 12px 14px;
+  cursor: pointer;
+  user-select: none;
+}
+
+/* Step number */
+.recipe-step-num {
+  width: 28px;
+  height: 28px;
+  min-width: 28px;
+  border-radius: 50%;
+  background: #f5ecfa;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 13px;
+  font-weight: 700;
+  color: #AE39C6;
+}
+.recipe-card.completed .recipe-step-num {
+  background: #AE39C6;
+  color: #fff;
+}
+
+.recipe-card-title {
+  flex: 1;
+  font-size: 15px;
+  font-weight: 600;
+  color: #072653;
+  line-height: 1.3;
+}
+.recipe-card.completed .recipe-card-title {
+  color: #a3b1c3;
+  text-decoration: line-through;
+}
+
+.recipe-card-chevron {
+  width: 18px;
+  height: 18px;
+  color: #b8c4d2;
+  flex-shrink: 0;
+  transition: transform 0.2s ease;
+}
+.recipe-card.active .recipe-card-chevron {
+  transform: rotate(180deg);
+  color: #AE39C6;
+}
+
+/* Expandable body — animated */
+.recipe-card-body {
+  max-height: 0;
+  overflow: hidden;
+  padding: 0 14px 0 53px;
+  opacity: 0;
+  transition: max-height 0.3s ease, opacity 0.25s ease, padding 0.3s ease;
+}
+.recipe-card.active .recipe-card-body {
+  max-height: 200px;
+  opacity: 1;
+  padding: 0 14px 14px 53px;
+}
+
+.recipe-card-desc {
+  font-size: 13px;
+  color: #6b7c8f;
+  line-height: 1.5;
+  margin-bottom: 4px;
+}
+.recipe-card-desc .recipe-card-time {
+  display: inline;
+  color: #AE39C6;
+  font-size: 11.5px;
+}
+.recipe-card-desc .recipe-card-time i { font-size: 10px; margin-right: 2px; }
+
+.recipe-card-actions {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin-top: 10px;
+}
+
+.btn-recipe-mark {
+  font-size: 12px;
+  font-weight: 600;
+  color: #AE39C6;
+  background: none;
+  border: 1.5px solid #dcc0e8;
+  border-radius: 6px;
+  padding: 4px 10px;
+  cursor: pointer;
+  font-family: inherit;
+  white-space: nowrap;
+}
+.btn-recipe-mark:hover { background: #faf5fd; border-color: #c9a3d4; }
+
+.btn-recipe-go {
+  font-size: 13px;
+  font-weight: 700;
+  color: #AE39C6;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 3px;
+  white-space: nowrap;
+}
+.btn-recipe-go span { font-size: 15px; }
+
+/* Completed state — collapsed by default, toggleable */
+.recipe-card.completed {
+  border-color: #e0e5ec;
+  background: #fafbfc;
+}
+.recipe-card.completed .recipe-card-body { max-height: 0; opacity: 0; padding-bottom: 0; }
+.recipe-card.completed.active .recipe-card-body { max-height: 200px; opacity: 1; padding-bottom: 14px; }
+.recipe-card.completed .recipe-card-chevron { color: #c0c9d5; }
+.recipe-card.completed.active .recipe-card-chevron {
+  transform: rotate(180deg);
+  color: #a3b1c3;
+}
+.recipe-card.completed .recipe-card-desc { color: #b0b9c8; }
+.recipe-card.completed .recipe-card-actions { display: none; }
+.recipe-card.completed .recipe-card-time { color: #c0c9d5; }
+
+/* Section divider */
+.recipes-section-divider {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin: 18px 0 10px;
+}
+.recipes-section-divider::before,
+.recipes-section-divider::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: #e8ecf2;
+}
+.recipes-section-divider span {
+  font-size: 10px;
+  font-weight: 700;
+  color: #b0b9c8;
+  text-transform: uppercase;
+  letter-spacing: 0.8px;
+  white-space: nowrap;
+}
+
+/* Feature request block */
+/* ===== V4: VIDEO PLACEHOLDER ===== */
+.v4-video-placeholder {
+  margin-top: 8px;
+  border-radius: 10px;
+  overflow: hidden;
+  cursor: pointer;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.08);
+}
+.v4-video-thumb {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  background: linear-gradient(135deg, #1a1a2e 0%, #16213e 40%, #0f3460 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.v4-video-gradient {
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(ellipse at 30% 60%, rgba(174,57,198,0.15) 0%, transparent 60%),
+    radial-gradient(ellipse at 70% 40%, rgba(64,117,191,0.15) 0%, transparent 60%);
+}
+.v4-video-play {
+  width: 52px;
+  height: 52px;
+  border-radius: 50%;
+  background: #AE39C6;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1;
+  box-shadow: 0 4px 16px rgba(174,57,198,0.4);
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+.v4-video-play svg {
+  margin-left: 2px;
+}
+.v4-video-placeholder:hover .v4-video-play {
+  transform: scale(1.08);
+  box-shadow: 0 6px 24px rgba(174,57,198,0.5);
+}
+.v4-video-placeholder.playing .v4-video-play {
+  transform: scale(0.95);
+}
+.v4-video-title {
+  position: absolute;
+  bottom: 12px;
+  left: 14px;
+  font-size: 13px;
+  font-weight: 700;
+  color: #fff;
+  z-index: 1;
+  text-shadow: 0 1px 4px rgba(0,0,0,0.5);
+}
+.v4-video-duration {
+  position: absolute;
+  bottom: 12px;
+  right: 14px;
+  font-size: 11px;
+  font-weight: 600;
+  color: #fff;
+  background: rgba(0,0,0,0.5);
+  padding: 2px 6px;
+  border-radius: 4px;
+  z-index: 1;
+}
+
+/* ===== V4: ANALYZE OVERLAY + MODAL ===== */
+.v4-analyze-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(7, 38, 83, 0.85);
+  z-index: 200;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  animation: v4overlayIn 0.3s ease-out;
+}
+@keyframes v4overlayIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+.v4-analyze-modal {
+  background: #fff;
+  border-radius: 14px;
+  width: 440px;
+  max-width: 92vw;
+  padding: 28px 28px 22px;
+  box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+  animation: v4modalIn 0.35s ease-out;
+}
+@keyframes v4modalIn {
+  from { opacity: 0; transform: translateY(16px) scale(0.96); }
+  to { opacity: 1; transform: translateY(0) scale(1); }
+}
+.v4-analyze-modal h2 {
+  font-size: 22px;
+  font-weight: 800;
+  color: #072653;
+  margin-bottom: 14px;
+  line-height: 1.25;
+}
+.v4-modal-infobox {
+  background: linear-gradient(135deg, #f9f0fd 0%, #f0ecfb 50%, #ecf2fd 100%);
+  border: 1px solid #e4d8f0;
+  border-radius: 10px;
+  padding: 14px 16px;
+  margin-bottom: 18px;
+}
+.v4-modal-infobox p {
+  font-size: 14px;
+  color: #3a4a5c;
+  line-height: 1.55;
+  margin: 0;
+}
+.v4-modal-infobox a {
+  color: #842697;
+  font-weight: 700;
+  text-decoration: none;
+}
+.v4-modal-infobox a:hover { text-decoration: underline; }
+.v4-modal-video {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  background: linear-gradient(135deg, #e8ecf2 0%, #dde3ed 100%);
+  border-radius: 10px;
+  border: 1.5px solid #c8d2e0;
+  overflow: hidden;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 20px;
+}
+.v4-modal-video-play {
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  background: #AE39C6;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4px 16px rgba(174,57,198,0.4);
+  transition: transform 0.2s, box-shadow 0.2s;
+  z-index: 1;
+}
+.v4-modal-video-play svg { margin-left: 3px; }
+.v4-modal-video:hover .v4-modal-video-play {
+  transform: scale(1.08);
+  box-shadow: 0 6px 24px rgba(174,57,198,0.5);
+}
+/* Fake UI skeleton inside video */
+.v4-modal-video-skeleton {
+  position: absolute;
+  inset: 0;
+  padding: 16px;
+}
+.v4-skel-row { display: flex; gap: 10px; margin-bottom: 10px; }
+.v4-skel-block {
+  border-radius: 6px;
+  background: #c8d2e0;
+}
+.v4-modal-actions {
+  display: flex;
+  gap: 10px;
+  justify-content: space-between;
+}
+.v4-modal-btn {
+  padding: 9px 22px;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 700;
+  cursor: pointer;
+  border: none;
+  transition: background 0.15s;
+}
+.v4-modal-btn-secondary {
+  background: #fff;
+  color: #4075bf;
+  border: 1.5px solid #b8cce4;
+}
+.v4-modal-btn-secondary:hover { background: #eef3fa; }
+.v4-modal-btn-primary {
+  background: #4075bf;
+  color: #fff;
+}
+.v4-modal-btn-primary:hover { background: #3565a8; }
+
+/* V4 panel z-index overrides (above placeholder pages) */
+#v4Panel { z-index: 11; }
+#v4PanelBg { z-index: 11; }
+#v4PanelScroll { z-index: 12; }
+#v4PanelSticky { z-index: 12; }
+
+/* ===== V4 (v1) FONT SIZE OVERRIDES — base 16 / small 14 / xs 12 ===== */
+#v4PanelScroll .recipes-panel-header h2 {
+  font-size: 22px;
+  letter-spacing: -0.4px;
+}
+#v4PanelScroll .recipes-panel-header p {
+  font-size: 14px;
+  line-height: 1.5;
+}
+#v4PanelScroll .recipes-panel-person span {
+  font-size: 14px;
+}
+#v4PanelScroll .progress-text {
+  font-size: 14px;
+  display: flex;
+  align-items: center;
+  gap: 7px;
+}
+@keyframes v4Pulse {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(174, 57, 198, 0.45); }
+  50% { box-shadow: 0 0 0 5px rgba(174, 57, 198, 0); }
+}
+.v4-progress-dot {
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  background: #AE39C6;
+  display: inline-block;
+  flex-shrink: 0;
+  animation: v4Pulse 2s ease-in-out infinite;
+}
+#v4PanelScroll .progress-time-left {
+  font-size: 13px;
+}
+#v4PanelScroll .recipe-card-title {
+  font-size: 16px;
+}
+#v4PanelScroll .recipe-step-num {
+  width: 30px;
+  height: 30px;
+  min-width: 30px;
+  font-size: 14px;
+}
+#v4PanelScroll .recipe-card-header {
+  gap: 12px;
+  padding: 13px 14px;
+}
+#v4PanelScroll .recipe-card-desc {
+  font-size: 14px;
+  line-height: 1.55;
+}
+#v4PanelScroll .recipe-card-desc .recipe-card-time {
+  font-size: 12px;
+}
+#v4PanelScroll .btn-recipe-mark {
+  font-size: 13px;
+  padding: 5px 12px;
+}
+#v4PanelScroll .btn-recipe-go {
+  font-size: 14px;
+}
+#v4PanelScroll .btn-recipe-go span {
+  font-size: 16px;
+}
+#v4PanelScroll .recipes-section-divider span {
+  font-size: 11px;
+  letter-spacing: 1px;
+}
+#v4PanelScroll .recipes-feature-req-title {
+  font-size: 14px;
+}
+#v4PanelScroll .recipes-feature-req-desc {
+  font-size: 13px;
+  line-height: 1.45;
+}
+#v4PanelScroll .recipes-feature-req-btn {
+  font-size: 13px;
+  padding: 6px 14px;
+}
+#v4PanelScroll .v4-video-title {
+  font-size: 14px;
+}
+#v4PanelScroll .v4-video-duration {
+  font-size: 12px;
+}
+#v4PanelSticky .btn-panel-call {
+  font-size: 14px;
+  height: 42px;
+}
+#v4PanelScroll .v3-panel-close {
+  top: -2px;
+  right: -4px;
+  font-size: 22px;
+  width: 28px;
+  height: 28px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 6px;
+  transition: background 0.15s, color 0.15s;
+}
+#v4PanelScroll .v3-panel-close:hover {
+  background: #f0f2f5;
+}
+#v4PanelScroll .recipes-panel-header h2 {
+  padding-right: 32px;
+}
+
+/* ===== V4 PANEL ENTRANCE ANIMATION ===== */
+@keyframes v4SlideIn {
+  from { transform: translateX(328px); opacity: 0; }
+  to { transform: translateX(0); opacity: 1; }
+}
+@keyframes v4FadeUp {
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* Persistent left accent + glow — full height including sticky */
+#v4PanelBg {
+  border-left: 3px solid #AE39C6;
+  box-shadow: -6px 0 24px rgba(174, 57, 198, 0.1);
+}
+#v4PanelSticky {
+  border-left: 3px solid #AE39C6;
+}
+
+/* Smooth entrance */
+#v4PanelBg.v4-entering {
+  animation: v4SlideIn 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+#v4PanelScroll.v4-entering {
+  animation: v4SlideIn 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+#v4PanelSticky.v4-entering {
+  animation: v4SlideIn 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+/* Staggered content fade-up */
+#v4PanelScroll.v4-entering .recipes-panel-header {
+  animation: v4FadeUp 0.45s ease-out 0.2s both;
+}
+#v4PanelScroll.v4-entering .recipes-panel-progress {
+  animation: v4FadeUp 0.45s ease-out 0.3s both;
+}
+#v4PanelScroll.v4-entering .recipe-card:nth-child(1) {
+  animation: v4FadeUp 0.4s ease-out 0.35s both;
+}
+#v4PanelScroll.v4-entering .recipe-card:nth-child(2) {
+  animation: v4FadeUp 0.4s ease-out 0.42s both;
+}
+#v4PanelScroll.v4-entering .recipe-card:nth-child(3) {
+  animation: v4FadeUp 0.4s ease-out 0.49s both;
+}
+#v4PanelScroll.v4-entering .recipes-section-divider {
+  animation: v4FadeUp 0.4s ease-out 0.54s both;
+}
+#v4PanelScroll.v4-entering .v4-video-placeholder {
+  animation: v4FadeUp 0.4s ease-out 0.58s both;
+}
+
+/* Analyze page */
+.v4-analyze-page {
+  position: fixed;
+  top: 60px;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: #f0f2f5;
+  z-index: 10;
+  display: none;
+  align-items: center;
+  justify-content: center;
+}
+.v4-placeholder-label {
+  font-size: 28px;
+  font-weight: 700;
+  color: #c0c8d4;
+  letter-spacing: 0.5px;
+}
+
+.recipes-feature-req {
+  margin-top: 18px;
+  padding: 14px 16px;
+  background: linear-gradient(135deg, #f9f0fd 0%, #f0ecfb 50%, #ecf2fd 100%);
+  border-radius: 10px;
+  border: 1px solid #e4d8f0;
+}
+.recipes-feature-req-title {
+  font-size: 13px;
+  font-weight: 700;
+  color: #072653;
+  margin-bottom: 3px;
+}
+.recipes-feature-req-desc {
+  font-size: 12px;
+  color: #8494a7;
+  line-height: 1.4;
+  margin-bottom: 8px;
+}
+.recipes-feature-req-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 12px;
+  font-weight: 700;
+  color: #842697;
+  background: #fff;
+  border: 1px solid #d8c4e4;
+  border-radius: 6px;
+  padding: 5px 12px;
+  cursor: pointer;
+  font-family: inherit;
+  text-decoration: none;
+}
+.recipes-feature-req-btn:hover {
+  background: #faf5fd;
+  border-color: #c9a3d4;
+}
+.recipes-feature-req-btn i { font-size: 11px; }
+
+/* Sticky CTA bar at bottom of panel */
+.recipes-panel-sticky {
+  display: none;
+  position: fixed;
+  bottom: 0;
+  right: 0;
+  width: 328px;
+  z-index: 2;
+  padding: 14px 20px;
+  background: #fff;
+  border-top: 1px solid #e8ecf2;
+  border-left: 1px solid #e8ecf2;
+}
+.btn-panel-call {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  height: 40px;
+  background: #faf5fd;
+  color: #842697;
+  font-family: 'Proxima Nova', sans-serif;
+  font-weight: 700;
+  font-size: 13px;
+  border-radius: 20px;
+  border: 1.5px solid #d4b3e0;
+  cursor: pointer;
+}
+.btn-panel-call:hover {
+  background: #f3e8f9;
+  border-color: #c9a3d4;
+}
+.btn-panel-call svg {
+  width: 15px;
+  height: 15px;
+}
+
+/* V3 all-done — strip to bonus cards only */
+.recipes-panel-scroll.all-done .recipe-card:not(.recipe-card-bonus) { display: none; }
+.recipes-panel-scroll.all-done .recipes-section-divider { display: none; }
+#v5PanelScroll.all-done .recipes-section-divider { display: flex; }
+.recipes-panel-scroll.all-done .recipes-panel-progress { display: none; }
+.recipes-panel-scroll.all-done .recipes-panel-person { display: none; }
+/* header keeps same size after completion */
+
+/* V3: reposition bottom-actions to left of panel */
+body.has-v3-panel .bottom-actions {
+  right: 344px;
+}
+
+/* V2: hide external call button, keep AI + trigger in bottom-actions */
+body.has-v2-widget .btn-onboarding-call {
+  display: none !important;
+}
+
+/* ===== V4: BOTTOM ONBOARDING BAR ===== */
+.onboarding-bar {
+  display: none;
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 48;
+  background: linear-gradient(180deg, #842697 0%, #AE39C6 100%);
+  box-shadow: 0 -4px 20px rgba(0,0,0,0.15);
+}
+.onboarding-bar-top {
+  display: flex;
+  align-items: center;
+  padding: 12px 24px;
+  gap: 20px;
+}
+.onboarding-bar-title {
+  font-size: 14px;
+  font-weight: 600;
+  color: #fff;
+  white-space: nowrap;
+}
+.onboarding-steps {
+  display: flex;
+  align-items: center;
+  gap: 0;
+  flex: 1;
+}
+.onboarding-step {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 16px;
+  border-radius: 16px;
+  font-size: 13px;
+  font-weight: 500;
+  color: rgba(255,255,255,0.7);
+  white-space: nowrap;
+  cursor: pointer;
+  transition: all 0.15s;
+}
+.onboarding-step.completed {
+  color: rgba(255,255,255,0.9);
+}
+.onboarding-step.active {
+  background: rgba(255,255,255,0.2);
+  color: #fff;
+}
+.onboarding-step .step-check {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  border: 2px solid rgba(255,255,255,0.4);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 11px;
+  flex-shrink: 0;
+}
+.onboarding-step.completed .step-check {
+  background: rgba(255,255,255,0.3);
+  border-color: transparent;
+}
+.onboarding-step.active .step-check {
+  border-color: #fff;
+}
+.step-connector {
+  width: 32px;
+  height: 2px;
+  background: rgba(255,255,255,0.25);
+  flex-shrink: 0;
+}
+.onboarding-bar-actions {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-left: auto;
+}
+.btn-bar-call {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  background: rgba(255,255,255,0.15);
+  color: #fff;
+  border: 1px solid rgba(255,255,255,0.3);
+  padding: 8px 16px;
+  border-radius: 20px;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  font-family: inherit;
+  white-space: nowrap;
+}
+.btn-bar-call:hover { background: rgba(255,255,255,0.25); }
+.btn-bar-collapse {
+  background: none;
+  border: none;
+  color: rgba(255,255,255,0.6);
+  cursor: pointer;
+  padding: 4px;
+  display: flex;
+  align-items: center;
+}
+.btn-bar-collapse:hover { color: #fff; }
+.onboarding-bar-bottom {
+  padding: 10px 24px 14px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.onboarding-bar-desc {
+  font-size: 13px;
+  color: rgba(255,255,255,0.8);
+  line-height: 1.4;
+}
+.btn-bar-next {
+  background: #fff;
+  color: #842697;
+  border: none;
+  padding: 8px 24px;
+  border-radius: 20px;
+  font-size: 13px;
+  font-weight: 700;
+  cursor: pointer;
+  font-family: inherit;
+  white-space: nowrap;
+}
+.btn-bar-next:hover { background: #f0e6f5; }
+
+/* V4 body adjustment */
+body.has-onboarding-bar .bottom-actions { bottom: 160px; }
+body.has-onboarding-bar .recipes-widget { bottom: 216px; }
+
+/* ===== PROTOTYPE SWITCHER ===== */
+.proto-switcher {
+  position: fixed;
+  bottom: 16px;
+  left: 16px;
+  z-index: 999;
+  display: flex;
+  gap: 0;
+  background: #1a1a2e;
+  border-radius: 8px;
+  padding: 4px;
+  box-shadow: 0 2px 12px rgba(0,0,0,0.5);
+  font-family: monospace;
+  font-size: 13px;
+  user-select: none;
+}
+.proto-switcher button {
+  background: transparent;
+  color: #888;
+  border: none;
+  padding: 6px 14px;
+  border-radius: 5px;
+  cursor: pointer;
+  font-family: monospace;
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+  transition: all 0.15s;
+}
+.proto-switcher button:hover { color: #ccc; }
+.proto-switcher button.active {
+  background: #e04cf0;
+  color: #fff;
+}
+
+/* ===== KYC OVERLAY ===== */
+.kyc-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  background: #1e3254;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: opacity 0.5s ease;
+}
+.kyc-overlay.hidden {
+  opacity: 0;
+  pointer-events: none;
+}
+.kyc-card {
+  background: #fff;
+  border-radius: 18px;
+  padding: 0;
+  max-width: 700px;
+  width: 92%;
+  box-shadow: 0 20px 50px rgba(0,0,0,0.2);
+  position: relative;
+  overflow: hidden;
+}
+.kyc-card-inner {
+  padding: 40px 44px 32px;
+}
+.kyc-step {
+  display: none;
+  animation: kyc-step-in 0.3s ease both;
+}
+.kyc-step.active { display: block; }
+@keyframes kyc-step-in {
+  from { opacity: 0; transform: translateX(16px); }
+  to   { opacity: 1; transform: translateX(0); }
+}
+.kyc-step.slide-out {
+  animation: kyc-step-out 0.2s ease both;
+}
+@keyframes kyc-step-out {
+  from { opacity: 1; transform: translateX(0); }
+  to   { opacity: 0; transform: translateX(-16px); }
+}
+.kyc-brand {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+.kyc-brand-mark {
+  width: 30px; height: 30px;
+  background: linear-gradient(135deg, #00b4d8, #4a90d9);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #fff;
+  font-weight: 800;
+  font-size: 13px;
+  letter-spacing: -0.5px;
+  flex-shrink: 0;
+}
+.kyc-brand-name {
+  font-size: 15px;
+  font-weight: 700;
+  color: #072653;
+  letter-spacing: -0.2px;
+}
+.kyc-step-label {
+  font-size: 13px;
+  font-weight: 500;
+  color: #7b8faa;
+  margin-bottom: 8px;
+}
+.kyc-title {
+  font-size: 26px;
+  font-weight: 700;
+  color: #072653;
+  margin-bottom: 6px;
+  line-height: 1.3;
+  letter-spacing: -0.3px;
+}
+.kyc-subtitle {
+  font-size: 15px;
+  color: #7b8faa;
+  margin-bottom: 26px;
+  font-weight: 400;
+  line-height: 1.5;
+}
+.kyc-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+}
+.kyc-option {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 15px 16px;
+  border: 1.5px solid #e2e8f0;
+  border-radius: 12px;
+  cursor: pointer;
+  transition: border-color 0.15s, background 0.15s;
+  background: #fff;
+}
+.kyc-option:hover {
+  border-color: #4075bf;
+  background: #f7faff;
+}
+.kyc-option.selected {
+  border-color: #4075bf;
+  background: #f0f5ff;
+}
+.kyc-option-icon {
+  width: 36px;
+  height: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  background: #f0f4f9;
+  border-radius: 9px;
+  color: #4075bf;
+  font-size: 15px;
+  transition: background 0.15s, color 0.15s;
+}
+.kyc-option.selected .kyc-option-icon {
+  background: #4075bf;
+  color: #fff;
+}
+.kyc-option-text strong {
+  display: block;
+  font-size: 14px;
+  font-weight: 600;
+  color: #072653;
+  line-height: 1.3;
+}
+.kyc-option-text span {
+  display: block;
+  font-size: 12.5px;
+  color: #94a3b8;
+  font-weight: 400;
+  margin-top: 1px;
+}
+.kyc-goals {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.kyc-goal {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 16px 20px;
+  border: 1.5px solid #e2e8f0;
+  border-radius: 12px;
+  cursor: pointer;
+  transition: border-color 0.15s, background 0.15s;
+  background: #fff;
+  font-size: 15px;
+  font-weight: 500;
+  color: #072653;
+  line-height: 1.4;
+}
+.kyc-goal::before {
+  content: '';
+  width: 18px; height: 18px;
+  border: 2px solid #d0d8e4;
+  border-radius: 50%;
+  flex-shrink: 0;
+  transition: all 0.15s;
+  box-sizing: border-box;
+}
+.kyc-goal:hover {
+  border-color: #4075bf;
+  background: #f7faff;
+}
+.kyc-goal:hover::before { border-color: #4075bf; }
+.kyc-goal.selected {
+  border-color: #4075bf;
+  background: #f0f5ff;
+}
+.kyc-goal.selected::before {
+  border-color: #4075bf;
+  background: #4075bf;
+  box-shadow: inset 0 0 0 2.5px #fff;
+}
+.kyc-goal .kyc-badge {
+  background: #072653;
+  color: #fff;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.6px;
+  padding: 4px 12px;
+  border-radius: 20px;
+  margin-left: auto;
+  flex-shrink: 0;
+  text-transform: uppercase;
+}
+.kyc-persona-info {
+  font-size: 13px;
+  color: #94a3b8;
+  margin-top: 18px;
+}
+.kyc-persona-info strong { color: #072653; font-weight: 600; }
+.kyc-bottom {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 28px;
+}
+.kyc-dots {
+  display: flex;
+  gap: 6px;
+  justify-content: center;
+  flex: 1;
+}
+.kyc-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #d0d8e4;
+  transition: all 0.3s ease;
+}
+.kyc-dot.active {
+  background: #4075bf;
+  width: 24px;
+  border-radius: 4px;
+}
+.kyc-btn-back {
+  border: 1.5px solid #d0d8e4;
+  background: #fff;
+  color: #4075bf;
+  padding: 10px 24px;
+  border-radius: 8px;
+  font-family: inherit;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.15s;
+  min-width: 100px;
+}
+.kyc-btn-back:hover { border-color: #4075bf; }
+.kyc-btn-continue {
+  background: #c2cdd9;
+  color: #fff;
+  border: none;
+  padding: 10px 28px;
+  border-radius: 8px;
+  font-family: inherit;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: not-allowed;
+  transition: all 0.15s;
+  min-width: 100px;
+}
+.kyc-btn-continue.enabled {
+  background: #4075bf;
+  cursor: pointer;
+}
+.kyc-btn-continue.enabled:hover { background: #345fa0; }
+
+/* ===== KYC MOBILE ===== */
+@media (max-width: 767px) {
+  .kyc-overlay { background: #fff; align-items: stretch; }
+  .kyc-card {
+    max-width: none; width: 100%; border-radius: 0;
+    box-shadow: none; display: flex; flex-direction: column; height: 100%;
+  }
+  .kyc-card-inner {
+    padding: 0; display: flex; flex-direction: column; height: 100%;
+  }
+  .kyc-step {
+    display: none; flex-direction: column; height: 100%;
+  }
+  .kyc-step.active { display: flex; }
+  /* Sticky top: logo + step */
+  .kyc-brand { display: none; }
+  .kyc-step-label { padding: 16px 20px 0; margin-bottom: 6px; }
+  /* Scrollable content */
+  .kyc-title { padding: 0 20px; font-size: 22px; margin-bottom: 4px; }
+  .kyc-subtitle { padding: 0 20px; font-size: 14px; margin-bottom: 16px; }
+  .kyc-grid {
+    padding: 0 20px; flex: 1; overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+    align-content: start;
+    grid-template-columns: 1fr;
+    gap: 8px;
+  }
+  .kyc-option { padding: 12px 14px; gap: 12px; }
+  .kyc-option-icon { width: 32px; height: 32px; font-size: 14px; }
+  .kyc-option-text strong { font-size: 13px; }
+  .kyc-option-text span { font-size: 11.5px; }
+  .kyc-goals {
+    padding: 0 20px; flex: 1; overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+  .kyc-goal { padding: 14px 16px; font-size: 14px; }
+  .kyc-persona-info { display: none; }
+  /* Sticky bottom bar */
+  .kyc-bottom {
+    position: sticky; bottom: 0; margin-top: auto;
+    padding: 12px 20px; background: #fff;
+    border-top: 1px solid #edf0f5;
+    flex-shrink: 0;
+  }
+  .kyc-btn-back, .kyc-btn-continue {
+    height: 40px; padding: 0 24px; font-size: 15px;
+  }
+
+  /* Layout: hide sidebar, fullwidth main */
+  .sidebar, .sidebar-bg { display: none !important; }
+  .topnav-links, .topnav-org, .topnav-right { display: none; }
+  .topnav { padding: 0 12px; }
+  .main { padding: 16px; max-width: none; }
+  .page-title { font-size: 18px; }
+}
+
+/* ===== MOBILE ONBOARDING ===== */
+.mob-switcher {
+  display: none;
+  position: fixed;
+  top: 14px;
+  right: 12px;
+  z-index: 200;
+  background: #111;
+  border-radius: 6px;
+  padding: 2px;
+  gap: 2px;
+}
+.mob-switcher button {
+  padding: 5px 12px;
+  border: none;
+  background: transparent;
+  font-family: inherit;
+  font-size: 11px;
+  font-weight: 600;
+  color: rgba(255,255,255,0.45);
+  border-radius: 4px;
+  cursor: pointer;
+}
+.mob-switcher button.active {
+  background: #fff;
+  color: #111;
+}
+.mob-sheet, .mob-float, .mob-fab { display: none; }
+
+@media (max-width: 767px) {
+  #v4Panel, #v4PanelBg, #v4PanelScroll, #v4PanelSticky,
+  #recipesPanel, #recipesPanelBg, #recipesPanelScroll, #recipesPanelSticky {
+    display: none !important;
+  }
+  body.has-v3-panel .main { margin-right: 0; }
+  body.has-v3-panel .bottom-actions { right: 16px; }
+  body.mob-onboarding .mob-switcher { display: flex; }
+
+  /* v1: BOTTOM SHEET */
+  .mob-sheet {
+    position: fixed;
+    bottom: 0; left: 0; right: 0;
+    z-index: 150;
+    background: #fff;
+    border-radius: 14px 14px 0 0;
+    border-top: 3px solid #AE39C6;
+    box-shadow: 0 -4px 24px rgba(7,38,83,0.15);
+    transform: translateY(100%);
+    max-height: none;
+  }
+  body.mob-onboarding .mob-sheet.mob-active { display: block; }
+  .mob-sheet.mob-active { transform: translateY(100%); }
+  .mob-sheet.slide-in { animation: mob-sheet-up 0.6s cubic-bezier(0.16, 1, 0.3, 1) both; }
+  @keyframes mob-sheet-up {
+    from { transform: translateY(100%); }
+    to { transform: translateY(0); }
+  }
+  .mob-sheet.collapsed,
+  .mob-sheet.expanded { transform: translateY(0); }
+  .mob-sheet-handle {
+    width: 32px; height: 4px;
+    background: #d0d8e4;
+    border-radius: 2px;
+    margin: 6px auto 0;
+    cursor: pointer;
+  }
+  /* Collapsed: current step inline */
+  .mob-sheet-collapsed {
+    display: flex;
+    align-items: center;
+    padding: 10px 16px 20px;
+    gap: 10px;
+    cursor: pointer;
+    max-height: 56px;
+    overflow: hidden;
+    opacity: 1;
+    transition: max-height 0.35s cubic-bezier(0.4,0,0.2,1), opacity 0.25s ease, padding 0.35s cubic-bezier(0.4,0,0.2,1);
+  }
+  .mob-sheet.expanded .mob-sheet-collapsed {
+    max-height: 0; opacity: 0;
+    padding-top: 0; padding-bottom: 0;
+  }
+  .mob-sheet-c-num {
+    width: 28px; height: 28px;
+    background: #f5ecfa;
+    color: #AE39C6;
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 14px; font-weight: 700; flex-shrink: 0;
+  }
+  .mob-sheet-c-body { flex: 1; min-width: 0; }
+  .mob-sheet-c-title {
+    font-size: 15px; font-weight: 600; color: #072653;
+    white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+  }
+  .mob-sheet-c-meta { font-size: 14px; color: #AE39C6; margin-top: 1px; }
+  .mob-sheet-c-progress { display: flex; align-items: center; gap: 6px; flex-shrink: 0; }
+  .mob-sheet-c-bar { width: 40px; height: 4px; background: #f0e4f5; border-radius: 2px; overflow: hidden; }
+  .mob-sheet-c-bar-fill { height: 100%; width: 0%; background: linear-gradient(90deg, #AE39C6, #d06ce8); border-radius: 2px; transition: width 0.4s ease; }
+  .mob-sheet-c-count { font-size: 14px; font-weight: 600; color: #AE39C6; }
+  .mob-sheet-c-expand {
+    width: 28px; height: 28px;
+    border: 1.5px solid #dcc0e8; background: #faf5fd; border-radius: 6px;
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0; color: #AE39C6; cursor: pointer;
+  }
+  /* Expanded */
+  .mob-sheet-expand-area {
+    max-height: 0; overflow: hidden; opacity: 0; padding: 0 16px;
+    transition: max-height 0.35s cubic-bezier(0.4,0,0.2,1), opacity 0.25s ease, padding 0.35s cubic-bezier(0.4,0,0.2,1);
+  }
+  .mob-sheet.expanded .mob-sheet-expand-area {
+    max-height: none; overflow: visible; opacity: 1; padding: 4px 16px 16px;
+  }
+  .mob-sheet-exp-header {
+    display: flex; align-items: center; padding: 0 0 6px; gap: 8px;
+  }
+  .mob-sheet-exp-done {
+    display: flex; align-items: center; gap: 6px;
+    font-size: 14px; font-weight: 700; color: #072653;
+  }
+  .mob-sheet-exp-done::before {
+    content: ''; width: 8px; height: 8px;
+    background: #AE39C6; border-radius: 50%; flex-shrink: 0;
+  }
+  .mob-sheet-exp-time { font-size: 13px; color: #94a3b8; margin-left: auto; }
+  .mob-sheet-exp-close {
+    width: 28px; height: 28px;
+    background: #f5ecfa; border: 1.5px solid #dcc0e8; border-radius: 6px;
+    color: #AE39C6; cursor: pointer;
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0;
+  }
+  .mob-sheet-bar {
+    height: 4px; background: #edf0f5; border-radius: 2px; overflow: hidden; margin-bottom: 10px;
+  }
+  .mob-sheet-bar-fill {
+    height: 100%; width: 0%;
+    background: linear-gradient(90deg, #AE39C6, #d06ce8);
+    border-radius: 3px; transition: width 0.4s ease;
+  }
+  /* Sheet cards */
+  .mob-s-card {
+    border: 1px solid #e8ecf2; border-radius: 10px; margin-bottom: 6px;
+    background: #fff; transition: border-color 0.2s, background 0.2s;
+  }
+  .mob-s-card.active { border-color: #d06ce8; background: #fdfbfe; }
+  .mob-s-card.completed { border-color: #e8ecf2; opacity: 0.5; }
+  .mob-s-card-header {
+    display: flex; align-items: center; gap: 10px;
+    padding: 10px 12px; cursor: pointer;
+  }
+  .mob-s-num {
+    width: 26px; height: 26px;
+    background: #f5ecfa; color: #AE39C6; border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 12px; font-weight: 700; flex-shrink: 0;
+    transition: background 0.2s, color 0.2s;
+  }
+  .mob-s-card.completed .mob-s-num { background: #AE39C6; color: #fff; }
+  .mob-s-card-title {
+    font-size: 14px; font-weight: 600; color: #072653; flex: 1; line-height: 1.3;
+  }
+  .mob-s-card.completed .mob-s-card-title { text-decoration: line-through; color: #a3b1c3; }
+  .mob-s-card-chevron {
+    width: 16px; height: 16px; color: #c2cdd9; flex-shrink: 0;
+    transition: transform 0.25s, color 0.2s;
+  }
+  .mob-s-card.active .mob-s-card-chevron { transform: rotate(180deg); color: #AE39C6; }
+  .mob-s-card-body {
+    display: grid; grid-template-rows: 0fr; overflow: hidden;
+    transition: grid-template-rows 0.3s cubic-bezier(0.4,0,0.2,1);
+  }
+  .mob-s-card.active .mob-s-card-body { grid-template-rows: 1fr; }
+  .mob-s-card-inner {
+    min-height: 0; padding: 0 12px 0 48px; overflow: hidden;
+    transition: padding 0.3s cubic-bezier(0.4,0,0.2,1);
+  }
+  .mob-s-card.active .mob-s-card-inner { padding: 0 12px 12px 48px; }
+  .mob-s-card-desc { font-size: 13px; color: #6b7c8f; line-height: 1.45; margin-bottom: 4px; }
+  .mob-s-card-time {
+    display: inline; color: #AE39C6; font-size: 11px; font-weight: 500;
+  }
+  .mob-s-card-time i { font-size: 10px; margin-right: 2px; }
+  .mob-s-actions { display: flex; align-items: center; gap: 10px; margin-top: 8px; }
+  .mob-s-mark {
+    padding: 4px 10px; background: none; color: #AE39C6;
+    border: 1.5px solid #dcc0e8; border-radius: 6px;
+    font-family: inherit; font-size: 12px; font-weight: 600; cursor: pointer;
+  }
+  .mob-s-mark:hover { background: #faf5fd; }
+  .mob-s-desktop-icon { color: #94a3b8; font-size: 11px; margin-right: 4px; }
+  .mob-s-desktop-badge {
+    display: inline-flex; align-items: center; gap: 5px;
+    font-size: 11px; font-weight: 600; color: #7b8faa;
+    background: #f0f4f9; border-radius: 4px; padding: 4px 8px; margin-top: 6px;
+  }
+  .mob-s-desktop-badge i { font-size: 10px; }
+  .mob-s-congrats {
+    text-align: center; padding: 16px 12px; margin-bottom: 8px;
+    background: linear-gradient(135deg, #faf5fd, #f0f0ff);
+    border-radius: 12px; border: 1px solid #e8ddf0;
+  }
+  .mob-s-congrats-icon {
+    width: 36px; height: 36px; margin: 0 auto 8px;
+    background: #AE39C6; color: #fff; border-radius: 50%;
+    display: flex; align-items: center; justify-content: center; font-size: 16px;
+  }
+  .mob-s-congrats-title { font-size: 15px; font-weight: 700; color: #072653; margin-bottom: 4px; }
+  .mob-s-congrats-desc { font-size: 13px; color: #6b7c8f; line-height: 1.45; }
+  .mob-s-go { font-size: 14px; color: #AE39C6; font-weight: 600; text-decoration: none; }
+
+  /* v2: FLOATING CARD */
+  .mob-float {
+    position: fixed; bottom: 16px; left: 12px; right: 12px; z-index: 150;
+    background: #fff; border-radius: 16px;
+    border-top: 3px solid #AE39C6;
+    box-shadow: 0 4px 24px rgba(7,38,83,0.15);
+    overflow: hidden; transition: opacity 0.25s, transform 0.25s;
+  }
+  body.mob-onboarding .mob-float.mob-active { display: block; }
+  .mob-float.mob-hidden { opacity: 0; transform: translateY(20px); pointer-events: none; }
+  .mob-float-progress { height: 3px; background: #f0e4f5; border-radius: 2px; margin-bottom: 12px; }
+  .mob-float-progress-fill { height: 100%; background: linear-gradient(90deg, #AE39C6, #d06ce8); border-radius: 2px; transition: width 0.4s ease; width: 0%; }
+  .mob-float-inner { padding: 14px 16px 16px; }
+  .mob-float-top { display: flex; align-items: center; justify-content: space-between; margin-bottom: 10px; }
+  .mob-float-top-left { display: flex; align-items: center; gap: 8px; }
+  .mob-float-num {
+    width: 24px; height: 24px;
+    background: #f5ecfa; color: #AE39C6; border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 14px; font-weight: 700; flex-shrink: 0;
+  }
+  .mob-float-step { font-size: 14px; font-weight: 600; color: #AE39C6; }
+  .mob-float-close {
+    width: 28px; height: 28px;
+    background: #f5ecfa; border: 1.5px solid #dcc0e8; border-radius: 6px;
+    color: #AE39C6; cursor: pointer;
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0;
+  }
+  .mob-float-title { font-size: 16px; font-weight: 700; color: #072653; margin-bottom: 4px; }
+  .mob-float-desc { font-size: 14px; color: #6b7c8f; line-height: 1.5; margin-bottom: 14px; }
+  .mob-float-actions { display: flex; align-items: center; gap: 14px; }
+  .mob-float-mark {
+    padding: 8px 20px; background: none; color: #AE39C6;
+    border: 1.5px solid #dcc0e8; border-radius: 8px;
+    font-family: inherit; font-size: 14px; font-weight: 600; cursor: pointer;
+  }
+  .mob-float-mark:hover { background: #faf5fd; }
+  .mob-float-go { font-size: 14px; color: #AE39C6; font-weight: 600; text-decoration: none; }
+  /* FAB */
+  /* Hide default bottom actions when v2 FAB is active */
+  body.mob-onboarding .bottom-actions .btn-onboarding-call { display: none; }
+  .mob-fab {
+    position: fixed; bottom: 24px; right: 68px; z-index: 150;
+    width: 44px; height: 44px; border-radius: 22px;
+    background: #AE39C6; color: #fff; border: none;
+    box-shadow: 0 3px 12px rgba(174,57,198,0.35);
+    cursor: pointer; font-family: inherit; font-size: 12px; font-weight: 700;
+    transition: opacity 0.25s, transform 0.25s;
+  }
+  body.mob-onboarding .mob-fab.mob-active { display: flex; align-items: center; justify-content: center; }
+  .mob-fab.mob-hidden { opacity: 0; transform: scale(0.5); pointer-events: none; }
+}
+</style>
+</head>
+<body>
+
+<!-- ===== TOP NAV ===== -->
+<nav class="topnav">
+  <div class="topnav-logo">Q</div>
+  <div class="topnav-org">
+    <div class="org-text">
+      <small>Maria 's Organization</small>
+      Default Worksp...
+    </div>
+    <span class="chevron">&#9660;</span>
+  </div>
+
+  <div class="topnav-links">
+    <a class="topnav-link" href="#" onclick="event.preventDefault();switchTab('Publish')">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 013 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
+      Publish
+    </a>
+    <a class="topnav-link" href="#" onclick="event.preventDefault();switchTab('Discover')">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg>
+      Discover
+    </a>
+    <a class="topnav-link" href="#" onclick="event.preventDefault();switchTab('Analyze')">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 20V10M12 20V4M6 20v-6"/></svg>
+      Analyze
+    </a>
+    <a class="topnav-link active" href="#" onclick="event.preventDefault();switchTab('Social Profiles')">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+      Social Profiles
+    </a>
+  </div>
+
+  <div class="topnav-right">
+    <button class="btn-upgrade">Upgrade</button>
+    <div class="topnav-icon">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 8A6 6 0 006 8c0 7-3 9-3 9h18s-3-2-3-9M13.73 21a2 2 0 01-3.46 0"/></svg>
+    </div>
+    <div class="topnav-icon">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 015.83 1c0 2-3 3-3 3M12 17h.01"/></svg>
+    </div>
+    <div class="topnav-icon">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 01-2.83 2.83l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 01-4 0v-.09A1.65 1.65 0 009 19.4a1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 01-2.83-2.83l.06-.06A1.65 1.65 0 004.68 15a1.65 1.65 0 00-1.51-1H3a2 2 0 010-4h.09A1.65 1.65 0 004.6 9a1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 012.83-2.83l.06.06A1.65 1.65 0 009 4.68a1.65 1.65 0 001-1.51V3a2 2 0 014 0v.09a1.65 1.65 0 001 1.51 1.65 1.65 0 001.82-.33l.06-.06a2 2 0 012.83 2.83l-.06.06A1.65 1.65 0 0019.4 9a1.65 1.65 0 001.51 1H21a2 2 0 010 4h-.09a1.65 1.65 0 00-1.51 1z"/></svg>
+    </div>
+    <div class="topnav-icon">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+    </div>
+  </div>
+</nav>
+
+<!-- ===== KYC OVERLAY ===== -->
+<div class="kyc-overlay" id="kycOverlay" style="display:none">
+  <div class="kyc-card">
+    <div class="kyc-card-inner">
+    <div class="kyc-step active" id="kycStep1">
+      <div class="kyc-brand">
+        <div class="kyc-brand-mark">SQ</div>
+        <div class="kyc-brand-name">SmarterQueue</div>
+      </div>
+      <div class="kyc-step-label">Step 1 of 2</div>
+      <div class="kyc-title">Which describes you best?</div>
+      <div class="kyc-subtitle">We'll tailor your setup so you see the most useful things first.</div>
+      <div class="kyc-grid">
+        <div class="kyc-option" data-persona="SMM Agency / Freelancer" onclick="selectPersona(this)">
+          <div class="kyc-option-icon"><i class="fa-solid fa-users-gear"></i></div>
+          <div class="kyc-option-text"><strong>SMM Agency / Freelancer</strong><span>Multiple clients/brands</span></div>
+        </div>
+        <div class="kyc-option" data-persona="Business" onclick="selectPersona(this)">
+          <div class="kyc-option-icon"><i class="fa-solid fa-building"></i></div>
+          <div class="kyc-option-text"><strong>Business</strong><span>In-house marketer</span></div>
+        </div>
+        <div class="kyc-option" data-persona="Branches / Franchise" onclick="selectPersona(this)">
+          <div class="kyc-option-icon"><i class="fa-solid fa-sitemap"></i></div>
+          <div class="kyc-option-text"><strong>Branches / Franchise</strong><span>Multiple locations</span></div>
+        </div>
+        <div class="kyc-option" data-persona="Solopreneur" onclick="selectPersona(this)">
+          <div class="kyc-option-icon"><i class="fa-solid fa-user"></i></div>
+          <div class="kyc-option-text"><strong>Solopreneur</strong><span>My own brand/business</span></div>
+        </div>
+        <div class="kyc-option" data-persona="Content Creator" onclick="selectPersona(this)">
+          <div class="kyc-option-icon"><i class="fa-solid fa-video"></i></div>
+          <div class="kyc-option-text"><strong>Content Creator</strong><span>Influencer / video creator</span></div>
+        </div>
+        <div class="kyc-option" data-persona="Blogger" onclick="selectPersona(this)">
+          <div class="kyc-option-icon"><i class="fa-solid fa-pen-nib"></i></div>
+          <div class="kyc-option-text"><strong>Blogger</strong><span>Promote my blog</span></div>
+        </div>
+        <div class="kyc-option" data-persona="High-Volume Publisher" onclick="selectPersona(this)">
+          <div class="kyc-option-icon"><i class="fa-solid fa-layer-group"></i></div>
+          <div class="kyc-option-text"><strong>High-Volume Publisher</strong><span>Multiple pages at scale</span></div>
+        </div>
+        <div class="kyc-option" data-persona="Other" onclick="selectPersona(this)">
+          <div class="kyc-option-icon"><i class="fa-solid fa-ellipsis"></i></div>
+          <div class="kyc-option-text"><strong>Other</strong><span>None of the above</span></div>
+        </div>
+      </div>
+      <div class="kyc-bottom">
+        <div style="min-width:100px"></div>
+        <div class="kyc-dots"><div class="kyc-dot active"></div><div class="kyc-dot"></div></div>
+        <div style="min-width:100px"></div>
+      </div>
+    </div>
+    <div class="kyc-step" id="kycStep2">
+      <div class="kyc-brand">
+        <div class="kyc-brand-mark">SQ</div>
+        <div class="kyc-brand-name">SmarterQueue</div>
+      </div>
+      <div class="kyc-step-label">Step 2 of 2</div>
+      <div class="kyc-title">What would you like to achieve first?</div>
+      <div class="kyc-subtitle">We'll give you personalized steps to help you get results faster.</div>
+      <div class="kyc-goals">
+        <div class="kyc-goal" onclick="selectGoal(this)">
+          Set up a consistent posting plan &amp; start scheduling
+          <span class="kyc-badge">RECOMMENDED</span>
+        </div>
+        <div class="kyc-goal" onclick="selectGoal(this)">Discover high-performing content in my niche to share</div>
+        <div class="kyc-goal" onclick="selectGoal(this)">Import my existing content &amp; get it publishing</div>
+        <div class="kyc-goal" onclick="selectGoal(this)">See which of my posts performed best &amp; apply those learnings</div>
+        <div class="kyc-goal" onclick="selectGoal(this)">Recycle my best posts automatically for ongoing engagement</div>
+      </div>
+      <div class="kyc-persona-info">Persona selected: <strong id="kycPersonaLabel"></strong></div>
+      <div class="kyc-bottom">
+        <button class="kyc-btn-back" onclick="goToStep(1)">Go Back</button>
+        <div class="kyc-dots"><div class="kyc-dot"></div><div class="kyc-dot active"></div></div>
+        <button class="kyc-btn-continue" id="kycContinueBtn" onclick="finishKyc()">Continue</button>
+      </div>
+    </div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== LAYOUT ===== -->
+<div class="layout">
+
+  <!-- SIDEBAR BG -->
+  <div class="sidebar-bg"></div>
+  <!-- SIDEBAR -->
+  <aside class="sidebar">
+    <div class="sidebar-label">ORGANIZATION</div>
+    <div class="sidebar-section">
+      <div class="sidebar-item">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/></svg>
+        Workspaces
+      </div>
+      <div class="sidebar-item">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87M16 3.13a4 4 0 010 7.75"/></svg>
+        Users
+      </div>
+      <div class="sidebar-item">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="3" width="20" height="18" rx="2"/><path d="M2 8h20M8 8v13"/></svg>
+        Business Details
+      </div>
+      <div class="sidebar-item">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="1" y="4" width="22" height="16" rx="2"/><path d="M1 10h22"/></svg>
+        Subscription Management
+      </div>
+      <div class="sidebar-item">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="M2 10h20"/><path d="M6 16h4"/></svg>
+        Billing
+      </div>
+      <div class="sidebar-item">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M8 12l2 2 4-4"/></svg>
+        Affiliate Program
+      </div>
+    </div>
+
+    <div class="sidebar-label">WORKSPACE / DEFAULT WORKSPACE</div>
+    <div class="sidebar-section">
+      <div class="sidebar-item active">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+        Social Profiles
+      </div>
+      <div class="sidebar-item">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 013 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
+        Publishing Settings
+      </div>
+      <div class="sidebar-item">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10 13a5 5 0 007.54.54l3-3a5 5 0 00-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 00-7.54-.54l-3 3a5 5 0 007.07 7.07l1.71-1.71"/></svg>
+        Link Tracking
+      </div>
+      <div class="sidebar-item">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M10 15l5-3-5-3v6z"/></svg>
+        Pause Settings
+      </div>
+    </div>
+
+    <div class="sidebar-label">TOOLS</div>
+    <div class="sidebar-section">
+      <div class="sidebar-item">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10 13a5 5 0 007.54.54l3-3a5 5 0 00-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 00-7.54-.54l-3 3a5 5 0 007.07 7.07l1.71-1.71"/></svg>
+        Bitly
+      </div>
+    </div>
+  </aside>
+
+  <!-- MAIN -->
+  <main class="main">
+    <h1 class="page-title">Social Profiles</h1>
+
+    <!-- Connect Profiles -->
+    <div class="card">
+      <h3 class="card-title">Connect Profiles</h3>
+
+      <div class="profiles-grid">
+        <button class="profile-btn instagram">
+          <div class="icon"><i class="fa-brands fa-instagram"></i></div>
+          Connect
+        </button>
+        <button class="profile-btn facebook">
+          <div class="icon"><i class="fa-brands fa-facebook-f"></i></div>
+          Connect
+        </button>
+        <button class="profile-btn twitter">
+          <div class="icon"><i class="fa-brands fa-x-twitter"></i></div>
+          Connect
+        </button>
+        <button class="profile-btn linkedin">
+          <div class="icon"><i class="fa-brands fa-linkedin-in"></i></div>
+          Connect
+        </button>
+        <button class="profile-btn google">
+          <div class="icon"><i class="fa-brands fa-google"></i></div>
+          Connect
+        </button>
+        <button class="profile-btn pinterest">
+          <div class="icon"><i class="fa-brands fa-pinterest-p"></i></div>
+          Connect
+        </button>
+        <button class="profile-btn tiktok">
+          <div class="icon"><i class="fa-brands fa-tiktok"></i></div>
+          Connect
+        </button>
+        <button class="profile-btn threads">
+          <div class="icon"><i class="fa-brands fa-threads"></i></div>
+          Connect
+        </button>
+        <button class="profile-btn youtube">
+          <div class="icon"><i class="fa-brands fa-youtube"></i></div>
+          Connect
+        </button>
+        <button class="profile-btn bitly">
+          <div class="icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none"><circle cx="15.5" cy="6.5" r="2.5" fill="currentColor"/><circle cx="12" cy="17.5" r="3.5" fill="currentColor"/><path d="M5 3v10c0 2.5 1.5 4 4 4" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/></svg></div>
+          Connect
+        </button>
+        <button class="profile-btn universal">
+          <div class="icon"><i class="fa-solid fa-user"></i></div>
+          Universal
+        </button>
+      </div>
+    </div>
+
+    <!-- Connected Profiles -->
+    <div class="connected-card">
+      <h3>Connected Profiles</h3>
+      <p>Connect your first profile and let SmarterQueue do the rest.</p>
+      <div class="connected-card-illustration">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 540" width="100%" fill="none">
+  <defs>
+    <filter id="shadow" x="-30%" y="-30%" width="160%" height="160%">
+      <feDropShadow dx="0" dy="10" stdDeviation="14" flood-color="#0F172A" flood-opacity="0.18"/>
+    </filter>
+    <filter id="shadow-sm" x="-30%" y="-30%" width="160%" height="160%">
+      <feDropShadow dx="0" dy="4" stdDeviation="8" flood-color="#0F172A" flood-opacity="0.14"/>
+    </filter>
+    <filter id="glow" x="-40%" y="-40%" width="180%" height="180%">
+      <feDropShadow dx="0" dy="0" stdDeviation="8" flood-color="#22D3EE" flood-opacity="0.35"/>
+      <feDropShadow dx="0" dy="0" stdDeviation="14" flood-color="#A78BFA" flood-opacity="0.20"/>
+      <feDropShadow dx="0" dy="0" stdDeviation="22" flood-color="#34D399" flood-opacity="0.14"/>
+    </filter>
+    <linearGradient id="loop-grad" x1="270" y1="150" x2="690" y2="390" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#22D3EE"/>
+      <stop offset="45%" stop-color="#A78BFA"/>
+      <stop offset="100%" stop-color="#34D399"/>
+    </linearGradient>
+    <linearGradient id="ig-grad" x1="0%" y1="100%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#F58529"/>
+      <stop offset="45%" stop-color="#DD2A7B"/>
+      <stop offset="100%" stop-color="#8134AF"/>
+    </linearGradient>
+    <path id="loop-path" d="M 480 270 C 540 160, 690 160, 690 270 C 690 380, 540 380, 480 270 C 420 160, 270 160, 270 270 C 270 380, 420 380, 480 270 Z"/>
+    <g id="post-image-text">
+      <rect x="-28" y="-34" width="56" height="68" rx="14" fill="#FFFFFF" fill-opacity="0.92" stroke="#E2E8F0" stroke-opacity="0.95" stroke-width="1"/>
+      <circle cx="-12" cy="-20" r="5.5" fill="currentColor" fill-opacity="0.95"/>
+      <rect x="-2" y="-23" width="26" height="4" rx="2" fill="#0F172A" fill-opacity="0.14"/>
+      <rect x="-2" y="-16" width="16" height="3.5" rx="1.75" fill="#0F172A" fill-opacity="0.10"/>
+      <rect x="-18" y="-9" width="36" height="24" rx="8" fill="#F1F5F9"/>
+      <rect x="-18" y="-9" width="36" height="24" rx="8" fill="currentColor" fill-opacity="0.12"/>
+      <path d="M -14 11 L -6 3 L 0 10 L 6 4 L 14 12" fill="none" stroke="#FFFFFF" stroke-opacity="0.85" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+      <circle cx="10" cy="-4" r="2.2" fill="#FFFFFF" fill-opacity="0.85"/>
+      <rect x="-18" y="20" width="34" height="4" rx="2" fill="#64748B" fill-opacity="0.38"/>
+      <rect x="-18" y="29" width="22" height="4" rx="2" fill="#94A3B8" fill-opacity="0.30"/>
+    </g>
+    <g id="post-video-text"><use href="#post-image-text"/><path d="M -3 -1 L 9 5 L -3 11 Z" fill="#FFFFFF" fill-opacity="0.92"/></g>
+    <g id="post-image-only">
+      <rect x="-28" y="-34" width="56" height="68" rx="14" fill="#FFFFFF" fill-opacity="0.92" stroke="#E2E8F0" stroke-opacity="0.95" stroke-width="1"/>
+      <rect x="-20" y="-28" width="40" height="50" rx="10" fill="#F1F5F9"/>
+      <rect x="-20" y="-28" width="40" height="50" rx="10" fill="currentColor" fill-opacity="0.10"/>
+      <path d="M -14 14 L -6 6 L 0 13 L 6 7 L 14 15" fill="none" stroke="#FFFFFF" stroke-opacity="0.80" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+      <circle cx="10" cy="-18" r="2.2" fill="#FFFFFF" fill-opacity="0.80"/>
+      <rect x="-20" y="26" width="28" height="4" rx="2" fill="#94A3B8" fill-opacity="0.26"/>
+    </g>
+    <g id="post-text-only">
+      <rect x="-28" y="-34" width="56" height="68" rx="14" fill="#FFFFFF" fill-opacity="0.92" stroke="#E2E8F0" stroke-opacity="0.95" stroke-width="1"/>
+      <circle cx="-12" cy="-20" r="5.5" fill="currentColor" fill-opacity="0.95"/>
+      <rect x="-2" y="-23" width="26" height="4" rx="2" fill="#0F172A" fill-opacity="0.14"/>
+      <rect x="-2" y="-16" width="16" height="3.5" rx="1.75" fill="#0F172A" fill-opacity="0.10"/>
+      <rect x="-18" y="-4" width="36" height="5" rx="2.5" fill="#64748B" fill-opacity="0.32"/>
+      <rect x="-18" y="6" width="32" height="5" rx="2.5" fill="#64748B" fill-opacity="0.26"/>
+      <rect x="-18" y="16" width="26" height="5" rx="2.5" fill="#94A3B8" fill-opacity="0.22"/>
+      <rect x="-18" y="28" width="18" height="4" rx="2" fill="#94A3B8" fill-opacity="0.18"/>
+    </g>
+    <g id="badge"><circle r="22" fill="currentColor"/><circle r="22" fill="none" stroke="#FFFFFF" stroke-opacity="0.18" stroke-width="1"/></g>
+    <g id="fa-facebook-f" fill="#FFFFFF"><g transform="scale(0.0507812500)"><g transform="translate(-160 -256)"><path d="M80 299.3V512H196V299.3h86.5l18-97.8H196V166.9c0-51.7 20.3-71.5 72.7-71.5c16.3 0 29.4 .4 37 1.2V7.9C291.4 4 256.4 0 236.2 0C129.3 0 80 50.5 80 159.4v42.1H14v97.8H80z"/></g></g></g>
+    <g id="fa-linkedin-in" fill="#FFFFFF"><g transform="scale(0.0507812500)"><g transform="translate(-224 -256)"><path d="M100.28 448H7.4V148.9h92.88zM53.79 108.1C24.09 108.1 0 83.5 0 53.8a53.79 53.79 0 0 1 107.58 0c0 29.7-24.1 54.3-53.79 54.3zM447.9 448h-92.68V302.4c0-34.7-.7-79.2-48.29-79.2-48.29 0-55.69 37.7-55.69 76.7V448h-92.78V148.9h89.08v40.8h1.3c12.4-23.5 42.69-48.3 87.88-48.3 94 0 111.28 61.9 111.28 142.3V448z"/></g></g></g>
+    <g id="fa-google" fill="#FFFFFF"><g transform="scale(0.0507812500)"><g transform="translate(-244 -256)"><path d="M488 261.8C488 403.3 391.1 504 248 504 110.8 504 0 393.2 0 256S110.8 8 248 8c66.8 0 123 24.5 166.3 64.9l-67.5 64.9C258.5 52.6 94.3 116.6 94.3 256c0 86.5 69.1 156.6 153.7 156.6 98.2 0 135-70.4 140.8-106.9H248v-85.3h236.1c2.3 12.7 3.9 24.9 3.9 41.4z"/></g></g></g>
+    <g id="fa-instagram" fill="#FFFFFF"><g transform="scale(0.0507812500)"><g transform="translate(-224 -256)"><path d="M224.1 141c-63.6 0-114.9 51.3-114.9 114.9s51.3 114.9 114.9 114.9S339 319.5 339 255.9 287.7 141 224.1 141zm0 189.6c-41.1 0-74.7-33.5-74.7-74.7s33.5-74.7 74.7-74.7 74.7 33.5 74.7 74.7-33.6 74.7-74.7 74.7zm146.4-194.3c0 14.9-12 26.8-26.8 26.8-14.9 0-26.8-12-26.8-26.8s12-26.8 26.8-26.8 26.8 12 26.8 26.8zm76.1 27.2c-1.7-35.9-9.9-67.7-36.2-93.9-26.2-26.2-58-34.4-93.9-36.2-37-2.1-147.9-2.1-184.9 0-35.8 1.7-67.6 9.9-93.9 36.1s-34.4 58-36.2 93.9c-2.1 37-2.1 147.9 0 184.9 1.7 35.9 9.9 67.7 36.2 93.9s58 34.4 93.9 36.2c37 2.1 147.9 2.1 184.9 0 35.9-1.7 67.7-9.9 93.9-36.2 26.2-26.2 34.4-58 36.2-93.9 2.1-37 2.1-147.8 0-184.8zM398.8 388c-7.8 19.6-22.9 34.7-42.6 42.6-29.5 11.7-99.5 9-132.1 9s-102.7 2.6-132.1-9c-19.6-7.8-34.7-22.9-42.6-42.6-11.7-29.5-9-99.5-9-132.1s-2.6-102.7 9-132.1c7.8-19.6 22.9-34.7 42.6-42.6 29.5-11.7 99.5-9 132.1-9s102.7-2.6 132.1 9c19.6 7.8 34.7 22.9 42.6 42.6 11.7 29.5 9 99.5 9 132.1s2.7 102.7-9 132.1z"/></g></g></g>
+    <g id="fa-youtube" fill="#FFFFFF"><g transform="scale(0.0451388889)"><g transform="translate(-288 -256)"><path d="M549.655 124.083c-6.281-23.65-24.787-42.276-48.284-48.597C458.781 64 288 64 288 64S117.22 64 74.629 75.486c-23.497 6.322-42.003 24.947-48.284 48.597-11.412 42.867-11.412 132.305-11.412 132.305s0 89.438 11.412 132.305c6.281 23.65 24.787 41.5 48.284 47.821C117.22 448 288 448 288 448s170.78 0 213.371-11.486c23.497-6.321 42.003-24.171 48.284-47.821 11.412-42.867 11.412-132.305 11.412-132.305s0-89.438-11.412-132.305zm-317.51 213.508V175.185l142.739 81.205-142.739 81.201z"/></g></g></g>
+    <g id="fa-pinterest-p" fill="#FFFFFF"><g transform="scale(0.0507812500)"><g transform="translate(-192 -256)"><path d="M204 6.5C101.4 6.5 0 74.9 0 185.6 0 256 39.6 296 63.6 296c9.9 0 15.6-27.6 15.6-35.4 0-9.3-23.7-29.1-23.7-67.8 0-80.4 61.2-137.4 140.4-137.4 68.1 0 118.5 38.7 118.5 109.8 0 53.1-21.3 152.7-90.3 152.7-24.9 0-46.2-18-46.2-43.8 0-37.8 26.4-74.4 26.4-113.4 0-66.2-93.9-54.2-93.9 25.8 0 16.8 2.1 35.4 9.6 50.7-13.8 59.4-42 147.9-42 209.1 0 18.9 2.7 37.5 4.5 56.4 3.4 3.8 1.7 3.4 6.9 1.5 50.4-69 48.6-82.5 71.4-172.8 12.3 23.4 44.1 36 69.3 36 106.2 0 153.9-103.5 153.9-196.8C384 71.3 298.2 6.5 204 6.5z"/></g></g></g>
+    <g id="fa-tiktok" fill="#FFFFFF"><g transform="scale(0.0507812500)"><g transform="translate(-224 -256)"><path d="M448,209.91a210.06,210.06,0,0,1-122.77-39.25V349.38A162.55,162.55,0,1,1,185,188.31V278.2a74.62,74.62,0,1,0,52.23,71.18V0l88,0a121.18,121.18,0,0,0,1.86,22.17h0A122.18,122.18,0,0,0,381,102.39a121.43,121.43,0,0,0,67,20.14Z"/></g></g></g>
+    <g id="fa-threads" fill="#FFFFFF"><g transform="scale(0.0507812500)"><g transform="translate(-224 -256)"><path d="M331.5 235.7c2.2 .9 4.2 1.9 6.3 2.8c29.2 14.1 50.6 35.2 61.8 61.4c15.7 36.5 17.2 95.8-30.3 143.2c-36.2 36.2-80.3 52.5-142.6 53h-.3c-70.2-.5-124.1-24.1-160.4-70.2c-32.3-41-48.9-98.1-49.5-169.6V256v-.2C17 184.3 33.6 127.2 65.9 86.2C102.2 40.1 156.2 16.5 226.4 16h.3c70.3 .5 124.9 24 162.3 69.9c18.4 22.7 32 50 40.6 81.7l-40.4 10.8c-7.1-25.8-17.8-47.8-32.2-65.4c-29.2-35.8-73-54.2-130.5-54.6c-57 .5-100.1 18.8-128.2 54.4C72.1 146.1 58.5 194.3 58 256c.5 61.7 14.1 109.9 40.3 143.3c28 35.6 71.2 53.9 128.2 54.4c51.4-.4 85.4-12.6 113.7-40.9c32.3-32.2 31.7-71.8 21.4-95.9c-6.1-14.2-17.1-26-31.9-34.9c-3.7 26.9-11.8 48.3-24.7 64.8c-17.1 21.8-41.4 33.6-72.7 35.3c-23.6 1.3-46.3-4.4-63.9-16c-20.8-13.8-33-34.8-34.3-59.3c-2.5-48.3 35.7-83 95.2-86.4c21.1-1.2 40.9-.3 59.2 2.8c-2.4-14.8-7.3-26.6-14.6-35.2c-10-11.7-25.6-17.7-46.2-17.8H227c-16.6 0-39 4.6-53.3 26.3l-34.4-23.6c19.2-29.1 50.3-45.1 87.8-45.1h.8c62.6 .4 99.9 39.5 103.7 107.7l-.2 .2zm-156 68.8c1.3 25.1 28.4 36.8 54.6 35.3c25.6-1.4 54.6-11.4 59.5-73.2c-13.2-2.9-27.8-4.4-43.4-4.4c-4.8 0-9.6 .1-14.4 .4c-42.9 2.4-57.2 23.2-56.2 41.8l-.1 .1z"/></g></g></g>
+    <g id="fa-x-twitter" fill="#FFFFFF"><g transform="scale(0.0507812500)"><g transform="translate(-256 -256)"><path d="M389.2 48h70.6L305.6 224.2 487 464H345L233.7 318.6 106.5 464H35.8L200.7 275.5 26.8 48H172.4L272.9 180.9 389.2 48zM364.4 421.8h39.1L151.1 88h-42L364.4 421.8z"/></g></g></g>
+    <style>
+      .wire { stroke:#94A3B8; stroke-opacity:.55; stroke-width:2.5; stroke-linecap:round; stroke-dasharray:5 9; }
+      .dot  { filter:url(#shadow-sm); }
+    </style>
+  </defs>
+  <path class="wire" d="M 170 170 C 230 170, 250 235, 300 240"><animate attributeName="stroke-dashoffset" from="0" to="-56" dur="1.8s" repeatCount="indefinite"/></path>
+  <path class="wire" d="M 170 250 C 230 250, 250 255, 300 260"><animate attributeName="stroke-dashoffset" from="0" to="-56" dur="1.6s" repeatCount="indefinite"/></path>
+  <path class="wire" d="M 170 330 C 230 330, 250 285, 300 280"><animate attributeName="stroke-dashoffset" from="0" to="-56" dur="1.7s" repeatCount="indefinite"/></path>
+  <path class="wire" d="M 170 410 C 230 410, 250 305, 300 300"><animate attributeName="stroke-dashoffset" from="0" to="-56" dur="1.9s" repeatCount="indefinite"/></path>
+  <circle class="dot" r="4" fill="#22D3EE"><animateMotion dur="2.8s" repeatCount="indefinite" begin="0s" path="M 170 170 C 230 170, 250 235, 300 240"/></circle>
+  <circle class="dot" r="4" fill="#A78BFA"><animateMotion dur="2.4s" repeatCount="indefinite" begin="0.4s" path="M 170 250 C 230 250, 250 255, 300 260"/></circle>
+  <circle class="dot" r="4" fill="#34D399"><animateMotion dur="2.6s" repeatCount="indefinite" begin="0.8s" path="M 170 330 C 230 330, 250 285, 300 280"/></circle>
+  <circle class="dot" r="4" fill="#FBBF24"><animateMotion dur="2.9s" repeatCount="indefinite" begin="1.2s" path="M 170 410 C 230 410, 250 305, 300 300"/></circle>
+  <use href="#loop-path" stroke="url(#loop-grad)" stroke-opacity="0.22" stroke-width="46" stroke-linecap="round" filter="url(#glow)"/>
+  <use href="#loop-path" stroke="url(#loop-grad)" stroke-opacity="0.92" stroke-width="8" stroke-linecap="round"/>
+  <use href="#loop-path" stroke="#E2E8F0" stroke-opacity="0.95" stroke-width="2.2" stroke-dasharray="10 14" stroke-linecap="round"><animate attributeName="stroke-dashoffset" from="0" to="-72" dur="2.4s" repeatCount="indefinite"/></use>
+  <g filter="url(#shadow-sm)">
+    <use href="#post-image-text" x="120" y="170" color="#22D3EE"/>
+    <use href="#post-video-text" x="120" y="250" color="#A78BFA"/>
+    <use href="#post-image-only" x="120" y="330" color="#34D399"/>
+    <use href="#post-text-only"  x="120" y="410" color="#FBBF24"/>
+  </g>
+  <use href="#post-image-text" color="#22D3EE" filter="url(#shadow)"><animateMotion dur="12s" repeatCount="indefinite" begin="0s" rotate="0"><mpath href="#loop-path"/></animateMotion></use>
+  <use href="#post-video-text" color="#A78BFA" filter="url(#shadow)"><animateMotion dur="12s" repeatCount="indefinite" begin="-3s" rotate="0"><mpath href="#loop-path"/></animateMotion></use>
+  <use href="#post-image-only" color="#34D399" filter="url(#shadow)"><animateMotion dur="12s" repeatCount="indefinite" begin="-6s" rotate="0"><mpath href="#loop-path"/></animateMotion></use>
+  <use href="#post-text-only"  color="#FBBF24" filter="url(#shadow)"><animateMotion dur="12s" repeatCount="indefinite" begin="-9s" rotate="0"><mpath href="#loop-path"/></animateMotion></use>
+  <g transform="translate(480 270)" filter="url(#shadow-sm)">
+    <circle r="34" fill="#FFFFFF" fill-opacity="0.90" stroke="#E2E8F0" stroke-opacity="0.95"/>
+    <text x="0" y="7" text-anchor="middle" font-family="system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif" font-size="26" font-weight="800" fill="#0F172A" fill-opacity="0.80">&#8734;</text>
+  </g>
+  <path id="out1" class="wire" d="M 660 240 C 720 240, 750 46, 790 46"><animate attributeName="stroke-dashoffset" from="0" to="-56" dur="1.55s" repeatCount="indefinite"/></path>
+  <path id="out2" class="wire" d="M 660 247.5 C 720 247.5, 750 102, 790 102"><animate attributeName="stroke-dashoffset" from="0" to="-56" dur="1.60s" repeatCount="indefinite"/></path>
+  <path id="out3" class="wire" d="M 660 255 C 720 255, 750 158, 790 158"><animate attributeName="stroke-dashoffset" from="0" to="-56" dur="1.65s" repeatCount="indefinite"/></path>
+  <path id="out4" class="wire" d="M 660 262.5 C 720 262.5, 750 214, 790 214"><animate attributeName="stroke-dashoffset" from="0" to="-56" dur="1.70s" repeatCount="indefinite"/></path>
+  <path id="out5" class="wire" d="M 660 270 C 720 270, 750 270, 790 270"><animate attributeName="stroke-dashoffset" from="0" to="-56" dur="1.75s" repeatCount="indefinite"/></path>
+  <path id="out6" class="wire" d="M 660 277.5 C 720 277.5, 750 326, 790 326"><animate attributeName="stroke-dashoffset" from="0" to="-56" dur="1.80s" repeatCount="indefinite"/></path>
+  <path id="out7" class="wire" d="M 660 285 C 720 285, 750 382, 790 382"><animate attributeName="stroke-dashoffset" from="0" to="-56" dur="1.85s" repeatCount="indefinite"/></path>
+  <path id="out8" class="wire" d="M 660 292.5 C 720 292.5, 750 438, 790 438"><animate attributeName="stroke-dashoffset" from="0" to="-56" dur="1.90s" repeatCount="indefinite"/></path>
+  <path id="out9" class="wire" d="M 660 300 C 720 300, 750 494, 790 494"><animate attributeName="stroke-dashoffset" from="0" to="-56" dur="1.95s" repeatCount="indefinite"/></path>
+  <circle class="dot" r="4" fill="#1877F2"><animateMotion dur="2.55s" repeatCount="indefinite" begin="0.2s"><mpath href="#out1"/></animateMotion></circle>
+  <circle class="dot" r="4" fill="#0A66C2"><animateMotion dur="2.45s" repeatCount="indefinite" begin="0.6s"><mpath href="#out2"/></animateMotion></circle>
+  <circle class="dot" r="4" fill="#4285F4"><animateMotion dur="2.60s" repeatCount="indefinite" begin="1.0s"><mpath href="#out3"/></animateMotion></circle>
+  <circle class="dot" r="4" fill="#DD2A7B"><animateMotion dur="2.40s" repeatCount="indefinite" begin="1.4s"><mpath href="#out4"/></animateMotion></circle>
+  <circle class="dot" r="4" fill="#FF0000"><animateMotion dur="2.50s" repeatCount="indefinite" begin="1.8s"><mpath href="#out5"/></animateMotion></circle>
+  <circle class="dot" r="4" fill="#E60023"><animateMotion dur="2.65s" repeatCount="indefinite" begin="2.2s"><mpath href="#out6"/></animateMotion></circle>
+  <circle class="dot" r="4" fill="#0F172A"><animateMotion dur="2.70s" repeatCount="indefinite" begin="2.6s"><mpath href="#out7"/></animateMotion></circle>
+  <circle class="dot" r="4" fill="#0F172A"><animateMotion dur="2.75s" repeatCount="indefinite" begin="3.0s"><mpath href="#out8"/></animateMotion></circle>
+  <circle class="dot" r="4" fill="#111827"><animateMotion dur="2.85s" repeatCount="indefinite" begin="3.4s"><mpath href="#out9"/></animateMotion></circle>
+  <g filter="url(#shadow-sm)">
+    <g transform="translate(840 46)"  color="#1877F2"><use href="#badge"/><use href="#fa-facebook-f"/></g>
+    <g transform="translate(840 102)" color="#0A66C2"><use href="#badge"/><use href="#fa-linkedin-in"/></g>
+    <g transform="translate(840 158)" color="#4285F4"><use href="#badge"/><use href="#fa-google"/></g>
+    <g transform="translate(840 214)"><circle r="22" fill="url(#ig-grad)"/><circle r="22" fill="none" stroke="#FFFFFF" stroke-opacity="0.18" stroke-width="1"/><use href="#fa-instagram"/></g>
+    <g transform="translate(840 270)" color="#FF0000"><use href="#badge"/><use href="#fa-youtube"/></g>
+    <g transform="translate(840 326)" color="#E60023"><use href="#badge"/><use href="#fa-pinterest-p"/></g>
+    <g transform="translate(840 382)" color="#0B0B0F"><use href="#badge"/><use href="#fa-tiktok"/></g>
+    <g transform="translate(840 438)" color="#0B0B0F"><use href="#badge"/><use href="#fa-threads"/></g>
+    <g transform="translate(840 494)" color="#111827"><use href="#badge"/><use href="#fa-x-twitter"/></g>
+  </g>
+</svg>
+      </div>
+    </div>
+  </main>
+
+  <!-- V3: Right Panel -->
+  <div class="recipes-panel" id="recipesPanel"></div>
+  <div class="recipes-panel-bg" id="recipesPanelBg"></div>
+  <div class="recipes-panel-scroll" id="recipesPanelScroll" style="display:none">
+    <div class="recipes-panel-inner">
+      <div class="recipes-panel-header">
+        <button class="v3-panel-close" onclick="closeV3Panel()">&times;</button>
+        <h2>Start Saving 8+ Hours a Week</h2>
+        <p>Complete 3 steps and your social media runs on autopilot. Takes about 9 minutes.</p>
+        <div class="recipes-panel-person">
+          <img src="https://unavatar.io/x/claudeschneider" alt="Claude">
+          <span><strong>Claude from SmarterQueue</strong></span>
+        </div>
+      </div>
+      <div class="recipes-panel-progress">
+        <div class="progress-bar-labels">
+          <div class="progress-text"><span id="progressCount">0</span> of 3 done</div>
+          <div class="progress-time-left">About 9 min left</div>
+        </div>
+        <div class="progress-bar-bg"><div class="progress-bar-fill" id="progressFill"></div></div>
+      </div>
+
+      <div id="v3Congrats" style="display:none"></div>
+
+      <div class="recipe-card active" data-recipe="1">
+        <div class="recipe-card-header" onclick="toggleCard(this.parentElement)">
+          <div class="recipe-step-num">1</div>
+          <div class="recipe-card-title">Connect your profiles</div>
+          <svg class="recipe-card-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
+        </div>
+        <div class="recipe-card-body">
+          <div class="recipe-card-desc">Stop logging into 4 different apps. Connect once, and every post goes out automatically. <span class="recipe-card-time"><i class="fa-regular fa-clock"></i> 3 min</span></div>
+          <div class="recipe-card-actions">
+            <button class="btn-recipe-mark" onclick="event.stopPropagation();markComplete(this.closest('.recipe-card'))">Mark complete</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="recipe-card" data-recipe="2">
+        <div class="recipe-card-header" onclick="toggleCard(this.parentElement)">
+          <div class="recipe-step-num">2</div>
+          <div class="recipe-card-title">Schedule your first post</div>
+          <svg class="recipe-card-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
+        </div>
+        <div class="recipe-card-body">
+          <div class="recipe-card-desc">Write one post and SmarterQueue picks the perfect time. You'll see it go live — magic. <span class="recipe-card-time"><i class="fa-regular fa-clock"></i> 3 min</span></div>
+          <div class="recipe-card-actions">
+            <button class="btn-recipe-mark" onclick="event.stopPropagation();markComplete(this.closest('.recipe-card'))">Mark complete</button>
+            <a class="btn-recipe-go" href="#">Create post <span>&rsaquo;</span></a>
+          </div>
+        </div>
+      </div>
+
+      <div class="recipe-card" data-recipe="3">
+        <div class="recipe-card-header" onclick="toggleCard(this.parentElement)">
+          <div class="recipe-step-num">3</div>
+          <div class="recipe-card-title">Find your best times to post</div>
+          <svg class="recipe-card-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
+        </div>
+        <div class="recipe-card-body">
+          <div class="recipe-card-desc">See when your audience is online. Right-time posts get 2&ndash;3x more engagement. <span class="recipe-card-time"><i class="fa-regular fa-clock"></i> 1 min</span></div>
+          <div class="recipe-card-actions">
+            <button class="btn-recipe-mark" onclick="event.stopPropagation();markComplete(this.closest('.recipe-card'))">Mark complete</button>
+            <a class="btn-recipe-go" href="#">Analytics <span>&rsaquo;</span></a>
+          </div>
+        </div>
+      </div>
+
+      <div class="recipes-section-divider"><span>Level up</span></div>
+
+      <div class="recipe-card recipe-card-bonus" data-recipe="4">
+        <div class="recipe-card-header" onclick="toggleCard(this.parentElement)">
+          <div class="recipe-step-num recipe-step-icon"><i class="fa-solid fa-file-import" style="font-size:12px"></i></div>
+          <div class="recipe-card-title">Import your content library</div>
+          <svg class="recipe-card-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
+        </div>
+        <div class="recipe-card-body">
+          <div class="recipe-card-desc">Upload a CSV and fill your entire queue in seconds. A whole week of content, done. <span class="recipe-card-time"><i class="fa-regular fa-clock"></i> 2 min</span></div>
+          <div class="recipe-card-actions">
+            <button class="btn-recipe-mark" onclick="event.stopPropagation();markComplete(this.closest('.recipe-card'))">Mark complete</button>
+            <a class="btn-recipe-go" href="#">Import <span>&rsaquo;</span></a>
+          </div>
+        </div>
+      </div>
+
+      <div class="recipe-card recipe-card-bonus" data-recipe="5">
+        <div class="recipe-card-header" onclick="toggleCard(this.parentElement)">
+          <div class="recipe-step-num recipe-step-icon"><i class="fa-solid fa-recycle" style="font-size:12px"></i></div>
+          <div class="recipe-card-title">Turn on Evergreen</div>
+          <svg class="recipe-card-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
+        </div>
+        <div class="recipe-card-body">
+          <div class="recipe-card-desc">Your best posts recycle automatically. Fresh feed, zero extra work. <span class="recipe-card-time"><i class="fa-regular fa-clock"></i> 1 min</span></div>
+          <div class="recipe-card-actions">
+            <button class="btn-recipe-mark" onclick="event.stopPropagation();markComplete(this.closest('.recipe-card'))">Mark complete</button>
+            <a class="btn-recipe-go" href="#">Evergreen <span>&rsaquo;</span></a>
+          </div>
+        </div>
+      </div>
+
+      <div class="recipe-card recipe-card-bonus" data-recipe="6">
+        <div class="recipe-card-header" onclick="toggleCard(this.parentElement)">
+          <div class="recipe-step-num recipe-step-icon">
+            <i class="fa-solid fa-users" style="font-size:12px"></i>
+          </div>
+          <div class="recipe-card-title">Invite your team</div>
+          <svg class="recipe-card-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
+        </div>
+        <div class="recipe-card-body">
+          <div class="recipe-card-desc">Add teammates with custom roles. Collaborate without stepping on each other's toes. <span class="recipe-card-time"><i class="fa-regular fa-clock"></i> 1 min</span></div>
+          <div class="recipe-card-actions">
+            <button class="btn-recipe-mark" onclick="event.stopPropagation();markComplete(this.closest('.recipe-card'))">Mark complete</button>
+            <a class="btn-recipe-go" href="#">Invite teammates <span>&rsaquo;</span></a>
+          </div>
+        </div>
+      </div>
+
+      <div class="recipe-card recipe-card-bonus" data-recipe="7">
+        <div class="recipe-card-header" onclick="toggleCard(this.parentElement)">
+          <div class="recipe-step-num recipe-step-icon"><i class="fa-solid fa-rss" style="font-size:12px"></i></div>
+          <div class="recipe-card-title">Auto-post from your blog</div>
+          <svg class="recipe-card-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
+        </div>
+        <div class="recipe-card-body">
+          <div class="recipe-card-desc">Connect your RSS feed and new posts go out automatically. Hands-free content. <span class="recipe-card-time"><i class="fa-regular fa-clock"></i> 2 min</span></div>
+          <div class="recipe-card-actions">
+            <button class="btn-recipe-mark" onclick="event.stopPropagation();markComplete(this.closest('.recipe-card'))">Mark complete</button>
+            <a class="btn-recipe-go" href="#">Connect RSS <span>&rsaquo;</span></a>
+          </div>
+        </div>
+      </div>
+
+      <div class="recipe-card recipe-card-bonus" data-recipe="8">
+        <div class="recipe-card-header" onclick="toggleCard(this.parentElement)">
+          <div class="recipe-step-num recipe-step-icon"><i class="fa-solid fa-layer-group" style="font-size:12px"></i></div>
+          <div class="recipe-card-title">Set up Categories</div>
+          <svg class="recipe-card-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
+        </div>
+        <div class="recipe-card-body">
+          <div class="recipe-card-desc">Organise content by type and SmarterQueue balances your mix automatically. <span class="recipe-card-time"><i class="fa-regular fa-clock"></i> 3 min</span></div>
+          <div class="recipe-card-actions">
+            <button class="btn-recipe-mark" onclick="event.stopPropagation();markComplete(this.closest('.recipe-card'))">Mark complete</button>
+            <a class="btn-recipe-go" href="#">Categories <span>&rsaquo;</span></a>
+          </div>
+        </div>
+      </div>
+
+      <!-- Feature request block -->
+      <div class="recipes-feature-req">
+        <div class="recipes-feature-req-title">&#x1F4A1; Shape the future of SmarterQueue</div>
+        <div class="recipes-feature-req-desc">Vote on what we build next or pitch your own idea.</div>
+        <a class="recipes-feature-req-btn" href="#">Request a feature</a>
+      </div>
+    </div>
+  </div>
+  <div class="recipes-panel-sticky" id="recipesPanelSticky">
+    <button class="btn-panel-call">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#7b2d8e" stroke-width="2"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07 19.5 19.5 0 01-6-6 19.79 19.79 0 01-3.07-8.67A2 2 0 014.11 2h3a2 2 0 012 1.72 12.84 12.84 0 00.7 2.81 2 2 0 01-.45 2.11L8.09 9.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45 12.84 12.84 0 002.81.7A2 2 0 0122 16.92z"/></svg>
+      Book your onboarding call
+    </button>
+  </div>
+
+  <!-- V4: Right Panel (copy of V3 for independent editing) -->
+  <div class="recipes-panel" id="v4Panel"></div>
+  <div class="recipes-panel-bg" id="v4PanelBg"></div>
+  <div class="recipes-panel-scroll" id="v4PanelScroll" style="display:none">
+    <div class="recipes-panel-inner">
+      <div class="recipes-panel-header">
+        <button class="v3-panel-close" onclick="closeV4Panel()">&times;</button>
+        <h2>Save 8+ Hours a Week</h2>
+        <p>Complete 3 steps and your social media runs on autopilot. Takes about 9 minutes.</p>
+        <div class="recipes-panel-person">
+          <img src="https://unavatar.io/x/claudeschneider" alt="Claude">
+          <span><strong>Claude from SmarterQueue</strong></span>
+        </div>
+      </div>
+      <div class="recipes-panel-progress">
+        <div class="progress-bar-labels">
+          <div class="progress-text"><span class="v4-progress-dot"></span><span id="v4ProgressCount">0</span> of 3 done</div>
+          <div class="progress-time-left">About 9 min left</div>
+        </div>
+        <div class="progress-bar-bg"><div class="progress-bar-fill" id="v4ProgressFill"></div></div>
+      </div>
+
+      <div id="v4Congrats" style="display:none"></div>
+
+      <div class="recipe-card active" data-recipe="1" data-v4="1">
+        <div class="recipe-card-header" onclick="toggleCard(this.parentElement)">
+          <div class="recipe-step-num">1</div>
+          <div class="recipe-card-title">Connect your profiles</div>
+          <svg class="recipe-card-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
+        </div>
+        <div class="recipe-card-body">
+          <div class="recipe-card-desc">Stop logging into 4 different apps. Connect once, and every post goes out automatically. <span class="recipe-card-time"><i class="fa-regular fa-clock"></i> 3 min</span></div>
+          <div class="recipe-card-actions">
+            <button class="btn-recipe-mark" onclick="event.stopPropagation();markComplete(this.closest('.recipe-card'));updateV4Progress()">Mark complete</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="recipe-card" data-recipe="2" data-v4="1">
+        <div class="recipe-card-header" onclick="toggleCard(this.parentElement)">
+          <div class="recipe-step-num">2</div>
+          <div class="recipe-card-title">Schedule your first post</div>
+          <svg class="recipe-card-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
+        </div>
+        <div class="recipe-card-body">
+          <div class="recipe-card-desc">Write one post and SmarterQueue picks the perfect time. You'll see it go live — magic. <span class="recipe-card-time"><i class="fa-regular fa-clock"></i> 3 min</span></div>
+          <div class="recipe-card-actions">
+            <button class="btn-recipe-mark" onclick="event.stopPropagation();markComplete(this.closest('.recipe-card'));updateV4Progress()">Mark complete</button>
+            <a class="btn-recipe-go" href="#">Create post <span>&rsaquo;</span></a>
+          </div>
+        </div>
+      </div>
+
+      <div class="recipe-card" data-recipe="3" data-v4="1">
+        <div class="recipe-card-header" onclick="toggleCard(this.parentElement)">
+          <div class="recipe-step-num">3</div>
+          <div class="recipe-card-title">Find best times to post</div>
+          <svg class="recipe-card-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
+        </div>
+        <div class="recipe-card-body">
+          <div class="recipe-card-desc">See when your audience is online. Right-time posts get 2&ndash;3x more engagement. <span class="recipe-card-time"><i class="fa-regular fa-clock"></i> 1 min</span></div>
+          <div class="recipe-card-actions">
+            <button class="btn-recipe-mark" onclick="event.stopPropagation();markComplete(this.closest('.recipe-card'));updateV4Progress()">Mark complete</button>
+            <a class="btn-recipe-go" href="#" onclick="event.preventDefault();openV4AnalyzePage()">Analytics <span>&rsaquo;</span></a>
+          </div>
+        </div>
+      </div>
+
+      <div class="recipes-section-divider"><span>Agency Video Guide</span></div>
+
+      <div class="v4-video-placeholder" onclick="this.classList.toggle('playing')">
+        <div class="v4-video-thumb">
+          <div class="v4-video-gradient"></div>
+          <div class="v4-video-play">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="#fff"><path d="M8 5v14l11-7z"/></svg>
+          </div>
+          <div class="v4-video-title">How SmarterQueue works</div>
+          <div class="v4-video-duration">2:34</div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="recipes-panel-sticky" id="v4PanelSticky">
+    <button class="btn-panel-call">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#7b2d8e" stroke-width="2"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07 19.5 19.5 0 01-6-6 19.79 19.79 0 01-3.07-8.67A2 2 0 014.11 2h3a2 2 0 012 1.72 12.84 12.84 0 00.7 2.81 2 2 0 01-.45 2.11L8.09 9.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45 12.84 12.84 0 002.81.7A2 2 0 0122 16.92z"/></svg>
+      Book your onboarding call
+    </button>
+  </div>
+
+  <div class="recipes-panel" id="v5Panel"></div>
+  <div class="recipes-panel-bg" id="v5PanelBg"></div>
+<div class="recipes-panel-scroll" id="v5PanelScroll" style="display:none">
+  <div class="recipes-panel-inner">
+    <div class="recipes-panel-header">
+      <button class="v3-panel-close" onclick="closeV5Panel()">&times;</button>
+      <h2>Start Saving 8+ Hours a Week</h2>
+      <p>Complete 2 steps and your social media runs on autopilot. Takes about 6 minutes.</p>
+      <div class="recipes-panel-person">
+        <img src="https://unavatar.io/x/claudeschneider" alt="Claude">
+        <span><strong>Claude from SmarterQueue</strong></span>
+      </div>
+    </div>
+    <div class="recipes-panel-progress">
+      <div class="progress-bar-labels">
+        <div class="progress-text"><span id="v5ProgressCount">0</span> of 2 done</div>
+        <div class="progress-time-left">About 6 min left</div>
+      </div>
+      <div class="progress-bar-bg"><div class="progress-bar-fill" id="v5ProgressFill"></div></div>
+    </div>
+
+    <div class="recipe-card active" data-recipe="1" data-v5="1">
+      <div class="recipe-card-header" onclick="toggleCard(this.parentElement)">
+        <div class="recipe-step-num">1</div>
+        <div class="recipe-card-title">Connect your profiles</div>
+        <svg class="recipe-card-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
+      </div>
+      <div class="recipe-card-body">
+        <div class="recipe-card-desc">Stop logging into 4 different apps. Connect once, and every post goes out automatically. <span class="recipe-card-time"><i class="fa-regular fa-clock"></i> 3 min</span></div>
+        <div class="recipe-card-actions">
+          <button class="btn-recipe-mark" onclick="event.stopPropagation();markComplete(this.closest('.recipe-card'));updateV5Progress()">Mark complete</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="recipe-card" data-recipe="2" data-v5="1">
+      <div class="recipe-card-header" onclick="toggleCard(this.parentElement)">
+        <div class="recipe-step-num">2</div>
+        <div class="recipe-card-title">Schedule your first post</div>
+        <svg class="recipe-card-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
+      </div>
+      <div class="recipe-card-body">
+        <div class="recipe-card-desc">Write one post and SmarterQueue picks the perfect time. You'll see it go live — magic. <span class="recipe-card-time"><i class="fa-regular fa-clock"></i> 3 min</span></div>
+        <div class="recipe-card-actions">
+          <button class="btn-recipe-mark" onclick="event.stopPropagation();markComplete(this.closest('.recipe-card'));updateV5Progress()">Mark complete</button>
+          <a class="btn-recipe-go" href="#">Create post <span>&rsaquo;</span></a>
+        </div>
+      </div>
+    </div>
+
+    <div class="recipes-section-divider"><span>How SmarterQueue Works</span></div>
+
+    <div class="recipe-card recipe-card-bonus" data-recipe="10" data-v5="1">
+      <div class="recipe-card-header" onclick="toggleCard(this.parentElement)">
+        <div class="recipe-step-num recipe-step-icon"><i class="fa-solid fa-layer-group" style="font-size:12px"></i></div>
+        <div class="recipe-card-title">Set up Categories</div>
+        <svg class="recipe-card-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
+      </div>
+      <div class="recipe-card-body">
+        <div class="recipe-card-desc">Organise content by type — SmarterQueue balances your mix automatically so your feed never looks repetitive. <span class="recipe-card-time"><i class="fa-regular fa-clock"></i> 3 min</span></div>
+        <div class="recipe-card-actions">
+          <button class="btn-recipe-mark" onclick="event.stopPropagation();markComplete(this.closest('.recipe-card'))">Mark complete</button>
+          <a class="btn-recipe-go" href="#">Categories <span>&rsaquo;</span></a>
+        </div>
+      </div>
+    </div>
+
+    <div class="recipe-card recipe-card-bonus" data-recipe="11" data-v5="1">
+      <div class="recipe-card-header" onclick="toggleCard(this.parentElement)">
+        <div class="recipe-step-num recipe-step-icon"><i class="fa-solid fa-calendar-days" style="font-size:12px"></i></div>
+        <div class="recipe-card-title">Create a Posting Plan</div>
+        <svg class="recipe-card-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
+      </div>
+      <div class="recipe-card-body">
+        <div class="recipe-card-desc">Set your weekly schedule — pick days, times, and how many posts per category. SmarterQueue fills the slots for you. <span class="recipe-card-time"><i class="fa-regular fa-clock"></i> 3 min</span></div>
+        <div class="recipe-card-actions">
+          <button class="btn-recipe-mark" onclick="event.stopPropagation();markComplete(this.closest('.recipe-card'))">Mark complete</button>
+          <a class="btn-recipe-go" href="#">Posting Plan <span>&rsaquo;</span></a>
+        </div>
+      </div>
+    </div>
+
+    <div class="recipe-card recipe-card-bonus" data-recipe="12" data-v5="1">
+      <div class="recipe-card-header" onclick="toggleCard(this.parentElement)">
+        <div class="recipe-step-num recipe-step-icon"><i class="fa-solid fa-bars-staggered" style="font-size:12px"></i></div>
+        <div class="recipe-card-title">Explore your Queue</div>
+        <svg class="recipe-card-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
+      </div>
+      <div class="recipe-card-body">
+        <div class="recipe-card-desc">See everything lined up and ready to go. Drag to reorder, swap slots, or pause individual posts. <span class="recipe-card-time"><i class="fa-regular fa-clock"></i> 1 min</span></div>
+        <div class="recipe-card-actions">
+          <button class="btn-recipe-mark" onclick="event.stopPropagation();markComplete(this.closest('.recipe-card'))">Mark complete</button>
+          <a class="btn-recipe-go" href="#">Queue <span>&rsaquo;</span></a>
+        </div>
+      </div>
+    </div>
+
+    <div class="recipe-card recipe-card-bonus" data-recipe="13" data-v5="1">
+      <div class="recipe-card-header" onclick="toggleCard(this.parentElement)">
+        <div class="recipe-step-num recipe-step-icon"><i class="fa-solid fa-pen-to-square" style="font-size:12px"></i></div>
+        <div class="recipe-card-title">Master the Post Editor</div>
+        <svg class="recipe-card-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
+      </div>
+      <div class="recipe-card-body">
+        <div class="recipe-card-desc">Write once, customise per network. Add images, hashtags, and first comments — all in one place. <span class="recipe-card-time"><i class="fa-regular fa-clock"></i> 2 min</span></div>
+        <div class="recipe-card-actions">
+          <button class="btn-recipe-mark" onclick="event.stopPropagation();markComplete(this.closest('.recipe-card'))">Mark complete</button>
+          <a class="btn-recipe-go" href="#">Post Editor <span>&rsaquo;</span></a>
+        </div>
+      </div>
+    </div>
+
+    <div class="recipes-section-divider"><span>Level up</span></div>
+
+    <div class="recipe-card recipe-card-bonus" data-recipe="4" data-v5="1">
+      <div class="recipe-card-header" onclick="toggleCard(this.parentElement)">
+        <div class="recipe-step-num recipe-step-icon"><i class="fa-solid fa-file-import" style="font-size:12px"></i></div>
+        <div class="recipe-card-title">Import your content library</div>
+        <svg class="recipe-card-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
+      </div>
+      <div class="recipe-card-body">
+        <div class="recipe-card-desc">Upload a CSV and fill your entire queue in seconds. A whole week of content, done. <span class="recipe-card-time"><i class="fa-regular fa-clock"></i> 2 min</span></div>
+        <div class="recipe-card-actions">
+          <button class="btn-recipe-mark" onclick="event.stopPropagation();markComplete(this.closest('.recipe-card'))">Mark complete</button>
+          <a class="btn-recipe-go" href="#">Import <span>&rsaquo;</span></a>
+        </div>
+      </div>
+    </div>
+
+    <div class="recipe-card recipe-card-bonus" data-recipe="5" data-v5="1">
+      <div class="recipe-card-header" onclick="toggleCard(this.parentElement)">
+        <div class="recipe-step-num recipe-step-icon"><i class="fa-solid fa-recycle" style="font-size:12px"></i></div>
+        <div class="recipe-card-title">Turn on Evergreen</div>
+        <svg class="recipe-card-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
+      </div>
+      <div class="recipe-card-body">
+        <div class="recipe-card-desc">Your best posts recycle automatically. Fresh feed, zero extra work. <span class="recipe-card-time"><i class="fa-regular fa-clock"></i> 1 min</span></div>
+        <div class="recipe-card-actions">
+          <button class="btn-recipe-mark" onclick="event.stopPropagation();markComplete(this.closest('.recipe-card'))">Mark complete</button>
+          <a class="btn-recipe-go" href="#">Evergreen <span>&rsaquo;</span></a>
+        </div>
+      </div>
+    </div>
+
+    <div class="recipe-card recipe-card-bonus" data-recipe="6" data-v5="1">
+      <div class="recipe-card-header" onclick="toggleCard(this.parentElement)">
+        <div class="recipe-step-num recipe-step-icon"><i class="fa-solid fa-users" style="font-size:12px"></i></div>
+        <div class="recipe-card-title">Invite your team</div>
+        <svg class="recipe-card-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
+      </div>
+      <div class="recipe-card-body">
+        <div class="recipe-card-desc">Add teammates with custom roles. Collaborate without stepping on each other's toes. <span class="recipe-card-time"><i class="fa-regular fa-clock"></i> 1 min</span></div>
+        <div class="recipe-card-actions">
+          <button class="btn-recipe-mark" onclick="event.stopPropagation();markComplete(this.closest('.recipe-card'))">Mark complete</button>
+          <a class="btn-recipe-go" href="#">Invite teammates <span>&rsaquo;</span></a>
+        </div>
+      </div>
+    </div>
+
+    <div class="recipe-card recipe-card-bonus" data-recipe="7" data-v5="1">
+      <div class="recipe-card-header" onclick="toggleCard(this.parentElement)">
+        <div class="recipe-step-num recipe-step-icon"><i class="fa-solid fa-rss" style="font-size:12px"></i></div>
+        <div class="recipe-card-title">Auto-post from your blog</div>
+        <svg class="recipe-card-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
+      </div>
+      <div class="recipe-card-body">
+        <div class="recipe-card-desc">Connect your RSS feed and new posts go out automatically. Hands-free content. <span class="recipe-card-time"><i class="fa-regular fa-clock"></i> 2 min</span></div>
+        <div class="recipe-card-actions">
+          <button class="btn-recipe-mark" onclick="event.stopPropagation();markComplete(this.closest('.recipe-card'))">Mark complete</button>
+          <a class="btn-recipe-go" href="#">Connect RSS <span>&rsaquo;</span></a>
+        </div>
+      </div>
+    </div>
+
+    <div class="recipe-card recipe-card-bonus" data-recipe="9" data-v5="1">
+      <div class="recipe-card-header" onclick="toggleCard(this.parentElement)">
+        <div class="recipe-step-num recipe-step-icon"><i class="fa-solid fa-chart-line" style="font-size:12px"></i></div>
+        <div class="recipe-card-title">Find your best times to post</div>
+        <svg class="recipe-card-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
+      </div>
+      <div class="recipe-card-body">
+        <div class="recipe-card-desc">See when your audience is online. Right-time posts get 2&ndash;3x more engagement. <span class="recipe-card-time"><i class="fa-regular fa-clock"></i> 1 min</span></div>
+        <div class="recipe-card-actions">
+          <button class="btn-recipe-mark" onclick="event.stopPropagation();markComplete(this.closest('.recipe-card'))">Mark complete</button>
+          <a class="btn-recipe-go" href="#">Analytics <span>&rsaquo;</span></a>
+        </div>
+      </div>
+    </div>
+
+    <div class="recipes-feature-req">
+      <div class="recipes-feature-req-title">&#x1F4A1; Shape the future of SmarterQueue</div>
+      <div class="recipes-feature-req-desc">Vote on what we build next or pitch your own idea.</div>
+      <a class="recipes-feature-req-btn" href="#">Request a feature</a>
+    </div>
+  </div>
+</div>
+<div class="recipes-panel-sticky" id="v5PanelSticky">
+  <button class="btn-panel-call">
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#7b2d8e" stroke-width="2"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07 19.5 19.5 0 01-6-6 19.79 19.79 0 01-3.07-8.67A2 2 0 014.11 2h3a2 2 0 012 1.72 12.84 12.84 0 00.7 2.81 2 2 0 01-.45 2.11L8.09 9.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45 12.84 12.84 0 002.81.7A2 2 0 0122 16.92z"/></svg>
+    Book your onboarding call
+  </button>
+</div>
+</div>
+
+<!-- Welcome Tooltip (hidden by default) -->
+<div class="welcome-tooltip" style="display:none">
+  <h3>Welcome to SmarterQueue!</h3>
+  <p>If you need any extra help, you can click on this help icon, or <a href="#">contact us</a> for any questions that might arise.</p>
+  <button class="btn-got-it">Got it</button>
+  <div style="clear:both"></div>
+</div>
+
+<!-- V4: Placeholder page for non-Social Profiles tabs -->
+<div class="v4-analyze-page" id="v4AnalyzePage">
+  <div class="v4-placeholder-label" id="v4PlaceholderLabel"></div>
+</div>
+
+<!-- V4: Analyze overlay + modal -->
+<div class="v4-analyze-overlay" id="v4AnalyzeOverlay" style="display:none">
+  <div class="v4-analyze-modal">
+    <h2>Understand Your Performance</h2>
+    <div class="v4-modal-infobox">
+      <p>Track how your content performs across platforms, with key metrics like engagement, reach, clicks, and more. Discover what's working best, and refine your strategy over time.</p>
+    </div>
+    <div class="v4-modal-video">
+      <div class="v4-modal-video-skeleton">
+        <div class="v4-skel-row">
+          <div class="v4-skel-block" style="width:45%;height:32px"></div>
+          <div class="v4-skel-block" style="width:30%;height:32px"></div>
+        </div>
+        <div class="v4-skel-row">
+          <div class="v4-skel-block" style="width:100%;height:60px"></div>
+        </div>
+        <div class="v4-skel-row">
+          <div class="v4-skel-block" style="width:65%;height:14px"></div>
+        </div>
+        <div class="v4-skel-row">
+          <div class="v4-skel-block" style="width:50%;height:14px"></div>
+        </div>
+      </div>
+      <div class="v4-modal-video-play">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="#fff"><path d="M8 5v14l11-7z"/></svg>
+      </div>
+    </div>
+    <div class="v4-modal-actions">
+      <button class="v4-modal-btn v4-modal-btn-secondary" onclick="closeV4AnalyzePage()">Learn More</button>
+      <button class="v4-modal-btn v4-modal-btn-primary" onclick="closeV4AnalyzePage()">Done</button>
+    </div>
+  </div>
+</div>
+
+<!-- Bottom Right Actions -->
+<div class="bottom-actions">
+  <!-- V2 trigger pill (hidden until v2 mode + collapsed) -->
+  <div class="v2-trigger" id="v2Trigger" onclick="openV2Widget()">
+    <div class="v2-ring-wrap">
+      <svg viewBox="0 0 30 30">
+        <circle class="v2-ring-bg" cx="15" cy="15" r="12"/>
+        <circle class="v2-ring-fill" id="v2RingFill" cx="15" cy="15" r="12"/>
+      </svg>
+      <div class="v2-ring-text" id="v2RingText">0/3</div>
+    </div>
+    <div class="v2-trigger-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg></div>
+    <span class="v2-trigger-label">Setup Guide</span>
+  </div>
+
+  <!-- V4 trigger pill (hidden until v4 mode + collapsed) -->
+  <div class="v2-trigger" id="v4Trigger" onclick="openV4Panel()">
+    <div class="v2-ring-wrap">
+      <svg viewBox="0 0 30 30">
+        <circle class="v2-ring-bg" cx="15" cy="15" r="12"/>
+        <circle class="v2-ring-fill" id="v4RingFill" cx="15" cy="15" r="12"/>
+      </svg>
+      <div class="v2-ring-text" id="v4RingText">0/3</div>
+    </div>
+    <div class="v2-trigger-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg></div>
+    <span class="v2-trigger-label">Setup Guide</span>
+  </div>
+
+  <button class="btn-onboarding-call">
+    <svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07 19.5 19.5 0 01-6-6 19.79 19.79 0 01-3.07-8.67A2 2 0 014.11 2h3a2 2 0 012 1.72 12.84 12.84 0 00.7 2.81 2 2 0 01-.45 2.11L8.09 9.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45 12.84 12.84 0 002.81.7A2 2 0 0122 16.92z"/></svg>
+    Book your onboarding call
+  </button>
+
+  <div class="ai-assistant">
+    <!-- AI Button -->
+    <div class="ai-button" id="aiButton" onclick="openPanel()">
+      <div class="ai-button-pill">
+        <div class="ai-button-circle">
+          <svg class="ai-icon" viewBox="-5 -10 110 120">
+            <path d="m74.773 57.645c-17.676 5.8398-23.562 11.727-29.402 29.402-0.48047 1.4531-2.5352 1.4531-3.0156 0-5.8398-17.676-11.727-23.562-29.402-29.402-1.4531-0.48047-1.4531-2.5352 0-3.0156 17.676-5.8398 23.562-11.727 29.402-29.402 0.48047-1.4531 2.5352-1.4531 3.0156 0 5.8398 17.676 11.727 23.562 29.402 29.402 1.4531 0.48047 1.4531 2.5352 0 3.0156z"/>
+            <path d="m87.594 28.617c-8.8359 2.918-11.781 5.8633-14.703 14.703-0.23828 0.72656-1.2656 0.72656-1.5078 0-2.918-8.8359-5.8633-11.781-14.703-14.703-0.72656-0.23828-0.72656-1.2656 0-1.5078 8.8359-2.918 11.781-5.8633 14.703-14.703 0.23828-0.72656 1.2656-0.72656 1.5078 0 2.918 8.8359 5.8633 11.781 14.703 14.703 0.72656 0.23828 0.72656 1.2656 0 1.5078z"/>
+          </svg>
+        </div>
+        <span class="ai-button-text">Ask AI</span>
+      </div>
+    </div>
+
+    <!-- AI Chat Panel -->
+    <div class="ai-panel" id="aiPanel">
+      <button class="ai-panel-close" onclick="closePanel()">
+        <svg width="21" height="21" viewBox="0 0 21 21" fill="none">
+          <path d="M0.390886 1.73397C0.0419312 1.3893 0.0415916 0.826026 0.390129 0.480933C0.733217 0.141238 1.28578 0.140902 1.62928 0.480179L8.90301 7.66448C9.68234 8.43423 10.9359 8.43386 11.7147 7.66365L18.9839 0.475265C19.3272 0.135769 19.8798 0.135769 20.2231 0.475266C20.5719 0.820176 20.5719 1.38351 20.2231 1.72842L13.0021 8.86897C12.2101 9.65211 12.2105 10.9313 13.0029 11.714L20.2283 18.8506C20.5773 19.1953 20.5776 19.7587 20.2291 20.1038C19.8859 20.4436 19.3333 20.4439 18.9897 20.1046L11.7162 12.9202C10.9368 12.1505 9.68331 12.1508 8.90443 12.921L1.63491 20.1097C1.29164 20.4491 0.739132 20.4491 0.395864 20.1097C0.0471249 19.7648 0.0471249 19.2015 0.395864 18.8567L7.61713 11.7157C8.40908 10.9326 8.4087 9.65336 7.6163 8.87068L0.390886 1.73397Z" fill="white"/>
+        </svg>
+      </button>
+      <div class="ai-panel-header">
+        <button class="ai-panel-back" onclick="closePanel()">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M19 12H5M12 19l-7-7 7-7"/>
+          </svg>
+        </button>
+        <div class="ai-panel-icon">
+          <svg viewBox="-5 -10 110 120">
+            <path d="m74.773 57.645c-17.676 5.8398-23.562 11.727-29.402 29.402-0.48047 1.4531-2.5352 1.4531-3.0156 0-5.8398-17.676-11.727-23.562-29.402-29.402-1.4531-0.48047-1.4531-2.5352 0-3.0156 17.676-5.8398 23.562-11.727 29.402-29.402 0.48047-1.4531 2.5352-1.4531 3.0156 0 5.8398 17.676 11.727 23.562 29.402 29.402 1.4531 0.48047 1.4531 2.5352 0 3.0156z"/>
+            <path d="m87.594 28.617c-8.8359 2.918-11.781 5.8633-14.703 14.703-0.23828 0.72656-1.2656 0.72656-1.5078 0-2.918-8.8359-5.8633-11.781-14.703-14.703-0.72656-0.23828-0.72656-1.2656 0-1.5078 8.8359-2.918 11.781-5.8633 14.703-14.703 0.23828-0.72656 1.2656-0.72656 1.5078 0 2.918 8.8359 5.8633 11.781 14.703 14.703 0.72656 0.23828 0.72656 1.2656 0 1.5078z"/>
+          </svg>
+        </div>
+        <h2 class="ai-panel-title">AI Answers</h2>
+      </div>
+      <div class="ai-panel-content">
+        <div class="ai-message-label">AI assistant</div>
+        <div class="ai-message">
+          Hi there! I can help you find answers from the SmarterQueue <a href="#">Help Center</a> or guide you to the right next step. What would you like to know today?
+        </div>
+        <div class="ai-suggestions-label">Suggestions</div>
+        <button class="ai-suggestion">How do Categories and the Posting Plan help automate my social media?</button>
+        <button class="ai-suggestion">How can Evergreen and Variations save me time while keeping posts fresh?</button>
+        <button class="ai-suggestion">How do Workspaces make it easier to manage multiple brands or clients?</button>
+        <button class="ai-suggestion">What roles and permissions can my team use to collaborate effectively?</button>
+      </div>
+      <div class="ai-panel-input">
+        <input type="text" placeholder="Ask a question...">
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- V2: Collapsible Corner Widget (expanded panel below, trigger inside bottom-actions) -->
+
+<!-- Expanded widget with recipe cards -->
+<div class="v2-expanded" id="v2Expanded">
+  <div class="v2-expanded-header">
+    <h3>Setup Guide</h3>
+    <button class="v2-expanded-close" onclick="closeV2Widget()">&times;</button>
+  </div>
+  <div class="v2-expanded-progress">
+    <div class="v2-expanded-progress-labels">
+      <div class="v2-expanded-progress-text"><span id="v2ProgressCount">0</span> of 3 done</div>
+      <div class="v2-expanded-progress-time">About 9 min left</div>
+    </div>
+    <div class="v2-expanded-bar-bg"><div class="v2-expanded-bar-fill" id="v2ProgressFill"></div></div>
+  </div>
+  <div id="v2Congrats" style="display:none"></div>
+
+  <div class="v2-expanded-cards">
+
+    <div class="recipe-card active" data-recipe="1" data-v2="1">
+      <div class="recipe-card-header" onclick="toggleCard(this.parentElement)">
+        <div class="recipe-step-num">1</div>
+        <div class="recipe-card-title">Connect your profiles</div>
+        <svg class="recipe-card-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
+      </div>
+      <div class="recipe-card-body">
+        <div class="recipe-card-desc">Stop logging into 4 different apps. Connect once, and every post goes out automatically. <span class="recipe-card-time"><i class="fa-regular fa-clock"></i> 3 min</span></div>
+        <div class="recipe-card-actions">
+          <button class="btn-recipe-mark" onclick="event.stopPropagation();markComplete(this.closest('.recipe-card'));updateV2Progress()">Mark complete</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="recipe-card" data-recipe="2" data-v2="1">
+      <div class="recipe-card-header" onclick="toggleCard(this.parentElement)">
+        <div class="recipe-step-num">2</div>
+        <div class="recipe-card-title">Schedule your first post</div>
+        <svg class="recipe-card-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
+      </div>
+      <div class="recipe-card-body">
+        <div class="recipe-card-desc">Write one post and SmarterQueue picks the perfect time. You'll see it go live — magic. <span class="recipe-card-time"><i class="fa-regular fa-clock"></i> 3 min</span></div>
+        <div class="recipe-card-actions">
+          <button class="btn-recipe-mark" onclick="event.stopPropagation();markComplete(this.closest('.recipe-card'));updateV2Progress()">Mark complete</button>
+          <a class="btn-recipe-go" href="#">Create post <span>&rsaquo;</span></a>
+        </div>
+      </div>
+    </div>
+
+    <div class="recipe-card" data-recipe="3" data-v2="1">
+      <div class="recipe-card-header" onclick="toggleCard(this.parentElement)">
+        <div class="recipe-step-num">3</div>
+        <div class="recipe-card-title">Find your best times to post</div>
+        <svg class="recipe-card-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
+      </div>
+      <div class="recipe-card-body">
+        <div class="recipe-card-desc">See when your audience is online. Right-time posts get 2&ndash;3x more engagement. <span class="recipe-card-time"><i class="fa-regular fa-clock"></i> 3 min</span></div>
+        <div class="recipe-card-actions">
+          <button class="btn-recipe-mark" onclick="event.stopPropagation();markComplete(this.closest('.recipe-card'));updateV2Progress()">Mark complete</button>
+          <a class="btn-recipe-go" href="#">Analytics <span>&rsaquo;</span></a>
+        </div>
+      </div>
+    </div>
+
+    <div class="recipes-section-divider"><span>Level up</span></div>
+
+    <div class="recipe-card recipe-card-bonus" data-recipe="4" data-v2="1">
+      <div class="recipe-card-header" onclick="toggleCard(this.parentElement)">
+        <div class="recipe-step-num recipe-step-icon"><i class="fa-solid fa-file-import" style="font-size:12px"></i></div>
+        <div class="recipe-card-title">Import your content library</div>
+        <svg class="recipe-card-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
+      </div>
+      <div class="recipe-card-body">
+        <div class="recipe-card-desc">Upload a CSV and fill your entire queue in seconds. <span class="recipe-card-time"><i class="fa-regular fa-clock"></i> 2 min</span></div>
+        <div class="recipe-card-actions">
+          <button class="btn-recipe-mark" onclick="event.stopPropagation();markComplete(this.closest('.recipe-card'))">Mark complete</button>
+          <a class="btn-recipe-go" href="#">Import <span>&rsaquo;</span></a>
+        </div>
+      </div>
+    </div>
+
+    <div class="recipe-card recipe-card-bonus" data-recipe="5" data-v2="1">
+      <div class="recipe-card-header" onclick="toggleCard(this.parentElement)">
+        <div class="recipe-step-num recipe-step-icon"><i class="fa-solid fa-recycle" style="font-size:12px"></i></div>
+        <div class="recipe-card-title">Turn on Evergreen</div>
+        <svg class="recipe-card-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
+      </div>
+      <div class="recipe-card-body">
+        <div class="recipe-card-desc">Your best posts recycle automatically. Fresh feed, zero extra work. <span class="recipe-card-time"><i class="fa-regular fa-clock"></i> 1 min</span></div>
+        <div class="recipe-card-actions">
+          <button class="btn-recipe-mark" onclick="event.stopPropagation();markComplete(this.closest('.recipe-card'))">Mark complete</button>
+          <a class="btn-recipe-go" href="#">Evergreen <span>&rsaquo;</span></a>
+        </div>
+      </div>
+    </div>
+
+    <div class="recipe-card recipe-card-bonus" data-recipe="7" data-v2="1">
+      <div class="recipe-card-header" onclick="toggleCard(this.parentElement)">
+        <div class="recipe-step-num recipe-step-icon"><i class="fa-solid fa-rss" style="font-size:12px"></i></div>
+        <div class="recipe-card-title">Auto-post from your blog</div>
+        <svg class="recipe-card-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
+      </div>
+      <div class="recipe-card-body">
+        <div class="recipe-card-desc">Connect your RSS feed and new posts go out automatically. <span class="recipe-card-time"><i class="fa-regular fa-clock"></i> 2 min</span></div>
+        <div class="recipe-card-actions">
+          <button class="btn-recipe-mark" onclick="event.stopPropagation();markComplete(this.closest('.recipe-card'))">Mark complete</button>
+          <a class="btn-recipe-go" href="#">Connect RSS <span>&rsaquo;</span></a>
+        </div>
+      </div>
+    </div>
+
+    <div class="recipe-card recipe-card-bonus" data-recipe="8" data-v2="1">
+      <div class="recipe-card-header" onclick="toggleCard(this.parentElement)">
+        <div class="recipe-step-num recipe-step-icon"><i class="fa-solid fa-layer-group" style="font-size:12px"></i></div>
+        <div class="recipe-card-title">Set up Categories</div>
+        <svg class="recipe-card-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
+      </div>
+      <div class="recipe-card-body">
+        <div class="recipe-card-desc">Organise content by type and SmarterQueue balances your mix automatically. <span class="recipe-card-time"><i class="fa-regular fa-clock"></i> 3 min</span></div>
+        <div class="recipe-card-actions">
+          <button class="btn-recipe-mark" onclick="event.stopPropagation();markComplete(this.closest('.recipe-card'))">Mark complete</button>
+          <a class="btn-recipe-go" href="#">Categories <span>&rsaquo;</span></a>
+        </div>
+      </div>
+    </div>
+
+    <div class="recipes-feature-req">
+      <div class="recipes-feature-req-title">&#x1F4A1; Shape the future of SmarterQueue</div>
+      <div class="recipes-feature-req-desc">Vote on what we build next or pitch your own idea.</div>
+      <a class="recipes-feature-req-btn" href="#">Request a feature</a>
+    </div>
+  </div>
+
+  <div class="v2-expanded-sticky">
+    <button class="btn-panel-call">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#842697" stroke-width="2"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07 19.5 19.5 0 01-6-6 19.79 19.79 0 01-3.07-8.67A2 2 0 014.11 2h3a2 2 0 012 1.72 12.84 12.84 0 00.7 2.81 2 2 0 01-.45 2.11L8.09 9.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45 12.84 12.84 0 002.81.7A2 2 0 0122 16.92z"/></svg>
+      Book your onboarding call
+    </button>
+  </div>
+</div>
+
+<!-- V4: Bottom Onboarding Bar -->
+<div class="onboarding-bar" id="onboardingBar">
+  <div class="onboarding-bar-top">
+    <div class="onboarding-bar-title">How SmarterQueue Works</div>
+    <div class="onboarding-steps">
+      <div class="onboarding-step completed">
+        <span class="step-check">&#10003;</span>
+        Categories
+      </div>
+      <div class="step-connector"></div>
+      <div class="onboarding-step active">
+        <span class="step-check">2</span>
+        Posting Plan
+      </div>
+      <div class="step-connector"></div>
+      <div class="onboarding-step">
+        <span class="step-check">3</span>
+        Queue
+      </div>
+      <div class="step-connector"></div>
+      <div class="onboarding-step">
+        <span class="step-check">4</span>
+        Post Editor
+      </div>
+    </div>
+    <div class="onboarding-bar-actions">
+      <button class="btn-bar-call">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07 19.5 19.5 0 01-6-6 19.79 19.79 0 01-3.07-8.67A2 2 0 014.11 2h3a2 2 0 012 1.72 12.84 12.84 0 00.7 2.81 2 2 0 01-.45 2.11L8.09 9.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45 12.84 12.84 0 002.81.7A2 2 0 0122 16.92z"/></svg>
+        Book your onboarding call
+      </button>
+      <button class="btn-bar-collapse" title="Collapse">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
+      </button>
+    </div>
+  </div>
+  <div class="onboarding-bar-bottom">
+    <div class="onboarding-bar-desc">Set up your Posting Plan to automatically schedule content at the best times for each profile.</div>
+    <button class="btn-bar-next">Next &rsaquo;</button>
+  </div>
+</div>
+
+<!-- ===== MOBILE ONBOARDING ===== -->
+<div class="mob-switcher" id="mobSwitcher">
+  <button class="active" data-mob="sheet">v1</button>
+  <button data-mob="float">v2</button>
+</div>
+
+<!-- Mobile v1: Bottom Sheet -->
+<div class="mob-sheet expanded mob-active" id="mobSheet" style="display:none">
+  <div class="mob-sheet-handle" onclick="toggleMobSheet()"></div>
+  <div class="mob-sheet-collapsed" onclick="toggleMobSheet()">
+    <div class="mob-sheet-c-num" id="mobSheetCNum">1</div>
+    <div class="mob-sheet-c-body">
+      <div class="mob-sheet-c-title" id="mobSheetCTitle">Connect your profiles</div>
+      <div class="mob-sheet-c-meta">Next step &middot; <span id="mobSheetCTime">3 min</span></div>
+    </div>
+    <div class="mob-sheet-c-progress">
+      <div class="mob-sheet-c-bar"><div class="mob-sheet-c-bar-fill" id="mobSheetCFill"></div></div>
+      <div class="mob-sheet-c-count" id="mobSheetCCount">0/3</div>
+    </div>
+    <div class="mob-sheet-c-expand">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 15l-6-6-6 6"/></svg>
+    </div>
+  </div>
+  <div class="mob-sheet-expand-area">
+    <div class="mob-sheet-exp-header">
+      <div class="mob-sheet-exp-done"><span id="mobSheetCount">0</span> of 3 done</div>
+      <div class="mob-sheet-exp-time" id="mobSheetTime">About 9 min left</div>
+      <button class="mob-sheet-exp-close" onclick="toggleMobSheet()">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
+      </button>
+    </div>
+    <div class="mob-sheet-bar"><div class="mob-sheet-bar-fill" id="mobSheetFill"></div></div>
+    <div class="mob-s-card active" data-mob-step="1">
+      <div class="mob-s-card-header" onclick="toggleMobCard(this.parentElement)">
+        <div class="mob-s-num">1</div>
+        <div class="mob-s-card-title">Connect your profiles</div>
+        <svg class="mob-s-card-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
+      </div>
+      <div class="mob-s-card-body"><div class="mob-s-card-inner">
+        <div class="mob-s-card-desc">Stop logging into 4 different apps. Connect once, and every post goes out automatically. <span class="mob-s-card-time"><i class="fa-regular fa-clock"></i> 3 min</span></div>
+        <div class="mob-s-actions">
+          <button class="mob-s-mark" onclick="event.stopPropagation();mobSheetComplete(this.closest('.mob-s-card'))">Mark complete</button>
+        </div>
+      </div></div>
+    </div>
+    <div class="mob-s-congrats" id="mobSheetCongrats" style="display:none">
+      <div class="mob-s-congrats-icon"><i class="fa-solid fa-rocket"></i></div>
+      <div class="mob-s-congrats-title">You're off to a great start!</div>
+      <div class="mob-s-congrats-desc">The next steps work best on desktop — bigger screen, drag &amp; drop, the works. Open SmarterQueue on your computer to keep going.</div>
+    </div>
+    <div class="mob-s-card" data-mob-step="2">
+      <div class="mob-s-card-header" onclick="toggleMobCard(this.parentElement)">
+        <div class="mob-s-num">2</div>
+        <div class="mob-s-card-title"><i class="fa-solid fa-desktop mob-s-desktop-icon"></i> Set your timeslots to post</div>
+        <svg class="mob-s-card-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
+      </div>
+      <div class="mob-s-card-body"><div class="mob-s-card-inner">
+        <div class="mob-s-card-desc">Choose the best times for each day and SmarterQueue will publish automatically. <span class="mob-s-card-time"><i class="fa-regular fa-clock"></i> 2 min</span></div>
+        <div class="mob-s-desktop-badge"><i class="fa-solid fa-desktop"></i> Best on desktop</div>
+      </div></div>
+    </div>
+    <div class="mob-s-card" data-mob-step="3">
+      <div class="mob-s-card-header" onclick="toggleMobCard(this.parentElement)">
+        <div class="mob-s-num">3</div>
+        <div class="mob-s-card-title"><i class="fa-solid fa-desktop mob-s-desktop-icon"></i> Bulk import your content</div>
+        <svg class="mob-s-card-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
+      </div>
+      <div class="mob-s-card-body"><div class="mob-s-card-inner">
+        <div class="mob-s-card-desc">Upload a CSV or connect an RSS feed to fill your queue in seconds. <span class="mob-s-card-time"><i class="fa-regular fa-clock"></i> 2 min</span></div>
+        <div class="mob-s-desktop-badge"><i class="fa-solid fa-desktop"></i> Best on desktop</div>
+      </div></div>
+    </div>
+  </div>
+</div>
+
+<!-- Mobile v2: Floating Card -->
+<div class="mob-float mob-hidden" id="mobFloat" style="display:none">
+  <div class="mob-float-inner">
+    <div class="mob-float-top">
+      <div class="mob-float-top-left">
+        <div class="mob-float-num" id="mobFloatNum">1</div>
+        <div class="mob-float-step" id="mobFloatStep">Step 1 of 3</div>
+      </div>
+      <button class="mob-float-close" onclick="closeMobFloat()">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
+      </button>
+    </div>
+    <div class="mob-float-progress"><div class="mob-float-progress-fill" id="mobFloatProgressFill"></div></div>
+    <div class="mob-float-title" id="mobFloatTitle">Connect your profiles</div>
+    <div class="mob-float-desc" id="mobFloatDesc">Connect once, and every post goes out automatically.</div>
+    <div class="mob-float-actions">
+      <button class="mob-float-mark" id="mobFloatMark" onclick="mobFloatComplete()">Mark complete</button>
+      <a class="mob-float-go" id="mobFloatGo" href="#" style="display:none">Go &rsaquo;</a>
+    </div>
+  </div>
+</div>
+<button class="mob-fab mob-hidden mob-active" id="mobFab" onclick="openMobFloat()" style="display:none">0/3</button>
+
+<!-- Prototype Switcher (hidden — v1 only) -->
+<div class="proto-switcher" style="display:none">
+  <button class="active" data-version="v4">v1</button>
+  <button data-version="v2">v2</button>
+  <button data-version="v3">v3</button>
+  <button data-version="v5">v4</button>
+</div>
+
+<script>
+// Close welcome tooltip
+document.querySelector('.btn-got-it').addEventListener('click', function() {
+  document.querySelector('.welcome-tooltip').style.display = 'none';
+});
+
+// AI Assistant panel
+var aiButton = document.getElementById('aiButton');
+var aiPanel = document.getElementById('aiPanel');
+
+function openPanel() {
+  aiButton.classList.add('hidden');
+  setTimeout(function() {
+    aiPanel.classList.add('open');
+  }, 150);
+}
+
+function closePanel() {
+  aiPanel.classList.remove('open');
+  setTimeout(function() {
+    aiButton.classList.remove('hidden');
+  }, 200);
+}
+
+// Accordion toggle
+function toggleCard(card) {
+  var wasActive = card.classList.contains('active');
+  // Close all non-completed active cards
+  document.querySelectorAll('.recipe-card.active').forEach(function(c) {
+    if (!c.classList.contains('completed') || c === card) c.classList.remove('active');
+  });
+  // Open clicked (if wasn't open)
+  if (!wasActive) card.classList.add('active');
+}
+
+// Mark complete — card collapses, next opens
+function markComplete(card) {
+  card.classList.remove('active');
+  card.classList.add('completed');
+  var num = card.querySelector('.recipe-step-num');
+  if (num && !num.getAttribute('data-num')) {
+    num.setAttribute('data-num', num.textContent);
+    num.innerHTML = '<i class="fa-solid fa-check" style="font-size:12px"></i>';
+  }
+  updateProgress();
+  // Auto-open next incomplete card
+  var next = card.nextElementSibling;
+  while (next && (!next.classList.contains('recipe-card') || next.classList.contains('completed'))) {
+    next = next.nextElementSibling;
+  }
+  if (next && next.classList.contains('recipe-card')) {
+    next.classList.add('active');
+  }
+}
+
+function updateProgress() {
+  var total = 3;
+  var panel = document.getElementById('recipesPanelScroll');
+  var done = panel.querySelectorAll('.recipe-card.completed:not(.recipe-card-bonus)').length;
+  if (done > total) done = total;
+  document.getElementById('progressCount').textContent = done;
+  document.getElementById('progressFill').style.width = ((done / total) * 100) + '%';
+  var timeEl = panel.querySelector('.progress-time-left');
+  if (timeEl) timeEl.textContent = done >= total ? 'Done!' : 'About ' + ((total - done) * 3) + ' min left';
+
+  if (done >= total && !panel.classList.contains('all-done')) {
+    panel.classList.add('all-done');
+    document.getElementById('v3Congrats').style.display = 'block';
+    // Collapse all cards
+    panel.querySelectorAll('.recipe-card.active').forEach(function(c) { c.classList.remove('active'); });
+    var header = document.querySelector('.recipes-panel-header h2');
+    if (header) header.textContent = 'Your Recipe Hub';
+    var headerP = document.querySelector('.recipes-panel-header p');
+    if (headerP) headerP.textContent = 'Setup complete! Explore bonus recipes below.';
+    fireConfetti();
+  }
+}
+
+// ===== PROTOTYPE SWITCHER =====
+function switchVersion(version) {
+  var panel = document.getElementById('recipesPanel');
+  var panelBg = document.getElementById('recipesPanelBg');
+  var panelScroll = document.getElementById('recipesPanelScroll');
+  var panelSticky = document.getElementById('recipesPanelSticky');
+  var bar = document.getElementById('onboardingBar');
+  var callBtn = document.querySelector('.btn-onboarding-call');
+
+  var v4Panel = document.getElementById('v4Panel');
+  var v4PanelBg = document.getElementById('v4PanelBg');
+  var v4PanelScroll = document.getElementById('v4PanelScroll');
+  var v4PanelSticky = document.getElementById('v4PanelSticky');
+
+  var v5Panel = document.getElementById('v5Panel');
+  var v5PanelBg = document.getElementById('v5PanelBg');
+  var v5PanelScroll = document.getElementById('v5PanelScroll');
+  var v5PanelSticky = document.getElementById('v5PanelSticky');
+
+  // Reset all
+  document.getElementById('v2Trigger').style.display = 'none';
+  document.getElementById('v4Trigger').style.display = 'none';
+  document.getElementById('v2Expanded').style.display = 'none';
+  document.getElementById('v2Expanded').classList.remove('all-done');
+  document.getElementById('v2Congrats').style.display = 'none';
+  panel.style.display = 'none';
+  panelBg.style.display = 'none';
+  panelScroll.style.display = 'none';
+  panelSticky.style.display = 'none';
+  v4Panel.style.display = 'none';
+  v4PanelBg.style.display = 'none';
+  v4PanelScroll.style.display = 'none';
+  v4PanelSticky.style.display = 'none';
+  v5Panel.style.display = 'none';
+  v5PanelBg.style.display = 'none';
+  v5PanelScroll.style.display = 'none';
+  v5PanelSticky.style.display = 'none';
+  bar.style.display = 'none';
+  callBtn.style.display = '';
+  document.body.classList.remove('has-onboarding-bar');
+  document.body.classList.remove('has-v3-panel');
+  document.body.classList.remove('has-v2-widget');
+
+  if (version === 'v1') {
+    // Default — just the page with call button + AI
+  }
+
+  if (version === 'v2') {
+    // Collapsible corner widget — start expanded
+    document.getElementById('v2Expanded').style.display = 'block';
+    callBtn.style.display = 'none';
+    document.body.classList.add('has-v2-widget');
+  }
+
+  if (version === 'v3') {
+    // Full-height right panel
+    panel.style.display = 'block';
+    panelBg.style.display = 'block';
+    panelScroll.style.display = 'block';
+    panelSticky.style.display = 'block';
+    callBtn.style.display = 'none';
+    document.body.classList.add('has-v3-panel');
+  }
+
+  if (version === 'v4') {
+    // Full-height right panel (copy of v3 for independent editing)
+    v4Panel.style.display = 'block';
+    v4PanelBg.style.display = 'block';
+    v4PanelScroll.style.display = 'block';
+    v4PanelSticky.style.display = 'block';
+    callBtn.style.display = 'none';
+    document.body.classList.add('has-v3-panel');
+    // Trigger slide-in animation
+    v4PanelBg.classList.remove('v4-entering');
+    v4PanelScroll.classList.remove('v4-entering');
+    v4PanelSticky.classList.remove('v4-entering');
+    void v4PanelBg.offsetWidth; // force reflow
+    v4PanelBg.classList.add('v4-entering');
+    v4PanelScroll.classList.add('v4-entering');
+    v4PanelSticky.classList.add('v4-entering');
+  }
+
+  if (version === 'v5') {
+    // Right panel variant — 2 mandatory + How SQ Works + Level up
+    v5Panel.style.display = 'block';
+    v5PanelBg.style.display = 'block';
+    v5PanelScroll.style.display = 'block';
+    v5PanelSticky.style.display = 'block';
+    callBtn.style.display = 'none';
+    document.body.classList.add('has-v3-panel');
+  }
+}
+
+// ===== V2 WIDGET FUNCTIONS =====
+function closeV3Panel() {
+  document.getElementById('recipesPanel').style.display = 'none';
+  document.getElementById('recipesPanelBg').style.display = 'none';
+  document.getElementById('recipesPanelScroll').style.display = 'none';
+  document.getElementById('recipesPanelSticky').style.display = 'none';
+  document.body.classList.remove('has-v3-panel');
+}
+
+function closeV4Panel() {
+  document.getElementById('v4Panel').style.display = 'none';
+  document.getElementById('v4PanelBg').style.display = 'none';
+  document.getElementById('v4PanelScroll').style.display = 'none';
+  document.getElementById('v4PanelSticky').style.display = 'none';
+  document.body.classList.remove('has-v3-panel');
+  // Show trigger pill with animation
+  var trigger = document.getElementById('v4Trigger');
+  trigger.style.display = 'flex';
+  trigger.classList.add('trigger-in');
+  trigger.addEventListener('animationend', function h() {
+    trigger.removeEventListener('animationend', h);
+    trigger.classList.remove('trigger-in');
+  });
+}
+
+function openV4Panel() {
+  var trigger = document.getElementById('v4Trigger');
+  // After completion, trigger becomes "Book your onboarding call" — do nothing
+  if (trigger.classList.contains('completed')) return;
+  trigger.style.display = 'none';
+  document.getElementById('v4Panel').style.display = 'block';
+  document.getElementById('v4PanelBg').style.display = 'block';
+  document.getElementById('v4PanelScroll').style.display = 'block';
+  document.getElementById('v4PanelSticky').style.display = 'block';
+  document.body.classList.add('has-v3-panel');
+}
+
+function switchTab(name) {
+  // Update active nav link
+  document.querySelectorAll('.topnav-link').forEach(function(l) { l.classList.remove('active'); });
+  document.querySelectorAll('.topnav-link').forEach(function(l) {
+    if (l.textContent.trim() === name) l.classList.add('active');
+  });
+  var page = document.getElementById('v4AnalyzePage');
+  var overlay = document.getElementById('v4AnalyzeOverlay');
+  overlay.style.display = 'none';
+  if (name === 'Social Profiles') {
+    page.style.display = 'none';
+  } else {
+    document.getElementById('v4PlaceholderLabel').textContent = name;
+    page.style.display = 'flex';
+  }
+}
+
+function openV4AnalyzePage() {
+  switchTab('Analyze');
+  document.getElementById('v4AnalyzeOverlay').style.display = 'flex';
+}
+
+function closeV4AnalyzePage() {
+  document.getElementById('v4AnalyzeOverlay').style.display = 'none';
+}
+
+function closeV5Panel() {
+  document.getElementById('v5Panel').style.display = 'none';
+  document.getElementById('v5PanelBg').style.display = 'none';
+  document.getElementById('v5PanelScroll').style.display = 'none';
+  document.getElementById('v5PanelSticky').style.display = 'none';
+  document.body.classList.remove('has-v3-panel');
+}
+
+function updateV4Progress() {
+  var scroll = document.getElementById('v4PanelScroll');
+  var cards = scroll.querySelectorAll('.recipe-card[data-v4]:not(.recipe-card-bonus)');
+  var done = 0;
+  var total = cards.length; // 3
+  cards.forEach(function(c) { if (c.classList.contains('completed')) done++; });
+  if (done > total) done = total;
+  var countEl = document.getElementById('v4ProgressCount');
+  var fillEl = document.getElementById('v4ProgressFill');
+  if (countEl) countEl.textContent = done;
+  if (fillEl) fillEl.style.width = ((done / total) * 100) + '%';
+  var timeEl = scroll.querySelector('.progress-time-left');
+  if (timeEl) timeEl.textContent = done >= total ? 'Done!' : 'About ' + ((total - done) * 3) + ' min left';
+  // Update trigger pill ring
+  var ringText = document.getElementById('v4RingText');
+  var ringFill = document.getElementById('v4RingFill');
+  if (ringText) ringText.textContent = done + '/' + total;
+  if (ringFill) {
+    var circumference = 2 * Math.PI * 12;
+    ringFill.style.strokeDashoffset = circumference - (done / total) * circumference;
+  }
+  // Completed state on trigger
+  var v4Trig = document.getElementById('v4Trigger');
+  if (done >= total) v4Trig.classList.add('completed');
+  else v4Trig.classList.remove('completed');
+
+  if (done >= total && !scroll.classList.contains('all-done')) {
+    scroll.classList.add('all-done');
+    scroll.querySelectorAll('.recipe-card.active').forEach(function(c) { c.classList.remove('active'); });
+    // Fade out panel simultaneously with confetti
+    var panel = document.getElementById('v4Panel');
+    var panelBg = document.getElementById('v4PanelBg');
+    var panelSticky = document.getElementById('v4PanelSticky');
+    scroll.style.transition = 'opacity 0.8s ease-out';
+    panelBg.style.transition = 'opacity 0.8s ease-out';
+    panelSticky.style.transition = 'opacity 0.8s ease-out';
+    scroll.style.opacity = '0';
+    panelBg.style.opacity = '0';
+    panelSticky.style.opacity = '0';
+    fireConfetti();
+    setTimeout(function() {
+      panel.style.display = 'none';
+      panelBg.style.display = 'none';
+      scroll.style.display = 'none';
+      panelSticky.style.display = 'none';
+      document.body.classList.remove('has-v3-panel');
+      // Show "Book your onboarding call" pill
+      var trigger = document.getElementById('v4Trigger');
+      trigger.classList.add('completed');
+      trigger.style.display = 'flex';
+      trigger.classList.add('trigger-in');
+      // Change label to "Book your onboarding call"
+      var trigLabel = trigger.querySelector('.v2-trigger-label');
+      if (trigLabel) trigLabel.textContent = 'Book your onboarding call';
+      trigger.addEventListener('animationend', function h() {
+        trigger.removeEventListener('animationend', h);
+        trigger.classList.remove('trigger-in');
+      });
+      // Reset opacity for reopening
+      scroll.style.opacity = '';
+      panelBg.style.opacity = '';
+      panelSticky.style.opacity = '';
+      scroll.style.transition = '';
+      panelBg.style.transition = '';
+      panelSticky.style.transition = '';
+    }, 850);
+  }
+}
+
+function updateV5Progress() {
+  var scroll = document.getElementById('v5PanelScroll');
+  var cards = scroll.querySelectorAll('.recipe-card[data-v5]:not(.recipe-card-bonus)');
+  var done = 0;
+  var total = cards.length; // 2
+  cards.forEach(function(c) { if (c.classList.contains('completed')) done++; });
+  var countEl = document.getElementById('v5ProgressCount');
+  var fillEl = document.getElementById('v5ProgressFill');
+  if (countEl) countEl.textContent = done;
+  if (fillEl) fillEl.style.width = ((done / total) * 100) + '%';
+  var timeEl = scroll.querySelector('.progress-time-left');
+  if (timeEl) timeEl.textContent = 'About ' + ((total - done) * 3) + ' min left';
+
+  if (done >= total) {
+    if (!scroll.classList.contains('all-done')) {
+      scroll.classList.add('all-done');
+      scroll.querySelectorAll('.recipe-card.active').forEach(function(c) { c.classList.remove('active'); });
+      var header = scroll.querySelector('.recipes-panel-header h2');
+      if (header) header.textContent = 'Your Recipe Hub';
+      var headerP = scroll.querySelector('.recipes-panel-header p');
+      if (headerP) headerP.textContent = 'Setup complete! Explore bonus recipes below.';
+      fireConfetti();
+    }
+  }
+}
+
+function openV2Widget() {
+  document.getElementById('v2Trigger').style.display = 'none';
+  var el = document.getElementById('v2Expanded');
+  el.style.display = 'block';
+  el.classList.remove('widget-closing');
+  el.classList.add('widget-opening');
+}
+function closeV2Widget() {
+  var el = document.getElementById('v2Expanded');
+  el.classList.remove('widget-opening');
+  el.classList.add('widget-closing');
+  el.addEventListener('animationend', function handler() {
+    el.removeEventListener('animationend', handler);
+    el.style.display = 'none';
+    el.classList.remove('widget-closing');
+    var trigger = document.getElementById('v2Trigger');
+    trigger.style.display = 'flex';
+    trigger.classList.add('trigger-in');
+    trigger.addEventListener('animationend', function h2() {
+      trigger.removeEventListener('animationend', h2);
+      trigger.classList.remove('trigger-in');
+    });
+  });
+}
+function closeV2() {
+  // not used anymore — kept for compat
+}
+function fireConfetti() {
+  var canvas = document.createElement('canvas');
+  canvas.className = 'confetti-canvas';
+  canvas.width = window.innerWidth;
+  canvas.height = window.innerHeight;
+  document.body.appendChild(canvas);
+  var ctx = canvas.getContext('2d');
+  var colors = ['#AE39C6','#d06ce8','#4075bf','#f0c040','#22a85b','#ff6b6b','#ff9f43','#54a0ff','#fff'];
+  var pieces = [];
+  // Two burst origins — left-center and right-center
+  var origins = [
+    { x: canvas.width * 0.3, y: canvas.height * 0.4 },
+    { x: canvas.width * 0.7, y: canvas.height * 0.4 }
+  ];
+  for (var i = 0; i < 120; i++) {
+    var o = origins[i % 2];
+    var angle = (Math.random() * Math.PI * 2);
+    var speed = 4 + Math.random() * 8;
+    pieces.push({
+      x: o.x, y: o.y,
+      vx: Math.cos(angle) * speed * (0.6 + Math.random()),
+      vy: Math.sin(angle) * speed * (0.6 + Math.random()) - 3,
+      w: 4 + Math.random() * 6,
+      h: 6 + Math.random() * 10,
+      color: colors[Math.floor(Math.random() * colors.length)],
+      rotation: Math.random() * 360,
+      rotSpeed: (Math.random() - 0.5) * 12,
+      gravity: 0.12 + Math.random() * 0.08,
+      opacity: 1,
+      decay: 0.008 + Math.random() * 0.006
+    });
+  }
+  function draw() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    var alive = false;
+    for (var i = 0; i < pieces.length; i++) {
+      var p = pieces[i];
+      if (p.opacity <= 0) continue;
+      alive = true;
+      p.x += p.vx;
+      p.y += p.vy;
+      p.vy += p.gravity;
+      p.vx *= 0.99;
+      p.rotation += p.rotSpeed;
+      p.opacity -= p.decay;
+      ctx.save();
+      ctx.translate(p.x, p.y);
+      ctx.rotate(p.rotation * Math.PI / 180);
+      ctx.globalAlpha = Math.max(0, p.opacity);
+      ctx.fillStyle = p.color;
+      ctx.fillRect(-p.w / 2, -p.h / 2, p.w, p.h);
+      ctx.restore();
+    }
+    if (alive) requestAnimationFrame(draw);
+    else canvas.remove();
+  }
+  requestAnimationFrame(draw);
+}
+function updateV2Progress() {
+  var total = 3;
+  var done = document.querySelectorAll('#v2Expanded .recipe-card.completed:not(.recipe-card-bonus)').length;
+  if (done > total) done = total;
+  // Update expanded progress
+  var countEl = document.getElementById('v2ProgressCount');
+  var fillEl = document.getElementById('v2ProgressFill');
+  if (countEl) countEl.textContent = done;
+  if (fillEl) fillEl.style.width = ((done / total) * 100) + '%';
+  var timeEl = document.querySelector('#v2Expanded .v2-expanded-progress-time');
+  if (timeEl) timeEl.textContent = done >= total ? 'Done!' : 'About ' + ((total - done) * 3) + ' min left';
+  // Update trigger pill
+  var ringText = document.getElementById('v2RingText');
+  var ringFill = document.getElementById('v2RingFill');
+  var trigSub = document.querySelector('.v2-trigger-sub');
+  if (ringText) ringText.textContent = done + '/3';
+  if (ringFill) {
+    var circumference = 2 * Math.PI * 12; // r=12
+    ringFill.style.strokeDashoffset = circumference - (done / total) * circumference;
+  }
+
+  // All done — confetti, rename, auto-collapse to pill
+  if (done >= total) {
+    var expanded = document.getElementById('v2Expanded');
+    if (!expanded.classList.contains('all-done')) {
+      expanded.classList.add('all-done');
+      // Collapse all cards
+      expanded.querySelectorAll('.recipe-card.active').forEach(function(c) { c.classList.remove('active'); });
+      var v2Header = expanded.querySelector('.v2-expanded-header h3');
+      if (v2Header) v2Header.textContent = 'Your Recipe Hub';
+      var trigger = document.getElementById('v2Trigger');
+      if (trigger) trigger.classList.add('completed');
+      var trigLabel = document.querySelector('.v2-trigger-label');
+      if (trigLabel) trigLabel.textContent = 'Your Recipe Hub';
+      fireConfetti();
+    }
+  }
+}
+
+document.querySelectorAll('.proto-switcher button').forEach(function(btn) {
+  btn.addEventListener('click', function() {
+    document.querySelectorAll('.proto-switcher button').forEach(function(b) { b.classList.remove('active'); });
+    btn.classList.add('active');
+    switchVersion(btn.dataset.version);
+  });
+});
+
+// ===== KYC FLOW =====
+var selectedPersona = null;
+var selectedGoal = null;
+var kycTransitioning = false;
+
+function selectPersona(el) {
+  document.querySelectorAll('#kycStep1 .kyc-option').forEach(function(o) { o.classList.remove('selected'); });
+  el.classList.add('selected');
+  selectedPersona = el.dataset.persona;
+  setTimeout(function() { goToStep(2); }, 400);
+}
+
+function goToStep(step) {
+  if (kycTransitioning) return;
+  kycTransitioning = true;
+  var current = document.querySelector('.kyc-step.active');
+  var target = step === 1 ? document.getElementById('kycStep1') : document.getElementById('kycStep2');
+  if (current === target) { kycTransitioning = false; return; }
+  current.classList.add('slide-out');
+  setTimeout(function() {
+    current.classList.remove('active', 'slide-out');
+    target.classList.add('active');
+    if (step === 2) {
+      document.getElementById('kycPersonaLabel').textContent = selectedPersona || '';
+      updateContinueBtn();
+    }
+    kycTransitioning = false;
+  }, 250);
+}
+
+function selectGoal(el) {
+  document.querySelectorAll('#kycStep2 .kyc-goal').forEach(function(g) { g.classList.remove('selected'); });
+  el.classList.add('selected');
+  selectedGoal = true;
+  updateContinueBtn();
+}
+
+function updateContinueBtn() {
+  var btn = document.getElementById('kycContinueBtn');
+  if (selectedGoal) btn.classList.add('enabled');
+  else btn.classList.remove('enabled');
+}
+
+function finishKyc() {
+  if (!selectedGoal) return;
+  var overlay = document.getElementById('kycOverlay');
+  overlay.classList.add('hidden');
+  setTimeout(function() { overlay.style.display = 'none'; }, 500);
+  if (window.innerWidth < 768) {
+    initMobileOnboarding();
+  } else {
+    switchVersion('v4');
+  }
+}
+
+// ===== MOBILE ONBOARDING =====
+var mobSteps = [
+  { title: 'Connect your profiles', desc: 'Stop logging into 4 different apps. Connect once, and every post goes out automatically.', go: null },
+  { title: 'Set your timeslots to post', desc: 'Choose the best times for each day and SmarterQueue will publish automatically.', go: 'Posting Plan' },
+  { title: 'Bulk import your content', desc: 'Upload a CSV or connect an RSS feed to fill your queue in seconds.', go: 'Import' }
+];
+var mobDone = 0;
+var mobCurrentFloat = 0;
+var mobActiveVariant = 'float';
+
+function initMobileOnboarding() {
+  document.body.classList.add('mob-onboarding');
+  if (mobActiveVariant === 'sheet') {
+    var sh = document.getElementById('mobSheet');
+    sh.style.display = 'block';
+    sh.classList.add('slide-in');
+    sh.addEventListener('animationend', function h() { sh.removeEventListener('animationend', h); sh.classList.remove('slide-in'); });
+    document.getElementById('mobFloat').style.display = 'none';
+    document.getElementById('mobFab').style.display = 'none';
+  } else {
+    document.getElementById('mobSheet').style.display = 'none';
+    document.getElementById('mobFloat').style.display = 'block';
+    document.getElementById('mobFloat').classList.remove('mob-hidden');
+    document.getElementById('mobFab').style.display = 'none';
+    renderMobFloat();
+  }
+}
+
+document.querySelectorAll('.mob-switcher button').forEach(function(btn) {
+  btn.addEventListener('click', function() {
+    document.querySelectorAll('.mob-switcher button').forEach(function(b) { b.classList.remove('active'); });
+    btn.classList.add('active');
+    mobActiveVariant = btn.dataset.mob;
+    document.getElementById('mobSheet').style.display = 'none';
+    document.getElementById('mobFloat').style.display = 'none';
+    document.getElementById('mobFab').style.display = 'none';
+    if (mobActiveVariant === 'sheet') {
+      document.getElementById('mobSheet').style.display = 'block';
+    } else {
+      document.getElementById('mobFloat').style.display = 'block';
+      document.getElementById('mobFloat').classList.remove('mob-hidden');
+      renderMobFloat();
+    }
+  });
+});
+
+// v1: Bottom Sheet
+function toggleMobSheet() {
+  var sheet = document.getElementById('mobSheet');
+  if (sheet.classList.contains('collapsed')) {
+    sheet.classList.remove('collapsed');
+    sheet.classList.add('expanded');
+  } else {
+    sheet.classList.remove('expanded');
+    sheet.classList.add('collapsed');
+  }
+}
+
+function toggleMobCard(card) {
+  var wasActive = card.classList.contains('active');
+  var hadOtherOpen = document.querySelector('.mob-s-card.active') && !wasActive;
+  document.querySelectorAll('.mob-s-card.active').forEach(function(c) { c.classList.remove('active'); });
+  if (!wasActive) {
+    if (hadOtherOpen) {
+      setTimeout(function() { card.classList.add('active'); }, 150);
+    } else {
+      card.classList.add('active');
+    }
+  }
+}
+
+function mobSheetComplete(card) {
+  card.classList.remove('active');
+  card.classList.add('completed');
+  var num = card.querySelector('.mob-s-num');
+  num.innerHTML = '<i class="fa-solid fa-check" style="font-size:10px"></i>';
+  mobDone++;
+  updateMobSheetProgress();
+  // Show congrats after step 1
+  if (card.getAttribute('data-mob-step') === '1') {
+    document.getElementById('mobSheetCongrats').style.display = 'block';
+  }
+  var next = card.nextElementSibling;
+  while (next && (!next.classList.contains('mob-s-card') || next.classList.contains('completed'))) {
+    next = next.nextElementSibling;
+  }
+  if (next && next.classList.contains('mob-s-card')) {
+    setTimeout(function() { next.classList.add('active'); }, 200);
+  }
+  if (mobDone >= 3) {
+    document.getElementById('mobSheet').classList.add('all-done');
+    fireConfetti();
+  }
+}
+
+function updateMobSheetProgress() {
+  var pct = ((mobDone / 3) * 100) + '%';
+  document.getElementById('mobSheetCount').textContent = mobDone;
+  document.getElementById('mobSheetFill').style.width = pct;
+  var timeEl = document.getElementById('mobSheetTime');
+  timeEl.textContent = mobDone >= 3 ? 'Done!' : 'About ' + ((3 - mobDone) * 3) + ' min left';
+  document.getElementById('mobSheetCFill').style.width = pct;
+  document.getElementById('mobSheetCCount').textContent = mobDone + '/3';
+  updateMobSheetCollapsed();
+}
+
+function updateMobSheetCollapsed() {
+  var nextCard = document.querySelector('.mob-s-card:not(.completed)');
+  if (nextCard) {
+    var step = nextCard.getAttribute('data-mob-step');
+    document.getElementById('mobSheetCNum').textContent = step;
+    document.getElementById('mobSheetCTitle').textContent = nextCard.querySelector('.mob-s-card-title').textContent;
+  } else {
+    document.getElementById('mobSheetCNum').innerHTML = '<i class="fa-solid fa-check" style="font-size:11px"></i>';
+    document.getElementById('mobSheetCNum').style.background = '#22a85b';
+    document.getElementById('mobSheetCTitle').textContent = 'All done!';
+    document.querySelector('.mob-sheet-c-meta').textContent = 'Setup complete';
+  }
+}
+
+// v2: Floating Card
+function renderMobFloat() {
+  while (mobCurrentFloat < 3 && document.querySelectorAll('.mob-s-card.completed[data-mob-step="' + (mobCurrentFloat + 1) + '"]').length > 0) {
+    mobCurrentFloat++;
+  }
+  var progressFill = document.getElementById('mobFloatProgressFill');
+  progressFill.style.width = ((mobDone / 3) * 100) + '%';
+  // After step 1 — show congrats, nudge to desktop
+  if (mobDone >= 1 && mobCurrentFloat >= 1) {
+    document.getElementById('mobFloatNum').innerHTML = '<i class="fa-solid fa-rocket" style="font-size:10px"></i>';
+    document.getElementById('mobFloatStep').textContent = '1 of 3 done';
+    document.getElementById('mobFloatTitle').textContent = "You're off to a great start!";
+    document.getElementById('mobFloatDesc').textContent = 'The next steps work best on desktop — bigger screen, drag & drop, the works. Open SmarterQueue on your computer to keep going.';
+    document.getElementById('mobFloatMark').style.display = 'none';
+    document.getElementById('mobFloatGo').style.display = 'none';
+    return;
+  }
+  var step = mobSteps[mobCurrentFloat];
+  document.getElementById('mobFloatTitle').textContent = step.title;
+  document.getElementById('mobFloatDesc').textContent = step.desc;
+  document.getElementById('mobFloatNum').textContent = mobCurrentFloat + 1;
+  document.getElementById('mobFloatStep').textContent = 'Step ' + (mobCurrentFloat + 1) + ' of 3';
+  document.getElementById('mobFloatMark').style.display = '';
+  var goLink = document.getElementById('mobFloatGo');
+  if (step.go) { goLink.style.display = ''; goLink.textContent = step.go + ' ›'; }
+  else { goLink.style.display = 'none'; }
+}
+
+function mobFloatComplete() {
+  mobDone++;
+  mobCurrentFloat++;
+  updateMobSheetProgress();
+  var sheetCard = document.querySelector('.mob-s-card[data-mob-step="' + mobCurrentFloat + '"]');
+  if (sheetCard && !sheetCard.classList.contains('completed')) {
+    sheetCard.classList.add('completed');
+    sheetCard.classList.remove('active');
+    var num = sheetCard.querySelector('.mob-s-num');
+    if (num) num.innerHTML = '<i class="fa-solid fa-check" style="font-size:10px"></i>';
+  }
+  renderMobFloat();
+}
+
+function closeMobFloat() {
+  document.getElementById('mobFloat').classList.add('mob-hidden');
+  document.getElementById('mobFab').style.display = 'flex';
+  document.getElementById('mobFab').classList.remove('mob-hidden');
+  document.getElementById('mobFab').textContent = mobDone + '/3';
+}
+
+function openMobFloat() {
+  document.getElementById('mobFab').classList.add('mob-hidden');
+  setTimeout(function() {
+    document.getElementById('mobFab').style.display = 'none';
+    document.getElementById('mobFloat').style.display = 'block';
+    void document.getElementById('mobFloat').offsetWidth;
+    document.getElementById('mobFloat').classList.remove('mob-hidden');
+    renderMobFloat();
+  }, 250);
+}
+
+// Auto-init: KYC hidden, show onboarding directly
+var currentMode = null;
+function applyMode() {
+  var isMobile = window.innerWidth < 768;
+  var newMode = isMobile ? 'mobile' : 'desktop';
+  if (newMode === currentMode) return;
+  currentMode = newMode;
+  if (isMobile) {
+    switchVersion('v1'); // resets all desktop panels
+    initMobileOnboarding();
+  } else {
+    // Hide mobile, show desktop
+    document.body.classList.remove('mob-onboarding');
+    document.getElementById('mobSheet').style.display = 'none';
+    document.getElementById('mobFloat').style.display = 'none';
+    document.getElementById('mobFab').style.display = 'none';
+    switchVersion('v4');
+  }
+}
+applyMode();
+window.addEventListener('resize', applyMode);
+
+// Confetti from v3 redirect
+if (window.location.search.indexOf('confetti=1') !== -1) {
+  setTimeout(fireConfetti, 600);
+  history.replaceState(null, '', window.location.pathname);
+}
+</script>
+
+</body>
+</html>
