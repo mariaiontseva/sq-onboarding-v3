@@ -1115,7 +1115,7 @@ body {
   background: none;
   border: 1.5px solid #dcc0e8;
   border-radius: 6px;
-  padding: 4px 10px;
+  padding: 5px 12px;
   cursor: pointer;
   font-family: inherit;
   white-space: nowrap;
@@ -1123,16 +1123,32 @@ body {
 .btn-recipe-mark:hover { background: #faf5fd; border-color: #c9a3d4; }
 
 .btn-recipe-go {
-  font-size: 13px;
-  font-weight: 700;
+  font-size: 12px;
+  font-weight: 600;
   color: #AE39C6;
+  background: #f5ecfa;
+  border: 1.5px solid #ecdaf3;
+  border-radius: 6px;
+  padding: 5px 12px;
   text-decoration: none;
   display: inline-flex;
   align-items: center;
-  gap: 3px;
+  gap: 6px;
   white-space: nowrap;
+  font-family: inherit;
+  cursor: pointer;
 }
-.btn-recipe-go span { font-size: 15px; }
+.btn-recipe-go:hover { background: #ecdaf3; border-color: #dcc0e8; }
+.btn-recipe-go span { display: none; }
+.btn-recipe-go::after {
+  content: '';
+  display: inline-block;
+  width: 5px; height: 5px;
+  border-top: 1.5px solid currentColor;
+  border-right: 1.5px solid currentColor;
+  transform: rotate(45deg);
+  margin-left: 1px;
+}
 
 /* Completed state — collapsed by default, toggleable */
 .recipe-card.completed {
@@ -1459,14 +1475,17 @@ body {
   font-size: 12px;
 }
 #v4PanelScroll .btn-recipe-mark {
-  font-size: 13px;
-  padding: 5px 12px;
+  font-size: 12.5px;
+  padding: 5px 10px;
 }
 #v4PanelScroll .btn-recipe-go {
-  font-size: 14px;
+  font-size: 12.5px;
+  padding: 5px 10px;
+  gap: 5px;
 }
-#v4PanelScroll .btn-recipe-go span {
-  font-size: 16px;
+#v4PanelScroll .btn-recipe-go::after {
+  width: 6px; height: 6px;
+  border-width: 1.5px;
 }
 #v4PanelScroll .recipes-section-divider span {
   font-size: 11px;
@@ -2523,7 +2542,7 @@ body.has-onboarding-bar .recipes-widget { bottom: 216px; }
     display: flex; align-items: center; justify-content: space-between; gap: 10px;
   }
   .mob-float-mark {
-    padding: 8px 20px; background: none; color: #AE39C6;
+    padding: 8px 16px; background: none; color: #AE39C6;
     border: 1.5px solid #dcc0e8; border-radius: 8px;
     font-family: inherit; font-size: 14px; font-weight: 600; cursor: pointer;
   }
@@ -2550,7 +2569,25 @@ body.has-onboarding-bar .recipes-widget { bottom: 216px; }
   .mob-float:not(.mob-has-go) .mob-float-call {
     width: auto; flex: 0 0 auto; margin-left: auto;
   }
-  .mob-float-go { font-size: 14px; color: #AE39C6; font-weight: 600; text-decoration: none; }
+  .mob-float-go {
+    display: inline-flex; align-items: center; gap: 6px;
+    padding: 8px 16px;
+    background: #f5ecfa; color: #AE39C6;
+    border: 1.5px solid #ecdaf3; border-radius: 8px;
+    font-family: inherit; font-size: 14px; font-weight: 600;
+    text-decoration: none;
+  }
+  .mob-float-go:hover { background: #ecdaf3; border-color: #dcc0e8; }
+  .mob-float-go::after {
+    content: '';
+    display: inline-block;
+    width: 7px; height: 7px;
+    border-top: 2px solid currentColor;
+    border-right: 2px solid currentColor;
+    transform: rotate(45deg);
+    margin-left: 2px;
+    margin-top: -1px;
+  }
   /* FAB */
   /* Hide default bottom actions when v2 FAB is active */
   body.mob-onboarding .bottom-actions .btn-onboarding-call { display: none; }
@@ -4589,7 +4626,7 @@ function renderMobFloat() {
   document.getElementById('mobFloatStep').textContent = 'Step ' + (mobCurrentFloat + 1) + ' of 3';
   document.getElementById('mobFloatMark').style.display = '';
   var goLink = document.getElementById('mobFloatGo');
-  if (step.go) { goLink.style.display = ''; goLink.textContent = step.go + ' ›'; }
+  if (step.go) { goLink.style.display = ''; goLink.textContent = step.go; }
   else { goLink.style.display = 'none'; }
   floatEl.classList.toggle('mob-has-go', !!step.go);
 }
