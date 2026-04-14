@@ -398,6 +398,8 @@ body {
   border-radius: 10px;
   cursor: pointer;
   transition: background 0.2s, border-color 0.2s;
+  white-space: nowrap;
+  flex-shrink: 0;
 }
 .btn-back:hover { background: hsl(215, 50%, 97%); border-color: hsl(215, 50%, 42%); }
 .btn-back.hidden { visibility: hidden; }
@@ -434,9 +436,18 @@ body {
   font-weight: 600;
   cursor: pointer;
   transition: opacity 0.2s, background 0.2s;
+  white-space: nowrap;
+  flex-shrink: 0;
 }
 .btn-continue:disabled { opacity: 0.45; cursor: not-allowed; }
 .btn-continue:not(:disabled):hover { background: hsl(215, 50%, 42%); }
+
+/* narrow screens: swap long labels for shorter ones */
+.btn-back .short { display: none; }
+@media (max-width: 480px) {
+  .btn-back .full { display: none; }
+  .btn-back .short { display: inline; }
+}
 
 /* ===== CONFETTI ===== */
 .confetti-canvas {
@@ -664,7 +675,7 @@ body {
 
   <!-- Action Bar -->
   <div class="action-bar">
-    <button class="btn-back hidden" id="btnBack" onclick="goBack()">Go Back</button>
+    <button class="btn-back hidden" id="btnBack" onclick="goBack()"><span class="full">Go Back</span><span class="short">Back</span></button>
     <div class="action-dots" id="actionDots">
       <div class="dot active"></div>
       <div class="dot"></div>
@@ -741,7 +752,7 @@ function updateUI() {
   // Continue button
   var btn = document.getElementById('btnNext');
   if (currentStep === 3) {
-    btn.textContent = "Let's get started";
+    btn.textContent = window.matchMedia('(max-width: 480px)').matches ? 'Get started' : "Let's get started";
     btn.disabled = false;
   } else {
     btn.textContent = 'Continue';
@@ -750,6 +761,14 @@ function updateUI() {
     if (currentStep === 2 && selectedGoal) btn.disabled = false;
   }
 }
+
+// Update Continue button label on resize so mobile gets the short variant
+window.addEventListener('resize', function() {
+  if (currentStep === 3) {
+    document.getElementById('btnNext').textContent =
+      window.matchMedia('(max-width: 480px)').matches ? 'Get started' : "Let's get started";
+  }
+});
 
 // Show action-bar shadow only when content actually scrolls under it
 function updateActionBarShadow() {

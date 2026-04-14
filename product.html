@@ -2539,6 +2539,9 @@ body.has-onboarding-bar .recipes-widget { bottom: 216px; }
   }
   .mob-float-call:hover { background: #ecdaf3; }
   .mob-float-call i { font-size: 13px; }
+  .mob-float-call .call-short { display: none; }
+  .mob-float:not(.mob-has-go) .mob-float-call .call-long { display: none; }
+  .mob-float:not(.mob-has-go) .mob-float-call .call-short { display: inline; }
   /* step 1 (no go-link): inline side-by-side, call sticks to the right */
   .mob-float:not(.mob-has-go) .mob-float-actions-wrap {
     flex-direction: row; align-items: center; justify-content: space-between;
@@ -3838,7 +3841,7 @@ body.has-onboarding-bar .recipes-widget { bottom: 216px; }
         <button class="mob-float-mark" id="mobFloatMark" onclick="mobFloatComplete()">Mark complete</button>
         <a class="mob-float-go" id="mobFloatGo" href="#" style="display:none">Go &rsaquo;</a>
       </div>
-      <a class="mob-float-call" href="#" onclick="event.preventDefault()"><i class="fa-solid fa-phone"></i>Book your onboarding call</a>
+      <a class="mob-float-call" href="#" onclick="event.preventDefault()"><i class="fa-solid fa-phone"></i><span class="call-long">Book your onboarding call</span><span class="call-short">Book a call</span></a>
     </div>
   </div>
 
