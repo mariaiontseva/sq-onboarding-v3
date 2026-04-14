@@ -2388,7 +2388,96 @@ body.has-onboarding-bar .recipes-widget { bottom: 216px; }
     background: #fff; border-radius: 16px;
     border-top: 3px solid #AE39C6;
     box-shadow: 0 4px 24px rgba(7,38,83,0.15);
-    overflow: hidden; transition: opacity 0.25s, transform 0.25s;
+    overflow: hidden; transition: opacity 0.25s, transform 0.25s, max-height 0.3s;
+    max-height: calc(100vh - 32px);
+  }
+  .mob-float.mob-expanded { max-height: 88vh; overflow-y: auto; -webkit-overflow-scrolling: touch; }
+
+  /* expanded "switch to desktop" mode */
+  .mob-float-expanded {
+    padding: 14px 16px 16px;
+    animation: mfe-shell 0.5s cubic-bezier(0.16, 1, 0.3, 1) both;
+  }
+  @keyframes mfe-shell {
+    from { opacity: 0; transform: translateY(6px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+  .mob-float-expanded > * {
+    opacity: 0;
+    animation: mfe-rise 0.55s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  }
+  .mob-float-expanded > *:nth-child(1) { animation-delay: 0.10s; }
+  .mob-float-expanded > *:nth-child(2) { animation-delay: 0.18s; }
+  .mob-float-expanded > *:nth-child(3) { animation-delay: 0.26s; }
+  .mob-float-expanded > *:nth-child(4) { animation-delay: 0.34s; }
+  .mob-float-expanded > *:nth-child(5) { animation-delay: 0.42s; }
+  .mob-float-expanded > *:nth-child(6) { animation-delay: 0.50s; }
+  @keyframes mfe-rise {
+    from { opacity: 0; transform: translateY(10px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+  .mob-float.mob-expanded {
+    transition: max-height 0.45s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+  .mfe-header {
+    display: flex; justify-content: space-between; align-items: center;
+    margin-bottom: 10px;
+  }
+  .mfe-eyebrow {
+    display: inline-flex; align-items: center; gap: 6px;
+    font-size: 12px; font-weight: 700; color: #1d8a4f;
+    background: #e6f7ee; padding: 4px 10px; border-radius: 999px;
+  }
+  .mfe-eyebrow i { font-size: 11px; }
+  .mfe-dismiss {
+    display: inline-flex; align-items: center; justify-content: center;
+    width: 32px; height: 32px;
+    background: none; border: none; cursor: pointer;
+    color: #94a3b8; border-radius: 8px;
+    transition: background 0.15s, color 0.15s;
+  }
+  .mfe-dismiss:hover { color: #072653; background: #f0f4f9; }
+  .mfe-title {
+    font-size: 19px; font-weight: 800; color: #072653;
+    line-height: 1.2; letter-spacing: -0.4px; margin-bottom: 6px;
+  }
+  .mfe-rocket { display: inline-block; }
+  .mfe-sub {
+    font-size: 13.5px; color: #6a7d99; line-height: 1.5;
+    margin-bottom: 14px;
+  }
+  .mfe-video {
+    margin-bottom: 14px;
+    border-radius: 12px;
+    aspect-ratio: 16 / 9;
+  }
+  .mfe-video .v4-video-thumb { border-radius: 12px; }
+  .mfe-incentive {
+    display: flex; align-items: flex-start; gap: 9px;
+    padding: 10px 12px; margin-bottom: 14px;
+    background: hsl(282, 60%, 96.5%); border: 1px solid hsl(282, 40%, 89%);
+    border-radius: 10px;
+    font-size: 12.5px; color: #5a1a6b; line-height: 1.4;
+  }
+  .mfe-incentive i { color: #AE39C6; font-size: 13px; margin-top: 1px; flex-shrink: 0; }
+  .mfe-incentive strong { color: #AE39C6; font-weight: 800; }
+  .mfe-actions {
+    display: flex; flex-direction: column; gap: 8px;
+  }
+  .mfe-call {
+    display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+    height: 44px; padding: 0 18px;
+    background: #AE39C6; color: #fff;
+    border: none; border-radius: 10px;
+    font-family: inherit; font-size: 15px; font-weight: 700;
+    text-decoration: none;
+    box-shadow: 0 4px 12px rgba(174, 57, 198, 0.3);
+  }
+  .mfe-call i { font-size: 13px; }
+  .mfe-continue {
+    height: 40px; background: none; border: none; cursor: pointer;
+    color: #6a7d99; font-family: inherit; font-size: 13.5px; font-weight: 500;
+    text-decoration: underline; text-underline-offset: 3px;
   }
   body.mob-onboarding .mob-float.mob-active { display: block; }
   .mob-float.mob-hidden { opacity: 0; transform: translateY(20px); pointer-events: none; }
@@ -2428,7 +2517,11 @@ body.has-onboarding-bar .recipes-widget { bottom: 216px; }
   }
   .mob-float-title { font-size: 16px; font-weight: 700; color: #072653; margin-bottom: 4px; }
   .mob-float-desc { font-size: 14px; color: #6b7c8f; line-height: 1.5; margin-bottom: 14px; }
-  .mob-float-actions { display: flex; align-items: center; gap: 10px; }
+  /* default (step 2/3 with go-link): two stacked rows */
+  .mob-float-actions-wrap { display: flex; flex-direction: column; gap: 10px; }
+  .mob-float-actions {
+    display: flex; align-items: center; justify-content: space-between; gap: 10px;
+  }
   .mob-float-mark {
     padding: 8px 20px; background: none; color: #AE39C6;
     border: 1.5px solid #dcc0e8; border-radius: 8px;
@@ -2436,9 +2529,9 @@ body.has-onboarding-bar .recipes-widget { bottom: 216px; }
   }
   .mob-float-mark:hover { background: #faf5fd; }
   .mob-float-call {
-    margin-left: auto;
-    display: inline-flex; align-items: center; gap: 8px;
-    padding: 8px 16px;
+    display: flex; align-items: center; justify-content: center; gap: 8px;
+    width: 100%;
+    padding: 9px 16px;
     background: #f5ecfa; color: #AE39C6;
     border: 1.5px solid #ecdaf3; border-radius: 8px;
     font-family: inherit; font-size: 14px; font-weight: 600; cursor: pointer;
@@ -2446,6 +2539,14 @@ body.has-onboarding-bar .recipes-widget { bottom: 216px; }
   }
   .mob-float-call:hover { background: #ecdaf3; }
   .mob-float-call i { font-size: 13px; }
+  /* step 1 (no go-link): inline side-by-side, call sticks to the right */
+  .mob-float:not(.mob-has-go) .mob-float-actions-wrap {
+    flex-direction: row; align-items: center; justify-content: space-between;
+  }
+  .mob-float:not(.mob-has-go) .mob-float-actions { flex: 0 0 auto; }
+  .mob-float:not(.mob-has-go) .mob-float-call {
+    width: auto; flex: 0 0 auto; margin-left: auto;
+  }
   .mob-float-go { font-size: 14px; color: #AE39C6; font-weight: 600; text-decoration: none; }
   /* FAB */
   /* Hide default bottom actions when v2 FAB is active */
@@ -3714,7 +3815,8 @@ body.has-onboarding-bar .recipes-widget { bottom: 216px; }
 
 <!-- Mobile v2: Floating Card -->
 <div class="mob-float mob-hidden" id="mobFloat" style="display:none">
-  <div class="mob-float-inner">
+  <!-- Compact mode (default per-step) -->
+  <div class="mob-float-inner mob-float-compact" id="mobFloatCompact">
     <div class="mob-float-top">
       <div class="mob-float-top-left">
         <div class="mob-float-num" id="mobFloatNum">1</div>
@@ -3731,10 +3833,42 @@ body.has-onboarding-bar .recipes-widget { bottom: 216px; }
     <div class="mob-float-reward">Finish today to unlock <strong>50% off your first month</strong></div>
     <div class="mob-float-title" id="mobFloatTitle">Connect your profiles</div>
     <div class="mob-float-desc" id="mobFloatDesc">Connect once, and every post goes out automatically.</div>
-    <div class="mob-float-actions">
-      <button class="mob-float-mark" id="mobFloatMark" onclick="mobFloatComplete()">Mark complete</button>
+    <div class="mob-float-actions-wrap">
+      <div class="mob-float-actions">
+        <button class="mob-float-mark" id="mobFloatMark" onclick="mobFloatComplete()">Mark complete</button>
+        <a class="mob-float-go" id="mobFloatGo" href="#" style="display:none">Go &rsaquo;</a>
+      </div>
       <a class="mob-float-call" href="#" onclick="event.preventDefault()"><i class="fa-solid fa-phone"></i>Book your onboarding call</a>
-      <a class="mob-float-go" id="mobFloatGo" href="#" style="display:none">Go &rsaquo;</a>
+    </div>
+  </div>
+
+  <!-- Expanded mode after step 1: switch-to-desktop nudge -->
+  <div class="mob-float-inner mob-float-expanded" id="mobFloatExpanded" style="display:none">
+    <div class="mfe-header">
+      <div class="mfe-eyebrow"><i class="fa-solid fa-circle-check"></i> Step 1 complete</div>
+      <button class="mfe-dismiss" onclick="dismissMobExpanded()" aria-label="Dismiss">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg>
+      </button>
+    </div>
+    <h3 class="mfe-title">You're off to a great start <span class="mfe-rocket">🚀</span></h3>
+    <p class="mfe-sub">The next steps work best on a bigger screen — drag &amp; drop, multi-account dashboards, the full editor.</p>
+
+    <div class="mfe-video v4-video-placeholder" onclick="this.classList.toggle('playing')">
+      <div class="v4-video-thumb">
+        <div class="v4-video-gradient"></div>
+        <div class="v4-video-play">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="#fff"><path d="M8 5v14l11-7z"/></svg>
+        </div>
+        <div class="v4-video-title">How SmarterQueue works</div>
+        <div class="v4-video-duration">2:34</div>
+      </div>
+    </div>
+
+    <div class="mfe-incentive"><i class="fa-solid fa-gift"></i> Finish on desktop today to lock in <strong>50% off your first month</strong></div>
+
+    <div class="mfe-actions">
+      <a class="mfe-call" href="#" onclick="event.preventDefault()"><i class="fa-solid fa-phone"></i> Book your onboarding call</a>
+      <button class="mfe-continue" onclick="dismissMobExpanded()">Continue on mobile</button>
     </div>
   </div>
 </div>
@@ -4403,22 +4537,48 @@ function updateMobSheetCollapsed() {
 }
 
 // v2: Floating Card
+var mobExpandedDismissed = false;
+
+function dismissMobExpanded() {
+  mobExpandedDismissed = true;
+  renderMobFloat();
+}
+
 function renderMobFloat() {
   while (mobCurrentFloat < 3 && document.querySelectorAll('.mob-s-card.completed[data-mob-step="' + (mobCurrentFloat + 1) + '"]').length > 0) {
     mobCurrentFloat++;
   }
+  var compact = document.getElementById('mobFloatCompact');
+  var expanded = document.getElementById('mobFloatExpanded');
+  var floatEl = document.getElementById('mobFloat');
+
+  // After step 1 — show large switch-to-desktop expanded view (until dismissed)
+  if (mobDone >= 1 && mobCurrentFloat >= 1 && !mobExpandedDismissed) {
+    compact.style.display = 'none';
+    expanded.style.display = 'block';
+    floatEl.classList.add('mob-expanded');
+    return;
+  }
+
+  // Compact step view
+  compact.style.display = 'block';
+  expanded.style.display = 'none';
+  floatEl.classList.remove('mob-expanded');
+
   var progressFill = document.getElementById('mobFloatProgressFill');
   progressFill.style.width = ((mobDone / 3) * 100) + '%';
-  // After step 1 — show congrats, nudge to desktop
-  if (mobDone >= 1 && mobCurrentFloat >= 1) {
-    document.getElementById('mobFloatNum').innerHTML = '<i class="fa-solid fa-rocket" style="font-size:10px"></i>';
-    document.getElementById('mobFloatStep').textContent = '1 of 3 done';
-    document.getElementById('mobFloatTitle').textContent = "You're off to a great start!";
-    document.getElementById('mobFloatDesc').textContent = 'The next steps work best on desktop — bigger screen, drag & drop, the works. Open SmarterQueue on your computer to keep going.';
+
+  // All done state
+  if (mobCurrentFloat >= 3) {
+    document.getElementById('mobFloatNum').innerHTML = '<i class="fa-solid fa-check" style="font-size:10px"></i>';
+    document.getElementById('mobFloatStep').textContent = 'All done';
+    document.getElementById('mobFloatTitle').textContent = "You're all set!";
+    document.getElementById('mobFloatDesc').textContent = 'Setup complete — your discount is locked in. 🎉';
     document.getElementById('mobFloatMark').style.display = 'none';
     document.getElementById('mobFloatGo').style.display = 'none';
     return;
   }
+
   var step = mobSteps[mobCurrentFloat];
   document.getElementById('mobFloatTitle').textContent = step.title;
   document.getElementById('mobFloatDesc').textContent = step.desc;
@@ -4428,6 +4588,7 @@ function renderMobFloat() {
   var goLink = document.getElementById('mobFloatGo');
   if (step.go) { goLink.style.display = ''; goLink.textContent = step.go + ' ›'; }
   else { goLink.style.display = 'none'; }
+  floatEl.classList.toggle('mob-has-go', !!step.go);
 }
 
 function mobFloatComplete() {
