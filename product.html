@@ -2172,7 +2172,7 @@ body.has-onboarding-bar .recipes-widget { bottom: 216px; }
   }
   body.has-v3-panel .main { margin-right: 0; }
   body.has-v3-panel .bottom-actions { right: 16px; }
-  body.mob-onboarding .mob-switcher { display: flex; }
+  body.mob-onboarding .mob-switcher { display: none; }
 
   /* v1: BOTTOM SHEET */
   .mob-sheet {
@@ -3557,9 +3557,9 @@ body.has-onboarding-bar .recipes-widget { bottom: 216px; }
 </div>
 
 <!-- ===== MOBILE ONBOARDING ===== -->
-<div class="mob-switcher" id="mobSwitcher">
-  <button class="active" data-mob="sheet">v1</button>
-  <button data-mob="float">v2</button>
+<div class="mob-switcher" id="mobSwitcher" style="display:none">
+  <button data-mob="sheet">v1</button>
+  <button class="active" data-mob="float">v2</button>
 </div>
 
 <!-- Mobile v1: Bottom Sheet -->
