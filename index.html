@@ -160,6 +160,162 @@ body {
   text-transform: uppercase;
 }
 
+/* ===== STEP 3: TRIAL UNLOCKED ===== */
+.reward-hero {
+  text-align: center;
+  margin-bottom: 28px;
+}
+.reward-badge {
+  display: inline-block;
+  background: hsl(215, 50%, 95%);
+  color: hsl(215, 60%, 36%);
+  font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", sans-serif;
+  font-size: 11px;
+  font-weight: 800;
+  padding: 5px 13px;
+  border-radius: 999px;
+  letter-spacing: 1.1px;
+  text-transform: uppercase;
+  margin-bottom: 20px;
+  font-feature-settings: "ss01", "tnum";
+}
+.reward-title {
+  font-family: -apple-system, "SF Pro Display", BlinkMacSystemFont, "Proxima Nova", sans-serif;
+  font-size: 30px;
+  font-weight: 800;
+  color: #061f47;
+  line-height: 1.08;
+  letter-spacing: -1px;
+  margin-bottom: 12px;
+  font-feature-settings: "kern" 1, "liga" 1, "ss01";
+  text-wrap: balance;
+}
+.reward-title .party {
+  display: inline-block;
+  transform-origin: 60% 70%;
+  animation: party-pop 1.4s cubic-bezier(0.16, 1, 0.3, 1) 0.15s 1 both;
+}
+@keyframes party-pop {
+  0% { transform: scale(0) rotate(-30deg); opacity: 0; }
+  50% { transform: scale(1.2) rotate(12deg); opacity: 1; }
+  100% { transform: scale(1) rotate(0deg); opacity: 1; }
+}
+.reward-sub {
+  font-size: 15px;
+  color: #5d7191;
+  line-height: 1.55;
+  letter-spacing: -0.1px;
+  text-wrap: pretty;
+}
+.reward-sub strong { color: #1a2c4a; font-weight: 600; }
+
+/* clean feature list — block-centered, items left-aligned */
+.features-clean {
+  list-style: none;
+  padding: 0;
+  margin: 0 auto 24px;
+  width: max-content;
+  max-width: 100%;
+}
+.features-clean li {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 8px 0;
+  font-size: 15px;
+  font-weight: 500;
+  color: #1a2c4a;
+  line-height: 1.35;
+  letter-spacing: -0.15px;
+  font-feature-settings: "kern" 1, "liga" 1;
+}
+.features-clean li i {
+  width: 22px;
+  font-size: 16px;
+  color: hsl(215, 55%, 45%);
+  text-align: center;
+  flex-shrink: 0;
+}
+
+/* bonus card — gamified challenge style, compact */
+.bonus-card {
+  display: flex;
+  align-items: flex-start;
+  gap: 13px;
+  padding: 13px 16px 14px;
+  background: hsl(215, 75%, 96%);
+  border: 1px solid hsl(215, 55%, 88%);
+  border-radius: 14px;
+  max-width: 380px;
+  margin: 0 auto;
+}
+.bonus-icon {
+  width: 38px; height: 38px;
+  border-radius: 999px;
+  background: hsl(215, 70%, 90%);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 17px;
+  flex-shrink: 0;
+  margin-top: 1px;
+}
+.bonus-body { flex: 1; min-width: 0; }
+.bonus-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 10px;
+  margin-bottom: 3px;
+}
+.bonus-title {
+  font-size: 15px;
+  font-weight: 700;
+  color: #061f47;
+  letter-spacing: -0.25px;
+  line-height: 1.2;
+}
+.bonus-meta {
+  font-size: 11px;
+  font-weight: 800;
+  color: hsl(215, 60%, 38%);
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  font-variant-numeric: tabular-nums;
+  font-feature-settings: "tnum";
+}
+.bonus-sub {
+  font-size: 13.5px;
+  color: #5d7191;
+  line-height: 1.45;
+  letter-spacing: -0.1px;
+  margin-bottom: 11px;
+}
+.bonus-sub strong { color: #1a2c4a; font-weight: 600; }
+.bonus-track {
+  position: relative;
+  height: 6px;
+  background: hsl(215, 25%, 90%);
+  border-radius: 999px;
+}
+.bonus-fill {
+  position: absolute;
+  left: 0; top: 0; bottom: 0;
+  width: 20%;
+  background: linear-gradient(90deg, hsl(215, 60%, 50%), hsl(215, 70%, 60%));
+  border-radius: 999px;
+  animation: bonus-grow 1.4s cubic-bezier(0.4,0,0.2,1) 0.4s both;
+}
+@keyframes bonus-grow {
+  from { width: 0; }
+  to { width: 20%; }
+}
+.bonus-gift-end {
+  position: absolute;
+  right: -8px;
+  top: -10px;
+  font-size: 16px;
+  filter: drop-shadow(0 1px 2px rgba(7, 38, 83, 0.18));
+}
+
 /* ===== CREDIT CARD FORM ===== */
 .cc-header { text-align: center; margin-bottom: 24px; }
 .cc-header h2 { font-size: 24px; font-weight: 700; margin-bottom: 4px; }
@@ -222,8 +378,12 @@ body {
   justify-content: space-between;
   gap: 12px;
   padding: 14px 20px calc(14px + env(safe-area-inset-bottom));
-  border-top: 1px solid #e4e9f0;
+  border-top: 1px solid transparent;
   background: #fff;
+  transition: box-shadow 0.2s ease, border-color 0.2s ease;
+}
+.action-bar.has-overflow {
+  border-top-color: #e4e9f0;
   box-shadow: 0 -6px 16px -4px rgba(7, 38, 83, 0.08), 0 -1px 3px rgba(7, 38, 83, 0.04);
 }
 .btn-back {
@@ -470,31 +630,36 @@ body {
       </div>
     </div>
 
-    <!-- Step 3: Credit Card -->
+    <!-- Step 3: Trial Unlocked -->
     <div class="step" id="step3">
-      <div class="cc-header">
-        <h2>Start your free trial</h2>
-        <p>Pay $0 today. Full access for 14 days.</p>
+      <div class="reward-hero">
+        <div class="reward-badge">7-Day Free Trial</div>
+        <h2 class="reward-title"><span class="party">🎉</span> You've unlocked<br>Team Plan</h2>
+        <p class="reward-sub">Enjoy 7 days of unlimited access on us<br>No credit card required</p>
       </div>
-      <div class="cc-brands">
-        <i class="fa-brands fa-cc-visa"></i>
-        <i class="fa-brands fa-cc-mastercard"></i>
-        <i class="fa-brands fa-cc-amex"></i>
-      </div>
-      <div class="cc-form">
-        <input class="cc-input" id="ccNumber" type="text" inputmode="numeric" maxlength="19" placeholder="Card number" oninput="formatCardNumber(this)">
-        <div class="cc-row">
-          <input class="cc-input" type="text" inputmode="numeric" maxlength="7" placeholder="MM / YY">
-          <input class="cc-input" type="text" inputmode="numeric" maxlength="4" placeholder="CVC">
+
+      <ul class="features-clean">
+        <li><i class="fa-solid fa-infinity"></i><span>Unlimited scheduled posts</span></li>
+        <li><i class="fa-solid fa-users"></i><span>Multi-user workspaces</span></li>
+        <li><i class="fa-solid fa-chart-line"></i><span>Advanced analytics &amp; insights</span></li>
+        <li><i class="fa-solid fa-arrows-rotate"></i><span>Auto-recycle your best content</span></li>
+        <li><i class="fa-solid fa-circle-check"></i><span>Approval workflows for the team</span></li>
+      </ul>
+
+      <div class="bonus-card">
+        <div class="bonus-icon">🎁</div>
+        <div class="bonus-body">
+          <div class="bonus-row">
+            <div class="bonus-title">Today's reward</div>
+            <div class="bonus-meta">50% off</div>
+          </div>
+          <div class="bonus-sub">Finish setup today to lock in your <strong>first-month discount</strong></div>
+          <div class="bonus-track">
+            <div class="bonus-fill"></div>
+            <div class="bonus-gift-end">🎁</div>
+          </div>
         </div>
-        <input class="cc-input" type="text" placeholder="Name on card">
       </div>
-      <div class="cc-trust">
-        <div class="cc-trust-item"><i class="fa-solid fa-lock"></i> 256-bit encryption</div>
-        <div class="cc-trust-item"><i class="fa-solid fa-rotate-left"></i> Cancel anytime</div>
-        <div class="cc-trust-item"><i class="fa-solid fa-shield-halved"></i> $0 for 14 days</div>
-      </div>
-      <div class="cc-fine">After your 14-day trial, you'll be charged $19.99/mo.<br>Cancel anytime before to avoid charges.</div>
     </div>
 
   </div>
@@ -515,6 +680,7 @@ body {
 var currentStep = 1;
 var selectedPersona = null;
 var selectedGoal = null;
+
 
 function selectPersona(el) {
   document.querySelectorAll('#step1 .opt-card').forEach(function(c) { c.classList.remove('selected'); });
@@ -554,6 +720,7 @@ function goToStep(n) {
   });
   document.querySelector('.modal-content').scrollTo(0, 0);
   updateUI();
+  setTimeout(updateActionBarShadow, 50);
 }
 
 function goBack() {
@@ -576,7 +743,7 @@ function updateUI() {
   // Continue button
   var btn = document.getElementById('btnNext');
   if (currentStep === 3) {
-    btn.textContent = 'Start Free Trial';
+    btn.textContent = "Let's get started";
     btn.disabled = false;
   } else {
     btn.textContent = 'Continue';
@@ -585,6 +752,24 @@ function updateUI() {
     if (currentStep === 2 && selectedGoal) btn.disabled = false;
   }
 }
+
+// Show action-bar shadow only when content actually scrolls under it
+function updateActionBarShadow() {
+  var content = document.querySelector('.modal-content');
+  var bar = document.querySelector('.action-bar');
+  if (!content || !bar) return;
+  var atBottom = content.scrollTop + content.clientHeight >= content.scrollHeight - 1;
+  bar.classList.toggle('has-overflow', !atBottom);
+}
+(function() {
+  var content = document.querySelector('.modal-content');
+  if (!content) return;
+  content.addEventListener('scroll', updateActionBarShadow, { passive: true });
+  window.addEventListener('resize', updateActionBarShadow);
+  // Initial + after layout settles
+  requestAnimationFrame(updateActionBarShadow);
+  setTimeout(updateActionBarShadow, 100);
+})();
 
 function formatCardNumber(el) {
   var v = el.value.replace(/\D/g, '').substring(0, 16);
