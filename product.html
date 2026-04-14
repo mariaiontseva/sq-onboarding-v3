@@ -2167,7 +2167,8 @@ body.has-onboarding-bar .recipes-widget { bottom: 216px; }
 
 @media (max-width: 767px) {
   #v4Panel, #v4PanelBg, #v4PanelScroll, #v4PanelSticky,
-  #recipesPanel, #recipesPanelBg, #recipesPanelScroll, #recipesPanelSticky {
+  #recipesPanel, #recipesPanelBg, #recipesPanelScroll, #recipesPanelSticky,
+  .ai-button, #aiPanel {
     display: none !important;
   }
   body.has-v3-panel .main { margin-right: 0; }
@@ -2379,27 +2380,55 @@ body.has-onboarding-bar .recipes-widget { bottom: 216px; }
   }
   .mob-float-title { font-size: 16px; font-weight: 700; color: #072653; margin-bottom: 4px; }
   .mob-float-desc { font-size: 14px; color: #6b7c8f; line-height: 1.5; margin-bottom: 14px; }
-  .mob-float-actions { display: flex; align-items: center; gap: 14px; }
+  .mob-float-actions { display: flex; align-items: center; gap: 10px; }
   .mob-float-mark {
     padding: 8px 20px; background: none; color: #AE39C6;
     border: 1.5px solid #dcc0e8; border-radius: 8px;
     font-family: inherit; font-size: 14px; font-weight: 600; cursor: pointer;
   }
   .mob-float-mark:hover { background: #faf5fd; }
+  .mob-float-call {
+    margin-left: auto;
+    display: inline-flex; align-items: center; gap: 8px;
+    padding: 8px 16px;
+    background: #f5ecfa; color: #AE39C6;
+    border: 1.5px solid #ecdaf3; border-radius: 8px;
+    font-family: inherit; font-size: 14px; font-weight: 600; cursor: pointer;
+    text-decoration: none;
+  }
+  .mob-float-call:hover { background: #ecdaf3; }
+  .mob-float-call i { font-size: 13px; }
   .mob-float-go { font-size: 14px; color: #AE39C6; font-weight: 600; text-decoration: none; }
   /* FAB */
   /* Hide default bottom actions when v2 FAB is active */
   body.mob-onboarding .bottom-actions .btn-onboarding-call { display: none; }
   .mob-fab {
-    position: fixed; bottom: 24px; right: 68px; z-index: 150;
-    width: 44px; height: 44px; border-radius: 22px;
+    position: fixed; bottom: 24px; right: 16px; z-index: 150;
+    height: 48px; padding: 5px 18px 5px 8px; border-radius: 999px;
     background: #AE39C6; color: #fff; border: none;
-    box-shadow: 0 3px 12px rgba(174,57,198,0.35);
-    cursor: pointer; font-family: inherit; font-size: 12px; font-weight: 700;
-    transition: opacity 0.25s, transform 0.25s;
+    box-shadow: 0 6px 18px rgba(174,57,198,0.45), 0 2px 4px rgba(174,57,198,0.25);
+    cursor: pointer; font-family: inherit;
+    display: inline-flex; align-items: center; gap: 10px;
+    transition: opacity 0.25s, transform 0.25s, box-shadow 0.25s;
   }
-  body.mob-onboarding .mob-fab.mob-active { display: flex; align-items: center; justify-content: center; }
+  .mob-fab:hover { box-shadow: 0 8px 22px rgba(174,57,198,0.55); transform: translateY(-1px); }
+  body.mob-onboarding .mob-fab.mob-active { display: inline-flex; }
   .mob-fab.mob-hidden { opacity: 0; transform: scale(0.5); pointer-events: none; }
+  .mob-fab-ring {
+    position: relative; width: 36px; height: 36px;
+    display: inline-flex; align-items: center; justify-content: center;
+    flex-shrink: 0;
+  }
+  .mob-fab-ring svg { position: absolute; inset: 0; transform: rotate(-90deg); }
+  .mob-fab-ring circle { transition: stroke-dashoffset 0.5s cubic-bezier(0.4,0,0.2,1); }
+  .mob-fab-num {
+    position: relative; z-index: 1;
+    font-size: 11px; font-weight: 700; color: #fff; letter-spacing: 0.2px;
+  }
+  .mob-fab-label {
+    font-size: 15px; font-weight: 700; color: #fff;
+    letter-spacing: -0.1px;
+  }
 }
 </style>
 </head>
@@ -3648,11 +3677,22 @@ body.has-onboarding-bar .recipes-widget { bottom: 216px; }
     <div class="mob-float-desc" id="mobFloatDesc">Connect once, and every post goes out automatically.</div>
     <div class="mob-float-actions">
       <button class="mob-float-mark" id="mobFloatMark" onclick="mobFloatComplete()">Mark complete</button>
+      <a class="mob-float-call" href="#" onclick="event.preventDefault()"><i class="fa-solid fa-phone"></i>Book your onboarding call</a>
       <a class="mob-float-go" id="mobFloatGo" href="#" style="display:none">Go &rsaquo;</a>
     </div>
   </div>
 </div>
-<button class="mob-fab mob-hidden mob-active" id="mobFab" onclick="openMobFloat()" style="display:none">0/3</button>
+<button class="mob-fab mob-hidden mob-active" id="mobFab" onclick="openMobFloat()" style="display:none">
+  <span class="mob-fab-ring">
+    <svg viewBox="0 0 36 36" width="36" height="36">
+      <circle cx="18" cy="18" r="14" stroke="rgba(255,255,255,0.3)" stroke-width="3" fill="none"/>
+      <circle id="mobFabRingFill" cx="18" cy="18" r="14" stroke="#fff" stroke-width="3" fill="none"
+              stroke-dasharray="87.96" stroke-dashoffset="87.96" stroke-linecap="round"/>
+    </svg>
+    <span class="mob-fab-num" id="mobFabNum">0/3</span>
+  </span>
+  <span class="mob-fab-label">Setup Guide</span>
+</button>
 
 <!-- Prototype Switcher (hidden — v1 only) -->
 <div class="proto-switcher" style="display:none">
@@ -4348,11 +4388,21 @@ function mobFloatComplete() {
   renderMobFloat();
 }
 
+function updateMobFabProgress() {
+  var num = document.getElementById('mobFabNum');
+  var ring = document.getElementById('mobFabRingFill');
+  if (num) num.textContent = mobDone + '/3';
+  if (ring) {
+    var c = 2 * Math.PI * 14; // ~87.96
+    ring.style.strokeDashoffset = c * (1 - mobDone / 3);
+  }
+}
+
 function closeMobFloat() {
   document.getElementById('mobFloat').classList.add('mob-hidden');
-  document.getElementById('mobFab').style.display = 'flex';
+  document.getElementById('mobFab').style.display = 'inline-flex';
   document.getElementById('mobFab').classList.remove('mob-hidden');
-  document.getElementById('mobFab').textContent = mobDone + '/3';
+  updateMobFabProgress();
 }
 
 function openMobFloat() {
